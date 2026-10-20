@@ -1,100 +1,187 @@
 # Østfold Husflidslag – Gruppe 28
 
-Nettside for kurs og aktiviteter i Østfold Husflidslag.
-Prosjekt i Software Engineering og Testing ved Høgskolen i Østfold.
+Nettside for kurs, aktiviteter og informasjon fra Østfold Husflidslag.
+Prosjektet utvikles i emnet Software Engineering og Testing ved Høgskolen i Østfold.
+
+Målet er å gjøre det enklere å finne relevante kurs, lese om aktivitetene
+i lokallagene og finne kontaktinformasjon.
 
 ## Teknologi
 
 - Frontend: HTML, CSS, JavaScript og Vue.
 - Backend: Java og Javalin.
-- Database: MySQL.
-- Bygg og tester: Maven Wrapper og JUnit.
+- Database: MySQL på HiØs server.
+- Bygg og avhengigheter: Maven Wrapper.
+- Automatiserte tester: JUnit.
+- Versjonskontroll og samarbeid: Git og GitHub.
 
-## Funksjoner
+Frontend og backend kjøres av samme server på port 8080.
+
+## Funksjoner og status
+
+Løsningen har foreløpig:
 
 - Forside med kommende kurs og nyheter.
 - Kursoversikt med søk og filtrering på tema og lokallag.
 - Kursdetaljer med dato, sted, pris, utstyr og kontaktperson.
-- Kontaktoversikt og navigasjon tilpasset mobil.
+- Kontaktoversikt.
+- Navigasjon og visninger tilpasset mobil.
 
-Ved vanlig oppstart hentes kurs fra MySQL. Nyhetene ligger foreløpig som statiske eksempeldata
-i JavaScript. Innlogging, administrasjon og digital påmelding er ikke implementert.
-SQL-filen inneholder eksempeldata for lokal utvikling.
+Kurs hentes fra MySQL ved vanlig oppstart. Nyhetene ligger foreløpig
+som statiske eksempeldata i JavaScript.
 
-## Oppstart uten database
+Innlogging, administrasjon og digital påmelding er ikke implementert.
 
-Forutsetning: JDK 21. Maven lastes ned automatisk av Maven Wrapper.
-Kommandoene kjøres fra prosjektmappen i PowerShell.
+## Prosjektstruktur
+
+| Mappe eller fil | Innhold |
+| --- | --- |
+| `src/main/java/` | Backend, API og databasetilgang |
+| `src/main/resources/public/` | HTML, CSS, JavaScript og bilder |
+| `src/test/java/` | Automatiserte tester |
+| `database/` | SQL-skjema og eksempeldata |
+| `docs/` | Teknisk dokumentasjon og manuell testing |
+| `pom.xml` | Avhengigheter og byggekonfigurasjon |
+
+## Oppstart
+
+Kommandoene nedenfor kjøres i PowerShell fra prosjektmappen.
+
+### Forutsetninger
+
+- Git.
+- JDK 21.
+- Tilgang til prosjektets MySQL-database ved vanlig oppstart.
+
+Maven Wrapper laster ned Maven automatisk ved første kjøring.
+
+### 1. Klon prosjektet
+
+```powershell
+git clone https://github.com/lwkyabdi/SETGruppe28.git
+cd SETGruppe28
+```
+
+### 2. Klargjør databasen
+
+Prosjektets utviklingsdatabase heter `se26_G28` og ligger på
+`itstud.hiof.no`, port `3306`.
+
+Hvis prosjektets tabeller allerede er opprettet, går du videre til
+databasekonfigurasjonen.
+
+Ved førstegangsoppsett velger du utviklingsdatabasen i MySQL Workbench
+og kjører filene i denne rekkefølgen:
+
+1. `database/01-schema.sql`
+2. `database/02-seed.sql`
+
+Den første filen oppretter tabellene. Den andre legger inn eksempeldata.
+Eksempeldataene importeres én gang i en tom database, ikke for hvert gruppemedlem.
+
+### 3. Konfigurer databasetilkoblingen
+
+Kopier konfigurasjonsmalen:
+
+```powershell
+Copy-Item dbConfig.example.properties dbConfig.properties
+```
+
+Åpne `dbConfig.properties` og fyll inn:
+
+```properties
+db.url=jdbc:mysql://itstud.hiof.no:3306/se26_G28?connectionTimeZone=Europe/Oslo
+db.username=gruppe28
+db.password=FYLL_INN_DATABASEPASSORD
+```
+
+Erstatt passordfeltet med databasepassordet dere har fått fra HiØ.
+
+`dbConfig.properties` er utelatt fra Git.
+`dbConfig.example.properties` inneholder konfigurasjonsmalen som deles i repoet.
+
+### 4. Start applikasjonen
+
+```powershell
+.\mvnw.cmd compile exec:java
+```
+
+Åpne [localhost:8080](http://localhost:8080/).
+
+Stopp serveren med **Ctrl + C**.
+
+### Valgfri oppstart uten database
+
+Grensesnittet kan også prøves med kursdata i minnet:
 
 ```powershell
 .\mvnw.cmd compile exec:java "-Dexec.args=--demo"
 ```
 
-Åpne [localhost:8080](http://localhost:8080). Denne modusen bruker eksempelkurser
-i minnet og trenger ingen databasekonfigurasjon. Kursdatoene beregnes fra dagens
-dato ved oppstart. Dataene opprettes på nytt ved hver oppstart.
+Denne modusen krever ingen databasekonfigurasjon. Kursdatoene beregnes
+ved oppstart, og dataene opprettes på nytt hver gang applikasjonen starter.
 
-## Oppstart med database
+Vanlig oppstart bruker MySQL. Data i minnet brukes bare med `--demo`.
 
-1. Bruk en MySQL-database for prosjektet. For en database på HiØ brukes
-   serveradresse, port, databasenavn og tilgangsopplysninger fra HiØ.
-   Tilkobling utenfor campus kan kreve VPN eller SSH-tunnel.
-
-2. Kjør `database/01-schema.sql` og deretter `database/02-seed.sql` i prosjektets
-   utviklingsdatabase. Eksempeldataene importeres én gang i en tom database.
-
-3. Kopier databasekonfigurasjonen:
-
-   ```powershell
-   Copy-Item dbConfig.example.properties dbConfig.properties
-   ```
-
-   Åpne `dbConfig.properties`, og tilpass `db.url`, `db.username` og `db.password`
-   til databasen. Eksempelfilens `localhost` erstattes med faktisk serveradresse
-   ved ekstern database. Tilkoblingsvalg og TLS settes etter serverens krav.
-   Filen er utelatt fra Git.
-
-4. Start applikasjonen:
-
-   ```powershell
-   .\mvnw.cmd compile exec:java
-   ```
-
-5. Åpne [localhost:8080](http://localhost:8080). Stopp serveren med **Ctrl + C**.
-
-Vanlig oppstart bruker MySQL. Eksempeldata i minnet brukes bare med `--demo`.
-På macOS og Linux brukes `sh mvnw` i stedet for `.\mvnw.cmd`.
-Frontend og backend kjøres av samme server på port 8080.
+På macOS og Linux brukes `sh mvnw` i stedet for `.\mvnw.cmd`
+i kommandoene ovenfor.
 
 ## Tester
+
+Kjør de automatiserte testene:
 
 ```powershell
 .\mvnw.cmd test
 ```
 
 Service-, API- og demo-testene kan kjøres uten MySQL.
-MySQL-testene aktiveres med miljøvariablene `MYSQL_TEST_URL`, `MYSQL_TEST_USER`
-og `MYSQL_TEST_PASSWORD`. De krever en separat database med navnet
-`husflid_test`, der tabellene slettes og opprettes på nytt ved teststart.
+
+MySQL-testene aktiveres med miljøvariablene:
+
+- `MYSQL_TEST_URL`
+- `MYSQL_TEST_USER`
+- `MYSQL_TEST_PASSWORD`
+
+Disse testene krever en separat database med navnet `husflid_test`.
+Tabellene i testdatabasen slettes og opprettes på nytt ved teststart.
+Testene skal derfor kjøres mot en egen testdatabase.
+
+Se [Manuell testing](docs/manuell-kontroll.md) for sjekklisten
+for testing i nettleseren.
 
 ## API
 
 | Metode | Endepunkt | Resultat |
 | --- | --- | --- |
 | GET | `/api/health` | Serverstatus |
-| GET | `/api/kurs` | Publiserte kurs |
+| GET | `/api/kurs` | Alle publiserte kurs |
 | GET | `/api/kurs/kommende` | Publiserte kurs fra og med dagens dato, sortert etter dato |
 | GET | `/api/kurs/{id}` | Detaljer om ett publisert kurs |
 
-Ugyldig kurs-ID gir 400, ukjent eller upublisert kurs gir 404,
-og feil ved databaseoppslag gir 503. Statusendepunktet kontrollerer bare serveren.
+API-et bruker følgende feilkoder:
+
+- `400` ved ugyldig kurs-ID.
+- `404` ved ukjent eller upublisert kurs.
+- `503` ved feil under databaseoppslag.
+
+`/api/health` kontrollerer at serveren svarer.
+Endepunktet kontrollerer ikke databasetilkoblingen.
 
 ## Samarbeid
 
-`main` er felles hovedbranch. Oppgaver utvikles i korte arbeidsbrancher,
-for eksempel `feature/kursoversikt`, og gjennomgås med pull request til `main`.
+`main` er prosjektets felles hovedbranch.
+
+Oppgaver utvikles i korte arbeidsbrancher, for eksempel
+`feature/kursoversikt`. Endringer gjennomgås med pull request før
+de merges til `main`.
+
+Commiter skal ha korte meldinger som beskriver endringene de inneholder.
+Velg filene som hører til oppgaven når du lager en commit.
 
 ## Dokumentasjon
 
 - [Arkitektur og avhengigheter](docs/arkitektur-og-avhengigheter.md)
 - [Manuell testing](docs/manuell-kontroll.md)
+
+Sprintplaner, arbeidsfordeling, møtereferater og evalueringer føres
+i gruppas levende prosjektdokumentasjon.
