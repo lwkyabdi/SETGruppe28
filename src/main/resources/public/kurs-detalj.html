@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kursdetaljer – Østfold Husflidslag</title>
+  <meta name="description" content="Studentdemo av kurs og informasjon for Østfold Husflidslag.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/site.css">
+  <script src="/webjars/vue/3.5.41/dist/vue.global.prod.js" defer></script>
+  <script src="/site.js" defer></script>
+</head>
+<body data-page="detalj">
+<noscript>Denne demoen trenger JavaScript for å hente og vise kurs.</noscript>
+<div id="app" v-cloak>
+  <site-header active="detalj"></site-header>
+<main class="side side-smal">
+  <nav class="brodsmuler" aria-label="Brødsmulesti"><ol><li><a href="/index.html">Hjem</a></li><li><a href="/kurs.html">Kurs og aktiviteter</a></li><li v-if="course" aria-current="page">{{ course.tittel }}</li></ol></nav>
+  <p v-if="loading" role="status">Henter kurs …</p>
+<p v-if="error" class="feilmelding" role="alert">{{ error }} <button type="button" @click="load">Prøv igjen</button></p>
+  <template v-if="course && !loading && !error">
+    <article class="kursdetalj" aria-labelledby="kurs-tittel">
+      <figure class="kursdetalj-bilde"><img src="/bilder/kurs-placeholder.svg" alt=""></figure>
+      <p class="kursdetalj-merker"><span class="kurs-tema">{{ course.tema }}</span> {{ course.lokallag }} Husflidslag</p>
+      <h1 id="kurs-tittel">{{ course.tittel }}</h1>
+      <dl class="fakta">
+        <dt>Startdato</dt><dd><time :datetime="course.dato">{{ dato(course.dato) }}</time></dd>
+        <dt>Tidspunkt</dt><dd>{{ course.tidspunkt }}</dd><dt>Varighet</dt><dd>{{ course.varighet }}</dd>
+        <dt>Sted</dt><dd>{{ course.sted }}</dd><dt>Målgruppe</dt><dd>{{ course.malgruppe }}</dd>
+        <dt>Nivå</dt><dd>{{ course.niva }}</dd><dt>Ledige plasser</dt><dd>{{ course.ledigePlasser }} av {{ course.kapasitet }}</dd>
+      </dl>
+      <section class="om-kurset"><h2>Om kurset</h2><p>{{ course.beskrivelse }}</p></section>
+      <section class="ta-med"><h2>Hva du bør ta med</h2><p>{{ course.utstyr }}</p></section>
+      <section class="kontaktkort"><h2>Kontaktperson</h2>
+        <img :src="course.kontakt.bilde" alt="Illustrasjon av en kontaktperson">
+        <p><strong>{{ course.kontakt.navn }}</strong></p>
+        <p><a :href="'mailto:' + course.kontakt.epost">{{ course.kontakt.epost }}</a></p>
+        <p><a :href="'tel:' + course.kontakt.telefon">{{ course.kontakt.telefon }}</a></p>
+      </section>
+    </article>
+    <aside class="pamelding" aria-label="Pris og påmelding">
+      <h2>Pris og plasser</h2>
+      <dl class="priser"><dt>Medlemspris</dt><dd>{{ pris(course.medlemspris) }}</dd><dt>Ikke-medlem</dt><dd>{{ pris(course.ordinaerpris) }}</dd></dl>
+      <p>{{ course.ledigePlasser > 0 ? course.ledigePlasser + ' ledige plasser' : 'Kurset er fullt' }}</p>
+      <button type="button" class="knapp knapp-gra" disabled>Digital påmelding er ikke tilgjengelig i demoen</button>
+      <p>Har du spørsmål? Se kontaktpersonen på denne siden.</p>
+    </aside>
+  </template>
+</main>
+  <site-footer></site-footer>
+</div>
+</body>
+</html>

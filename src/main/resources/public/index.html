@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hjem – Østfold Husflidslag</title>
+  <meta name="description" content="Studentdemo av kurs og informasjon for Østfold Husflidslag.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/site.css">
+  <script src="/webjars/vue/3.5.41/dist/vue.global.prod.js" defer></script>
+  <script src="/site.js" defer></script>
+</head>
+<body data-page="hjem">
+<noscript>Denne demoen trenger JavaScript for å hente og vise kurs.</noscript>
+<div id="app" v-cloak>
+  <site-header active="hjem"></site-header>
+<main>
+  <section class="hero" aria-labelledby="hero-tittel">
+    <p class="hero-merke">Østfold Husflidslag</p>
+    <h1 id="hero-tittel">Skap, lær og møt andre</h1>
+    <p class="hero-ingress">Oppdag kurs, aktiviteter og håndverkstradisjoner hos husflidslagene i Østfold.</p>
+    <div class="hero-knapper"><a href="/kurs.html" class="knapp knapp-hvit">Finn kurs og aktiviteter</a><a href="/aktuelt.html" class="knapp knapp-kant">Se siste nytt</a></div>
+    <figure class="hero-bilde"><img src="/bilder/kurs-placeholder.svg" alt=""></figure>
+  </section>
+  <section class="seksjon" aria-labelledby="nytt-tittel">
+    <header class="seksjon-topp"><h2 id="nytt-tittel">Siste nytt</h2><p>Eksempelnyheter fra lagene</p><a href="/aktuelt.html" class="pil-lenke">Se alle nyheter</a></header>
+    <ul class="kortliste"><li v-for="n in news.slice(0, 3)" :key="n.id"><article class="kort nyhet">
+      <figure><img src="/bilder/kurs-placeholder.svg" alt=""></figure>
+      <p class="nyhet-meta"><time :datetime="n.dato">{{ dato(n.dato) }}</time> <span>{{ n.lokallag }}</span></p>
+      <h3>{{ n.tittel }}</h3><p>{{ n.ingress }}</p><a :href="'/nyhet.html?id=' + n.id" class="les-mer">Les mer<span class="skjult">: {{ n.tittel }}</span></a>
+    </article></li></ul>
+  </section>
+  <section class="seksjon seksjon-beige" aria-labelledby="kurs-tittel">
+    <header class="seksjon-topp"><h2 id="kurs-tittel">Kommende kurs</h2><p>Kursene som starter nærmest i tid</p><a href="/kurs.html" class="pil-lenke">Se alle kurs</a></header>
+    <p v-if="loading" role="status">Henter kurs …</p>
+<p v-if="error" class="feilmelding" role="alert">{{ error }} <button type="button" @click="load">Prøv igjen</button></p>
+    <p v-if="!loading && !error && courses.length === 0">Ingen kommende kurs er publisert.</p>
+    <ul class="kortliste" v-if="!loading && !error"><li v-for="k in courses.slice(0, 3)" :key="k.id"><kurs-kort :kurs="k"></kurs-kort></li></ul>
+  </section>
+  <section class="seksjon hjelp"><h2>Spørsmål om et kurs?</h2><p>Du finner kurskontakt på hver kursside.</p><a href="/kontakt.html" class="knapp knapp-gronn">Kontakt oss</a></section>
+</main>
+  <site-footer></site-footer>
+</div>
+</body>
+</html>

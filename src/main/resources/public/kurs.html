@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kurs og aktiviteter – Østfold Husflidslag</title>
+  <meta name="description" content="Studentdemo av kurs og informasjon for Østfold Husflidslag.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/site.css">
+  <script src="/webjars/vue/3.5.41/dist/vue.global.prod.js" defer></script>
+  <script src="/site.js" defer></script>
+</head>
+<body data-page="kurs">
+<noscript>Denne demoen trenger JavaScript for å hente og vise kurs.</noscript>
+<div id="app" v-cloak>
+  <site-header active="kurs"></site-header>
+<main class="side">
+  <header class="sidetopp"><h1>Kurs og aktiviteter</h1><p>Finn kurs nær deg – for alle nivåer og interesser</p></header>
+  <form class="kursfilter" @submit.prevent="updateAddress" role="search">
+    <label for="kurs-sok">Hva vil du lære?</label><input id="kurs-sok" type="search" v-model="search" @input="updateAddress" placeholder="Søk etter kurs">
+    <label for="tema-filter">Tema</label><select id="tema-filter" v-model="theme" @change="updateAddress"><option value="">Alle temaer</option><option v-for="t in themes" :key="t" :value="slug(t)">{{ t }}</option></select>
+    <label for="lokallag-filter">Lokallag</label><select id="lokallag-filter" v-model="localGroup" @change="updateAddress"><option value="">Alle lokallag</option><option v-for="l in localGroups" :key="l" :value="slug(l)">{{ l }}</option></select>
+  </form>
+  <section aria-labelledby="kursliste-tittel"><h2 id="kursliste-tittel" class="skjult">Kurs</h2>
+    <p v-if="loading" role="status">Henter kurs …</p>
+<p v-if="error" class="feilmelding" role="alert">{{ error }} <button type="button" @click="load">Prøv igjen</button></p>
+    <p v-if="!loading && !error" class="antall" aria-live="polite">Viser {{ filtered.length }} kurs</p>
+    <p v-if="!loading && !error && filtered.length === 0">Ingen kurs passer søket ditt. Prøv et annet tema eller lokallag.</p>
+    <ul class="kortliste kursliste" v-if="!loading && !error"><li v-for="k in filtered" :key="k.id"><kurs-kort :kurs="k"></kurs-kort></li></ul>
+  </section>
+</main>
+  <site-footer></site-footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aktuelt – Østfold Husflidslag</title>
+  <meta name="description" content="Nyheter og informasjon fra Østfold Husflidslag og lokallagene i Østfold.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/site.css">
+  <script src="/webjars/vue/3.5.41/dist/vue.global.prod.js" defer></script>
+  <script src="/site.js" defer></script>
+</head>
+<body data-page="aktuelt">
+  <noscript>Aktiver JavaScript for å vise innholdet på siden.</noscript>
+
+  <div id="app" v-cloak>
+    <site-header active="aktuelt"></site-header>
+
+    <main class="side">
+      <header class="sidetopp">
+        <h1>Aktuelt</h1>
+        <p>Nyheter og informasjon fra lagene i Østfold</p>
+      </header>
+
+      <section aria-labelledby="nyheter-tittel">
+        <h2 id="nyheter-tittel" class="skjult">Alle nyheter</h2>
+
+        <ul class="kortliste nyhetsliste">
+          <li v-for="n in news" :key="n.id">
+            <article class="kort nyhet">
+              <figure>
+                <img src="/bilder/kurs-placeholder.svg" alt="">
+              </figure>
+
+              <p class="nyhet-meta">
+                <time :datetime="n.dato">{{ dato(n.dato) }}</time>
+                <span>{{ n.lokallag }}</span>
+              </p>
+
+              <h3>{{ n.tittel }}</h3>
+              <p>{{ n.ingress }}</p>
+
+              <a :href="'/nyhet.html?id=' + n.id" class="les-mer">
+                Les mer<span class="skjult">: {{ n.tittel }}</span>
+              </a>
+            </article>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+  </div>
+</body>
+</html>

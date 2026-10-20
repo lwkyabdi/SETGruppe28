@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nyhet – Østfold Husflidslag</title>
+  <meta name="description" content="Studentdemo av kurs og informasjon for Østfold Husflidslag.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/site.css">
+  <script src="/webjars/vue/3.5.41/dist/vue.global.prod.js" defer></script>
+  <script src="/site.js" defer></script>
+</head>
+<body data-page="nyhet">
+<noscript>Denne demoen trenger JavaScript for å hente og vise kurs.</noscript>
+<div id="app" v-cloak>
+  <site-header active="nyhet"></site-header>
+<main class="side side-smal">
+  <p><a href="/aktuelt.html">Tilbake til Aktuelt</a></p>
+  <article v-if="currentNews"><h1>{{ currentNews.tittel }}</h1><p><time :datetime="currentNews.dato">{{ dato(currentNews.dato) }}</time> · {{ currentNews.lokallag }}</p><p>{{ currentNews.ingress }}</p><p>{{ currentNews.tekst }}</p></article>
+  <section v-else role="alert"><h1>Nyheten finnes ikke</h1><p>Velg en nyhet fra oversikten.</p></section>
+</main>
+  <site-footer></site-footer>
+</div>
+</body>
+</html>
