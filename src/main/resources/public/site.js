@@ -27,6 +27,7 @@ const Header = {
       <li><a href="/kurs.html" :aria-current="['kurs','detalj'].includes(active) ? 'page' : null">Kurs og aktiviteter</a></li>
       <li><a href="/aktuelt.html" :aria-current="['aktuelt','nyhet'].includes(active) ? 'page' : null">Aktuelt</a></li>
       <li><a href="/kontakt.html" :aria-current="active === 'kontakt' ? 'page' : null">Kontakt oss</a></li>
+      <li><a href="/admin.html">Admin</a></li>
     </ul></nav>
     <nav class="header-hoyre" aria-label="Finn kurs"><a href="/kurs.html" class="knapp knapp-gronn">Finn kurs</a></nav>
     <button type="button" class="menyknapp" :aria-expanded="open" aria-controls="mobilmeny"
@@ -36,6 +37,7 @@ const Header = {
     <nav id="mobilmeny" class="mobilmeny" aria-label="Mobilmeny" v-show="open"><ul>
       <li><a href="/index.html">Hjem</a></li><li><a href="/kurs.html">Kurs og aktiviteter</a></li>
       <li><a href="/aktuelt.html">Aktuelt</a></li><li><a href="/kontakt.html">Kontakt oss</a></li>
+      <li><a href="/admin.html">Admin</a></li>
     </ul></nav>
   </header>`
 };

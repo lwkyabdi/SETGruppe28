@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administrasjon – Østfold Husflidslag</title>
+  <meta name="description" content="Administrasjon av kurs, nyheter og påmeldinger for Østfold Husflidslag.">
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="/admin.css">
+
+  <script src="/webjars/vue/3.5.41/dist/vue.global.prod.js" defer></script>
+  <script src="/admin.js" defer></script>
+</head>
+
+<body data-page="admin">
+<noscript>Denne administrasjonssiden trenger JavaScript for å fungere.</noscript>
+
+<div id="app" v-cloak class="admin-app">
+
+  <!-- Innlogging -->
+  <main class="admin-login " id="login-view">
+    <header class="sidetopp">
+      <h1>Administrasjon</h1>
+      <p>Logg inn for å administrere Østfold Husflidslag.</p>
+    </header>
+
+    <section class="login-panel" aria-labelledby="login-title">
+      <div class="admin-logo" aria-hidden="true">Ø</div>
+
+      <h2 id="login-title">Logg inn</h2>
+
+      <form id="login-form">
+        <label for="admin-email">Brukernavn / e-post</label>
+        <input
+          id="admin-email"
+          name="email"
+          type="email"
+          autocomplete="username"
+          required>
+
+        <label for="admin-password">Passord</label>
+        <input
+          id="admin-password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required>
+
+        <p id="login-message" role="status"></p>
+
+        <button type="submit" class="knapp knapp-gronn">
+          Logg inn
+        </button>
+      </form>
+
+      <a href="/index.html" class="tilbake-lenke">
+        ← Til offentlig side
+      </a>
+    </section>
+  </main>
+
+  <!-- Dashboard -->
+  <div id="dashboard-view" hidden>
+    <site-header active="admin"></site-header>
+
+    <div class="admin-layout">
+
+      <!-- Administrasjonsmeny -->
+      <aside class="admin-sidebar">
+        <h2>ADMIN</h2>
+
+        <nav aria-label="Administrasjonsmeny">
+          <ul>
+            <li>
+              <button type="button" data-page="dashboard">
+                Dashboard
+              </button>
+            </li>
+            <li>
+              <button type="button" data-page="courses">
+                Kurs
+              </button>
+            </li>
+            <li>
+              <button type="button" data-page="news">
+                Nyheter
+              </button>
+            </li>
+            <li>
+              <button type="button" data-page="registrations">
+                Påmeldinger
+              </button>
+            </li>
+            <li>
+              <button type="button" data-page="participants">
+                Deltakere
+              </button>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+          <a href="/index.html">Se nettsiden</a>
+          <button type="button" id="logout-button">Logg ut</button>
+        </div>
+      </aside>
+
+      <!-- Hovedinnhold -->
+      <main class="admin-main">
+
+        <section
+          class="admin-page"
+          id="page-dashboard"
+          data-content-page="dashboard">
+
+          <header class="sidetopp">
+            <h1>Hei, administrator!</h1>
+            <p>Her har du oversikt over aktiviteten i Husflidslaget.</p>
+          </header>
+
+          <div class="admin-stats">
+            <article class="admin-stat">
+              <h2>Aktive kurs</h2>
+              <p id="active-course-count">0</p>
+            </article>
+
+            <article class="admin-stat">
+              <h2>Påmeldinger</h2>
+              <p id="registration-count">0</p>
+            </article>
+
+            <article class="admin-stat">
+              <h2>På venteliste</h2>
+              <p id="waiting-list-count">0</p>
+            </article>
+          </div>
+
+          <div class="admin-actions">
+            <button type="button" class="knapp knapp-gronn" data-action="new-course">
+              + Nytt kurs
+            </button>
+
+            <button type="button" class="knapp knapp-gronn" data-action="new-news">
+              + Ny nyhet
+            </button>
+          </div>
+
+          <section class="admin-section" aria-labelledby="mine-kurs">
+            <h2 id="mine-kurs">Dine kurs</h2>
+
+            <div class="admin-table-wrap">
+              <table>
+                <thead>
+                <tr>
+                  <th>Kurs</th>
+                  <th>Dato</th>
+                  <th>Påmeldte</th>
+                  <th>Handling</th>
+                </tr>
+                </thead>
+                <tbody id="dashboard-course-rows"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <!-- Kursadministrasjon -->
+        <section
+          class="admin-page"
+          id="page-courses"
+          data-content-page="courses"
+          hidden>
+
+          <header class="sidetopp">
+            <h1>Kurs</h1>
+            <p>Se og administrer kurs.</p>
+          </header>
+
+          <button type="button" class="knapp knapp-gronn" data-action="new-course">
+            + Nytt kurs
+          </button>
+
+          <div class="admin-table-wrap">
+            <table>
+              <thead>
+              <tr>
+                <th>Kurs</th>
+                <th>Dato</th>
+                <th>Påmeldte</th>
+                <th>Handling</th>
+              </tr>
+              </thead>
+              <tbody id="course-rows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Nyheter -->
+        <section
+          class="admin-page"
+          id="page-news"
+          data-content-page="news"
+          hidden>
+
+          <header class="sidetopp">
+            <h1>Nyheter</h1>
+            <p>Administrer nyheter fra Husflidslaget.</p>
+          </header>
+
+          <button type="button" class="knapp knapp-gronn" data-action="new-news">
+            + Ny nyhet
+          </button>
+
+          <div id="news-list"></div>
+        </section>
+
+        <!-- Påmeldinger -->
+        <section
+          class="admin-page"
+          id="page-registrations"
+          data-content-page="registrations"
+          hidden>
+
+          <header class="sidetopp">
+            <h1>Påmeldinger</h1>
+            <p>Oversikt over påmeldinger til kurs.</p>
+          </header>
+
+          <div id="registrations-list"></div>
+        </section>
+
+        <!-- Deltakere -->
+        <section
+          class="admin-page"
+          id="page-participants"
+          data-content-page="participants"
+          hidden>
+
+          <header class="sidetopp">
+            <h1>Deltakere</h1>
+            <p>Oversikt over deltakere.</p>
+          </header>
+
+          <div id="participants-list"></div>
+        </section>
+
+      </main>
+    </div>
+
+    <site-footer></site-footer>
+  </div>
+
+  <!-- Skjema for kurs og nyheter -->
+  <dialog id="editor-dialog" class="admin-dialog">
+    <form id="editor-form">
+      <h2 id="editor-title">Nytt kurs</h2>
+
+      <input type="hidden" id="editor-kind">
+      <input type="hidden" id="editor-id">
+
+      <label for="item-title">Tittel</label>
+      <input id="item-title" name="title" required>
+
+      <label for="item-date">Dato</label>
+      <input id="item-date" name="date" type="date" required>
+
+      <label for="item-detail">Beskrivelse / sted</label>
+      <input id="item-detail" name="detail" required>
+
+      <label for="item-capacity">Kapasitet</label>
+      <input id="item-capacity" name="capacity" type="number" min="1">
+
+      <p id="editor-message" role="status"></p>
+
+      <button type="submit" class="knapp knapp-gronn">Lagre</button>
+      <button type="button" id="cancel-dialog">Avbryt</button>
+    </form>
+  </dialog>
+
+</div>
+</body>
+</html>
