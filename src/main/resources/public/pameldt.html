@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Du er påmeldt – Østfold Husflidslag</title>
+  <meta name="description" content="Påmeldingen din er registrert.">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!--HEADER-->
+  <header class="topp">
+    <a href="index.html" class="logo">
+      <strong>Østfold</strong>
+      <span>Husflidslag</span>
+    </a>
+
+    <nav class="hovedmeny" aria-label="Hovedmeny">
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html" aria-current="page">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+      </ul>
+    </nav>
+
+    <!--Bli medlem, Min side og kurssøk-->
+    <nav class="header-hoyre" aria-label="Medlem og kurssøk">
+      <ul>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag" class="skjult">Velg lokallag</label>
+        <select id="lokallag" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+
+    <button type="button" class="menyknapp" aria-expanded="false" aria-controls="mobilmeny" aria-label="Åpne meny">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+    </button>
+
+    <!--Menyen på mobil-->
+    <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html" aria-current="page">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
+        <select id="lokallag-mobil" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+  </header>
+
+  <main class="side side-bekreft">
+
+    <!--DU ER PÅMELDT-->
+    <section class="pameldt" id="pameldt" aria-labelledby="pameldt-tittel">
+      <p class="pameldt-ikon" aria-hidden="true">✅</p>
+      <h1 id="pameldt-tittel">Du er påmeldt!</h1>
+      <p class="pameldt-tekst">
+        Påmeldingen til Bunadssøm for nybegynnere er registrert.
+        En bekreftelse sendes til <span id="pameldt-epost">e-posten din</span>.
+      </p>
+
+      <!--Kurset du er påmeldt-->
+      <article class="pameldt-kurs" aria-labelledby="pameldt-kurs">
+        <h2 id="pameldt-kurs">Bunadssøm for nybegynnere</h2>
+        <p><time datetime="2024-09-20T18:00">20. september 2024</time> · 18:00–21:00</p>
+        <p>Fredrikstad Husflidslag · Fredrikstad Husflidssenter, Nygårdsgt. 14</p>
+      </article>
+
+      <!--Videre herfra-->
+      <ul class="pameldt-knapper">
+        <li><a href="kurs.html" class="knapp knapp-gronn">Se flere kurs</a></li>
+        <li><a href="index.html" class="knapp knapp-kant-mork">Tilbake til forsiden</a></li>
+      </ul>
+    </section>
+
+    <!--Vises hvis man kommer hit uten å ha meldt seg på-->
+    <section class="ingen-pamelding" id="ingen-pamelding" aria-labelledby="ingen-tittel" hidden>
+      <h2 id="ingen-tittel">Vi fant ingen påmelding</h2>
+      <p>Meld deg på et kurs først, så får du en bekreftelse her.</p>
+      <a href="kurs.html" class="knapp knapp-gronn">Se alle kurs</a>
+    </section>
+
+  </main>
+
+  <!--FOOTER-->
+  <footer class="bunn">
+    <section aria-labelledby="footer-om">
+      <h2 id="footer-om">Østfold Husflidslag</h2>
+      <p>Vi tar vare på norske håndverkstradisjoner og formidler dem videre til nye generasjoner gjennom kurs, aktiviteter og fellesskap.</p>
+      <ul class="sosiale-medier">
+        <li><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+        <li><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      </ul>
+    </section>
+
+    <nav aria-labelledby="footer-snarveier">
+      <h2 id="footer-snarveier">Snarveier</h2>
+      <ul>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="faq.html">Ofte stilte spørsmål</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+      </ul>
+    </nav>
+
+    <section aria-labelledby="footer-kontakt">
+      <h2 id="footer-kontakt">Kontakt</h2>
+      <address>
+        <p>Fredrikstad Husflidslag</p>
+        <p>Nygårdsgt. 14, 1606 Fredrikstad</p>
+        <a href="tel:+4790012345">Tlf: 900 12 345</a>
+        <a href="mailto:post@fredrikstad-husflid.no">post@fredrikstad-husflid.no</a>
+      </address>
+    </section>
+
+    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Om oss – Østfold Husflidslag</title>
+  <meta name="description" content="Om Østfold Husflidslag: historie, hva vi tilbyr og våre lokallag.">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!--HEADER-->
+  <header class="topp">
+    <a href="index.html" class="logo">
+      <strong>Østfold</strong>
+      <span>Husflidslag</span>
+    </a>
+
+    <nav class="hovedmeny" aria-label="Hovedmeny">
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="om-oss.html" aria-current="page">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+      </ul>
+    </nav>
+
+    <!--Bli medlem, Min side og kurssøk-->
+    <nav class="header-hoyre" aria-label="Medlem og kurssøk">
+      <ul>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag" class="skjult">Velg lokallag</label>
+        <select id="lokallag" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+
+    <button type="button" class="menyknapp" aria-expanded="false" aria-controls="mobilmeny" aria-label="Åpne meny">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+    </button>
+
+    <!--Menyen på mobil-->
+    <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="om-oss.html" aria-current="page">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
+        <select id="lokallag-mobil" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+  </header>
+
+  <main class="om-oss">
+
+    <!--TOPP-->
+    <header class="om-topp">
+      <h1>Om oss</h1>
+      <p>Østfold Husflidslag er en regional organisasjon som tar vare på og formidler norske håndverkstradisjoner i Østfold.</p>
+    </header>
+
+    <!--VÅR HISTORIE OG MISJON-->
+    <section class="om-seksjon historie" aria-labelledby="historie-tittel">
+      <h2 id="historie-tittel">Vår historie og misjon</h2>
+      <p>Østfold Husflidslag ble stiftet på begynnelsen av 1900-tallet med et enkelt mål: å ta vare på og videreføre norske håndverkstradisjoner for kommende generasjoner.</p>
+      <p>I dag er vi en levende organisasjon med over 500 aktive medlemmer fordelt på åtte lokallag i hele Østfold. Vi tilbyr kurs, aktiviteter og samlinger gjennom hele året.</p>
+      <p>Vi er en del av Norges Husflidslag, den nasjonale paraplyorganisasjonen som koordinerer husflidsarbeidet i hele landet.</p>
+      <figure>
+        <img src="https://picsum.photos/id/237/200/300" alt="Plassholderbilde">
+      </figure>
+    </section>
+
+    <!--HVA VI TILBYR-->
+    <section class="om-seksjon" aria-labelledby="tilbud-tittel">
+      <h2 id="tilbud-tittel" class="sentrert-tittel">Hva vi tilbyr</h2>
+      <ul class="tilbud">
+        <li>
+          <article class="tilbud-kort">
+            <p class="tilbud-ikon" aria-hidden="true">🧶</p>
+            <h3>Kurs og opplæring</h3>
+            <p>Vi tilbyr kurs i strikking, veving, søm, brodering, bunad, trearbeid og mye mer – for alle nivåer.</p>
+          </article>
+        </li>
+        <li>
+          <article class="tilbud-kort">
+            <p class="tilbud-ikon" aria-hidden="true">👥</p>
+            <h3>Fellesskap</h3>
+            <p>Vi bygger et varmt og inkluderende fellesskap av mennesker som deler interessen for håndverk og tradisjoner.</p>
+          </article>
+        </li>
+        <li>
+          <article class="tilbud-kort">
+            <p class="tilbud-ikon" aria-hidden="true">🏛️</p>
+            <h3>Kulturarv</h3>
+            <p>Vi bevarer og formidler norske håndverkstradisjoner, fra bunadhåndverk til trearbeid og tekstiltradisjoner.</p>
+          </article>
+        </li>
+        <li>
+          <article class="tilbud-kort">
+            <p class="tilbud-ikon" aria-hidden="true">🤝</p>
+            <h3>Frivillighet</h3>
+            <p>Organisasjonen drives i stor grad av frivillige med lidenskap for håndverk og kultur.</p>
+          </article>
+        </li>
+        <li>
+          <article class="tilbud-kort">
+            <p class="tilbud-ikon" aria-hidden="true">📚</p>
+            <h3>Deling av kunnskap</h3>
+            <p>Erfarne håndverkere deler kunnskap med nye generasjoner og sørger for at tradisjonene lever videre.</p>
+          </article>
+        </li>
+        <li>
+          <article class="tilbud-kort">
+            <p class="tilbud-ikon" aria-hidden="true">🌍</p>
+            <h3>Åpent for alle</h3>
+            <p>Vi ønsker alle velkomne – uansett alder, bakgrunn eller erfaring. Det er aldri for sent å lære noe nytt.</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <!--VÅRE LOKALLAG-->
+    <section class="om-seksjon" aria-labelledby="lag-tittel">
+      <h2 id="lag-tittel">Våre lokallag</h2>
+      <p class="om-ingress">Vi har aktive husflidslag i hele Østfold. Du kan delta på kurs hos alle lagene, uansett hvor du bor.</p>
+      <ul class="lag-liste">
+        <li>
+          <article class="kort lag-kort">
+            <figure><img src="https://picsum.photos/id/237/200/300" alt=""></figure>
+            <h3>Fredrikstad Husflidslag</h3>
+            <p>Fredrikstad Husflidslag ble stiftet i 1932 og tilbyr kurs og aktiviteter gjennom hele året i hjembyen vår.</p>
+            <a href="kurs.html?lokallag=fredrikstad" class="les-mer">Se kurs<span class="skjult"> hos Fredrikstad Husflidslag</span></a>
+          </article>
+        </li>
+        <li>
+          <article class="kort lag-kort">
+            <figure><img src="https://picsum.photos/id/237/200/300" alt=""></figure>
+            <h3>Sarpsborg Husflidslag</h3>
+            <p>Sarpsborg Husflidslag er et aktivt lag med over 100 medlemmer. Vi spesialiserer oss på strikking og tekstilhåndverk.</p>
+            <a href="kurs.html?lokallag=sarpsborg" class="les-mer">Se kurs<span class="skjult"> hos Sarpsborg Husflidslag</span></a>
+          </article>
+        </li>
+        <li>
+          <article class="kort lag-kort">
+            <figure><img src="https://picsum.photos/id/237/200/300" alt=""></figure>
+            <h3>Moss Husflidslag</h3>
+            <p>Moss Husflidslag har lange tradisjoner innen veving og har et fullt utstyrt vevstudio tilgjengelig for alle medlemmer.</p>
+            <a href="kurs.html?lokallag=moss" class="les-mer">Se kurs<span class="skjult"> hos Moss Husflidslag</span></a>
+          </article>
+        </li>
+        <li>
+          <article class="kort lag-kort">
+            <figure><img src="https://picsum.photos/id/237/200/300" alt=""></figure>
+            <h3>Halden Husflidslag</h3>
+            <p>Halden Husflidslag ligger like ved den historiske Fredriksten festning og arrangerer kurs i naturlige materialer og tradisjonshåndverk.</p>
+            <a href="kurs.html?lokallag=halden" class="les-mer">Se kurs<span class="skjult"> hos Halden Husflidslag</span></a>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <!--BLI EN DEL AV FELLESSKAPET-->
+    <section class="om-seksjon fellesskap" aria-labelledby="fellesskap-tittel">
+      <h2 id="fellesskap-tittel">Bli en del av fellesskapet</h2>
+      <p>Er du nysgjerrig på håndverk og tradisjon? Ta kontakt eller meld deg på et kurs. Vi ønsker deg hjertelig velkommen!</p>
+      <ul class="om-knapper">
+        <li><a href="kurs.html" class="knapp knapp-gronn">Finn kurs</a></li>
+        <li><a href="kontakt.html" class="knapp knapp-gronn-kant">Kontakt oss</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!--FOOTER-->
+  <footer class="bunn">
+    <section aria-labelledby="footer-om">
+      <h2 id="footer-om">Østfold Husflidslag</h2>
+      <p>Vi tar vare på norske håndverkstradisjoner og formidler dem videre til nye generasjoner gjennom kurs, aktiviteter og fellesskap.</p>
+      <ul class="sosiale-medier">
+        <li><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+        <li><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      </ul>
+    </section>
+
+    <nav aria-labelledby="footer-snarveier">
+      <h2 id="footer-snarveier">Snarveier</h2>
+      <ul>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="faq.html">Ofte stilte spørsmål</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+      </ul>
+    </nav>
+
+    <section aria-labelledby="footer-kontakt">
+      <h2 id="footer-kontakt">Kontakt</h2>
+      <address>
+        <p>Fredrikstad Husflidslag</p>
+        <p>Nygårdsgt. 14, 1606 Fredrikstad</p>
+        <a href="tel:+4790012345">Tlf: 900 12 345</a>
+        <a href="mailto:post@fredrikstad-husflid.no">post@fredrikstad-husflid.no</a>
+      </address>
+    </section>
+
+    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+  </footer>
+
+</body>
+</html>

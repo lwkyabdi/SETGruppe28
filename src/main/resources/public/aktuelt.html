@@ -1,55 +1,175 @@
 <!DOCTYPE html>
-<html lang="nb">
+<html lang="no">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aktuelt – Østfold Husflidslag</title>
-  <meta name="description" content="Nyheter og informasjon fra Østfold Husflidslag og lokallagene i Østfold.">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/site.css">
-  <script src="/webjars/vue/3.5.41/dist/vue.global.prod.js" defer></script>
-  <script src="/site.js" defer></script>
+  <meta name="description" content="Nyheter, arrangementer og informasjon fra husflidslagene i Østfold.">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-<body data-page="aktuelt">
-  <noscript>Aktiver JavaScript for å vise innholdet på siden.</noscript>
+<body>
 
-  <div id="app" v-cloak>
-    <site-header active="aktuelt"></site-header>
+  <!--HEADER-->
+  <header class="topp">
+    <a href="index.html" class="logo">
+      <strong>Østfold</strong>
+      <span>Husflidslag</span>
+    </a>
 
-    <main class="side">
-      <header class="sidetopp">
-        <h1>Aktuelt</h1>
-        <p>Nyheter og informasjon fra lagene i Østfold</p>
-      </header>
+    <nav class="hovedmeny" aria-label="Hovedmeny">
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html" aria-current="page">Aktuelt</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+      </ul>
+    </nav>
 
-      <section aria-labelledby="nyheter-tittel">
-        <h2 id="nyheter-tittel" class="skjult">Alle nyheter</h2>
+    <!--Bli medlem, Min side og kurssøk-->
+    <nav class="header-hoyre" aria-label="Medlem og kurssøk">
+      <ul>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
 
-        <ul class="kortliste nyhetsliste">
-          <li v-for="n in news" :key="n.id">
-            <article class="kort nyhet">
-              <figure>
-                <img src="/bilder/kurs-placeholder.svg" alt="">
-              </figure>
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag" class="skjult">Velg lokallag</label>
+        <select id="lokallag" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
 
-              <p class="nyhet-meta">
-                <time :datetime="n.dato">{{ dato(n.dato) }}</time>
-                <span>{{ n.lokallag }}</span>
-              </p>
+    <button type="button" class="menyknapp" aria-expanded="false" aria-controls="mobilmeny" aria-label="Åpne meny">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+    </button>
 
-              <h3>{{ n.tittel }}</h3>
-              <p>{{ n.ingress }}</p>
+    <!--Menyen på mobil-->
+    <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html" aria-current="page">Aktuelt</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
+        <select id="lokallag-mobil" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+  </header>
 
-              <a :href="'/nyhet.html?id=' + n.id" class="les-mer">
-                Les mer<span class="skjult">: {{ n.tittel }}</span>
-              </a>
-            </article>
-          </li>
-        </ul>
-      </section>
-    </main>
+  <main class="side">
 
-    <site-footer></site-footer>
-  </div>
+    <!--SIDETOPP-->
+    <header class="sidetopp">
+      <h1>Aktuelt</h1>
+      <p>Nyheter, arrangementer og informasjon fra husflidlagene i Østfold</p>
+    </header>
+
+    <!--NYHETER-->
+    <section aria-labelledby="nyheter-tittel">
+      <h2 id="nyheter-tittel" class="skjult">Alle nyheter</h2>
+      <ul class="kortliste nyhetsliste">
+        <li>
+          <article class="kort nyhet">
+            <figure><img src="https://picsum.photos/id/237/200/300" alt=""></figure>
+            <p class="nyhet-meta"><time datetime="2024-09-02">2. september 2024</time> <span>Fredrikstad</span></p>
+            <h3>Nytt bunadskurs i Fredrikstad – meld deg på nå!</h3>
+            <p>Vi åpner nå påmelding til høstens bunadskurs i Fredrikstad. Det er kun 8 plasser, og de fylles raskt.</p>
+            <a href="nyhet.html?id=1" class="les-mer">Les mer<span class="skjult">: Nytt bunadskurs i Fredrikstad</span></a>
+          </article>
+        </li>
+        <li>
+          <article class="kort nyhet">
+            <figure><img src="https://picsum.photos/id/237/200/300" alt=""></figure>
+            <p class="nyhet-meta"><time datetime="2024-09-05">5. september 2024</time> <span>Moss</span></p>
+            <h3>Ledige plasser på vevkurs i Moss</h3>
+            <p>Det er fortsatt ledige plasser på høstens vevkurs i Moss. Et flott kurs for deg som vil lære tradisjonell båndbinding.</p>
+            <a href="nyhet.html?id=2" class="les-mer">Les mer<span class="skjult">: Ledige plasser på vevkurs i Moss</span></a>
+          </article>
+        </li>
+        <li>
+          <article class="kort nyhet">
+            <figure><img src="https://picsum.photos/id/237/200/300" alt=""></figure>
+            <p class="nyhet-meta"><time datetime="2024-08-28">28. august 2024</time> <span>Østfold</span></p>
+            <h3>Høstprogrammet er klart – se alle kurs og aktiviteter</h3>
+            <p>Vi har satt opp et rikt høstprogram med kurs innen strikking, veving, søm, broderi, bunad og trearbeid.</p>
+            <a href="nyhet.html?id=3" class="les-mer">Les mer<span class="skjult">: Høstprogrammet er klart</span></a>
+          </article>
+        </li>
+        <li>
+          <article class="kort nyhet">
+            <figure><img src="https://picsum.photos/id/237/200/300" alt=""></figure>
+            <p class="nyhet-meta"><time datetime="2024-08-20">20. august 2024</time> <span>Fredrikstad</span></p>
+            <h3>Velkommen til medlemskveld i september</h3>
+            <p>Alle medlemmer inviteres til en hyggelig sammenkomst hos Fredrikstad Husflidslag 14. september.</p>
+            <a href="nyhet.html?id=4" class="les-mer">Les mer<span class="skjult">: Velkommen til medlemskveld</span></a>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <!--SE ALLE KURS-->
+    <p class="alle-kurs aktuelt-knapp">
+      <a href="kurs.html" class="knapp knapp-gronn">Se alle kurs og aktiviteter</a>
+    </p>
+
+  </main>
+
+  <!--FOOTER-->
+  <footer class="bunn">
+    <section aria-labelledby="footer-om">
+      <h2 id="footer-om">Østfold Husflidslag</h2>
+      <p>Vi tar vare på norske håndverkstradisjoner og formidler dem videre til nye generasjoner gjennom kurs, aktiviteter og fellesskap.</p>
+      <ul class="sosiale-medier">
+        <li><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+        <li><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      </ul>
+    </section>
+
+    <nav aria-labelledby="footer-snarveier">
+      <h2 id="footer-snarveier">Snarveier</h2>
+      <ul>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="faq.html">Ofte stilte spørsmål</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+      </ul>
+    </nav>
+
+    <section aria-labelledby="footer-kontakt">
+      <h2 id="footer-kontakt">Kontakt</h2>
+      <address>
+        <p>Fredrikstad Husflidslag</p>
+        <p>Nygårdsgt. 14, 1606 Fredrikstad</p>
+        <a href="tel:+4790012345">Tlf: 900 12 345</a>
+        <a href="mailto:post@fredrikstad-husflid.no">post@fredrikstad-husflid.no</a>
+      </address>
+    </section>
+
+    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+  </footer>
+
 </body>
 </html>

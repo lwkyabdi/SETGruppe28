@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Påmelding: Bunadssøm for nybegynnere – Østfold Husflidslag</title>
+  <meta name="description" content="Meld deg på kurs hos Østfold Husflidslag.">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!--HEADER-->
+  <header class="topp">
+    <a href="index.html" class="logo">
+      <strong>Østfold</strong>
+      <span>Husflidslag</span>
+    </a>
+
+    <nav class="hovedmeny" aria-label="Hovedmeny">
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html" aria-current="page">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+      </ul>
+    </nav>
+
+    <!--Bli medlem, Min side og kurssøk-->
+    <nav class="header-hoyre" aria-label="Medlem og kurssøk">
+      <ul>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag" class="skjult">Velg lokallag</label>
+        <select id="lokallag" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+
+    <button type="button" class="menyknapp" aria-expanded="false" aria-controls="mobilmeny" aria-label="Åpne meny">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+    </button>
+
+    <!--Menyen på mobil-->
+    <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html" aria-current="page">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
+        <select id="lokallag-mobil" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+  </header>
+
+  <main class="side side-smal" id="pameldingsside">
+
+    <!--BRØDSMULESTI-->
+    <nav class="brodsmuler" aria-label="Brødsmulesti">
+      <ol>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="kurs-detalj.html?id=1">Bunadssøm for nybegynnere</a></li>
+        <li><a href="pamelding.html" aria-current="page">Påmelding</a></li>
+      </ol>
+    </nav>
+
+    <!--PÅMELDINGSSKJEMA-->
+    <section class="pameldingsskjema" aria-labelledby="pamelding-tittel">
+      <header class="sidetopp">
+        <h1 id="pamelding-tittel">Meld deg på kurs</h1>
+        <p>Fyll ut skjemaet. På neste side ser du over opplysningene før du bekrefter.</p>
+      </header>
+
+      <!--Skjemaet sender deg videre til bekreft.html (se script.js)-->
+      <form id="pamelding-skjema" action="bekreft.html" novalidate>
+        <!--Om deg-->
+        <fieldset>
+          <legend>Om deg</legend>
+
+          <label for="fornavn">Fornavn</label>
+          <input id="fornavn" name="fornavn" type="text" autocomplete="given-name" required>
+
+          <label for="etternavn">Etternavn</label>
+          <input id="etternavn" name="etternavn" type="text" autocomplete="family-name" required>
+
+          <label for="epost">E-post</label>
+          <input id="epost" name="epost" type="email" autocomplete="email" required>
+
+          <label for="telefon">Telefon</label>
+          <input id="telefon" name="telefon" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9 +]{8,15}" required>
+
+          <label for="fodselsar">Fødselsår</label>
+          <input id="fodselsar" name="fodselsar" type="number" inputmode="numeric" min="1900" max="2026" placeholder="F.eks. 1985" required>
+        </fieldset>
+
+        <!--Medlemskap-->
+        <fieldset>
+          <legend>Er du medlem av Husflidslaget?</legend>
+
+          <label class="valg">
+            <input type="radio" name="medlem" value="ja" required>
+            Ja, jeg er medlem
+          </label>
+          <label class="valg">
+            <input type="radio" name="medlem" value="nei">
+            Nei, jeg er ikke medlem
+          </label>
+
+          <label for="medlemsnummer" class="medlemsnummer" hidden>Medlemsnummer (valgfritt)</label>
+          <input id="medlemsnummer" name="medlemsnummer" type="text" inputmode="numeric" class="medlemsnummer" hidden>
+        </fieldset>
+
+        <!--Annet-->
+        <fieldset>
+          <legend>Annet</legend>
+
+          <label for="kommentar">Kommentar (valgfritt)</label>
+          <textarea id="kommentar" name="kommentar" rows="4" placeholder="F.eks. behov for tilrettelegging eller spørsmål til kursleder"></textarea>
+        </fieldset>
+
+        <!--Samtykke-->
+        <label class="valg samtykke">
+          <input type="checkbox" name="samtykke" required>
+          Jeg godtar at opplysningene mine brukes til å behandle påmeldingen.
+        </label>
+
+        <p class="skjema-feil" id="skjema-feil" role="alert" hidden></p>
+
+        <button type="submit" class="knapp knapp-gronn knapp-stor">Gå videre</button>
+      </form>
+    </section>
+
+    <!--KURSET DU MELDER DEG PÅ-->
+    <aside class="kurs-oppsummering" aria-labelledby="oppsummering-tittel">
+      <h2 id="oppsummering-tittel">Du melder deg på</h2>
+      <p class="kurs-tema">Bunad</p>
+      <h3>Bunadssøm for nybegynnere</h3>
+
+      <dl class="info-list">
+        <dt>Dato</dt>
+        <dd><time datetime="2024-09-20T18:00">20. september 2024, kl. 18:00–21:00</time></dd>
+        <dt>Varighet</dt>
+        <dd>8 kvelder</dd>
+        <dt>Sted</dt>
+        <dd>Fredrikstad Husflidssenter, Nygårdsgt. 14</dd>
+        <dt>Lokallag</dt>
+        <dd>Fredrikstad Husflidslag</dd>
+        <dt>Ledige plasser</dt>
+        <dd>3 av 8</dd>
+      </dl>
+
+      <!--Prisen endres når man velger medlem eller ikke (data-medlem og data-ordinaer brukes av script.js)-->
+      <p class="din-pris" data-medlem="1&nbsp;500 kr" data-ordinaer="2&nbsp;000 kr">
+        <span>Din pris</span>
+        <strong id="din-pris">Velg medlemskap</strong>
+      </p>
+    </aside>
+
+  </main>
+
+  <!--FOOTER-->
+  <footer class="bunn">
+    <section aria-labelledby="footer-om">
+      <h2 id="footer-om">Østfold Husflidslag</h2>
+      <p>Vi tar vare på norske håndverkstradisjoner og formidler dem videre til nye generasjoner gjennom kurs, aktiviteter og fellesskap.</p>
+      <ul class="sosiale-medier">
+        <li><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+        <li><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      </ul>
+    </section>
+
+    <nav aria-labelledby="footer-snarveier">
+      <h2 id="footer-snarveier">Snarveier</h2>
+      <ul>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="faq.html">Ofte stilte spørsmål</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+      </ul>
+    </nav>
+
+    <section aria-labelledby="footer-kontakt">
+      <h2 id="footer-kontakt">Kontakt</h2>
+      <address>
+        <p>Fredrikstad Husflidslag</p>
+        <p>Nygårdsgt. 14, 1606 Fredrikstad</p>
+        <a href="tel:+4790012345">Tlf: 900 12 345</a>
+        <a href="mailto:post@fredrikstad-husflid.no">post@fredrikstad-husflid.no</a>
+      </address>
+    </section>
+
+    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+  </footer>
+
+</body>
+</html>

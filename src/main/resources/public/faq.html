@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ofte stilte spørsmål – Østfold Husflidslag</title>
+  <meta name="description" content="Svar på de vanligste spørsmålene om kurs, påmelding og betaling hos Østfold Husflidslag.">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!--HEADER-->
+  <header class="topp">
+    <a href="index.html" class="logo">
+      <strong>Østfold</strong>
+      <span>Husflidslag</span>
+    </a>
+
+    <nav class="hovedmeny" aria-label="Hovedmeny">
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+      </ul>
+    </nav>
+
+    <!--Bli medlem, Min side og kurssøk-->
+    <nav class="header-hoyre" aria-label="Medlem og kurssøk">
+      <ul>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag" class="skjult">Velg lokallag</label>
+        <select id="lokallag" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+
+    <button type="button" class="menyknapp" aria-expanded="false" aria-controls="mobilmeny" aria-label="Åpne meny">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+    </button>
+
+    <!--Menyen på mobil-->
+    <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
+      <ul>
+        <li><a href="index.html">Hjem</a></li>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="bli-medlem.html">Bli medlem</a></li>
+        <li><a href="min-side.html">Min side</a></li>
+      </ul>
+      <form class="finn-kurs" action="kurs.html" method="get" role="search">
+        <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
+        <select id="lokallag-mobil" name="lokallag">
+          <option value="fredrikstad">Fredrikstad</option>
+          <option value="sarpsborg">Sarpsborg</option>
+          <option value="moss">Moss</option>
+          <option value="halden">Halden</option>
+          <option value="indre-ostfold">Indre Østfold</option>
+        </select>
+        <button type="submit">Finn kurs</button>
+      </form>
+    </nav>
+  </header>
+
+  <main class="side side-faq">
+
+    <!--SIDETOPP-->
+    <header class="sidetopp">
+      <h1>Ofte stilte spørsmål</h1>
+      <p>Svar på de vanligste spørsmålene om kurs, påmelding og betaling</p>
+    </header>
+
+    <!--SPØRSMÅL OG SVAR-->
+    <!--details og summary åpner og lukker svarene uten JavaScript-->
+    <section class="faq" aria-labelledby="faq-tittel">
+      <h2 id="faq-tittel" class="skjult">Spørsmål og svar</h2>
+      <details>
+        <summary>Hva skjer hvis kurset blir avlyst?</summary>
+        <p>Hvis et kurs må avlyses, for eksempel fordi det er for få påmeldte, får du beskjed på e-post så snart som mulig. Du får da hele kursavgiften tilbake.</p>
+      </details>
+      <details>
+        <summary>Hva skjer med betalingen hvis kurset ikke gjennomføres?</summary>
+        <p>Blir kurset ikke gjennomført, betaler vi tilbake hele beløpet til samme konto eller kort som du betalte med. Tilbakebetalingen skjer vanligvis i løpet av én til to uker.</p>
+      </details>
+      <details>
+        <summary>Hva gjør jeg hvis jeg blir syk?</summary>
+        <p>Gi beskjed til kurskontakten så tidlig som mulig. Melder du fra før kurset starter, kan plassen gå videre til noen på ventelisten. Ta kontakt med lokallaget for å høre om refusjon.</p>
+      </details>
+      <details>
+        <summary>Hvordan fungerer ventelisten?</summary>
+        <p>Når et kurs er fullt, kan du sette deg på venteliste. Hvis noen melder seg av, får den første på listen tilbud om plassen på e-post og må svare innen en gitt frist.</p>
+      </details>
+      <details>
+        <summary>Må jeg være medlem for å delta på kurs?</summary>
+        <p>Nei, alle kan delta på kursene våre. Medlemmer betaler lavere pris, så det lønner seg ofte å bli medlem hvis du tar flere kurs.</p>
+      </details>
+      <details>
+        <summary>Hvordan får jeg medlemspris?</summary>
+        <p>Du får medlemspris når du er medlem av Norges Husflidslag. Kryss av for at du er medlem når du melder deg på. Medlemskapet gir rabatt på kurs i hele landet.</p>
+      </details>
+      <details>
+        <summary>Kan jeg melde meg på kurs i et annet lokallag enn mitt eget?</summary>
+        <p>Ja. Du kan delta på kurs hos alle lokallagene i Østfold, uansett hvor du bor eller hvilket lag du er medlem i.</p>
+      </details>
+      <details>
+        <summary>Hva om det er tekniske problemer med påmeldingssiden?</summary>
+        <p>Prøv å laste siden på nytt eller bruk en annen nettleser. Virker det fortsatt ikke, kan du kontakte oss på telefon eller e-post, så hjelper vi deg med påmeldingen.</p>
+      </details>
+      <details>
+        <summary>Hva skal jeg ta med på kurs?</summary>
+        <p>Det står under «Hva du bør ta med» på hver kursside. Du får også en liste på e-post når du har meldt deg på.</p>
+      </details>
+      <details>
+        <summary>Er det aldersgrense på kursene?</summary>
+        <p>De fleste kursene er for voksne, men noen er åpne for barn og ungdom. Målgruppen står på kurssiden. Er du usikker, kan du spørre kurskontakten.</p>
+      </details>
+    </section>
+
+    <!--FANT DU IKKE SVARET-->
+    <aside class="sporsmal faq-kontakt" aria-labelledby="kontakt-tittel">
+      <h2 id="kontakt-tittel">Fant du ikke svaret?</h2>
+      <p>Ta gjerne kontakt med oss – vi svarer raskt.</p>
+      <a href="kontakt.html" class="knapp knapp-gronn">Kontakt oss</a>
+    </aside>
+
+  </main>
+
+  <!--FOOTER-->
+  <footer class="bunn">
+    <section aria-labelledby="footer-om">
+      <h2 id="footer-om">Østfold Husflidslag</h2>
+      <p>Vi tar vare på norske håndverkstradisjoner og formidler dem videre til nye generasjoner gjennom kurs, aktiviteter og fellesskap.</p>
+      <ul class="sosiale-medier">
+        <li><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+        <li><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      </ul>
+    </section>
+
+    <nav aria-labelledby="footer-snarveier">
+      <h2 id="footer-snarveier">Snarveier</h2>
+      <ul>
+        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
+        <li><a href="aktuelt.html">Aktuelt</a></li>
+        <li><a href="kontakt.html">Kontakt oss</a></li>
+        <li><a href="faq.html">Ofte stilte spørsmål</a></li>
+        <li><a href="om-oss.html">Om oss</a></li>
+      </ul>
+    </nav>
+
+    <section aria-labelledby="footer-kontakt">
+      <h2 id="footer-kontakt">Kontakt</h2>
+      <address>
+        <p>Fredrikstad Husflidslag</p>
+        <p>Nygårdsgt. 14, 1606 Fredrikstad</p>
+        <a href="tel:+4790012345">Tlf: 900 12 345</a>
+        <a href="mailto:post@fredrikstad-husflid.no">post@fredrikstad-husflid.no</a>
+      </address>
+    </section>
+
+    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+  </footer>
+
+</body>
+</html>
