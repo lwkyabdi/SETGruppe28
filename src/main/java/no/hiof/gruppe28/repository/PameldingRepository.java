@@ -24,11 +24,5 @@ public interface PameldingRepository {
                     409, "Påmelding er stengt for dette kurset."
             );
         }
-
-        if (kurs.ledigePlasser() <= 0) {
-            throw new PameldingException(
-                    409, "Kurset er fullt. Velg et annet kurs."
-            );
-        }
     }
 }

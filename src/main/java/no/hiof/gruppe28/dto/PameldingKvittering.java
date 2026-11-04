@@ -1,6 +1,8 @@
 package no.hiof.gruppe28.dto;
 
 import no.hiof.gruppe28.model.Kurs;
+import no.hiof.gruppe28.model.PameldingStatus;
+
 import java.math.BigDecimal;
 
 public record PameldingKvittering(
@@ -13,13 +15,15 @@ public record PameldingKvittering(
         String lokallag,
         BigDecimal pris,
         int ledigePlasser,
-        boolean demo
+        boolean demo,
+        String status
 ) {
     public static PameldingKvittering fra(
             Kurs kurs,
             String referanse,
             BigDecimal pris,
-            boolean demo
+            boolean demo,
+            PameldingStatus status
     ) {
         return new PameldingKvittering(
                 referanse,
@@ -31,7 +35,8 @@ public record PameldingKvittering(
                 kurs.lokallag(),
                 pris,
                 kurs.ledigePlasser(),
-                demo
+                demo,
+            status.name().toLowerCase()
         );
     }
 }
