@@ -3,6 +3,7 @@ package no.hiof.gruppe28.repository;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.dto.PameldingKvittering;
 import no.hiof.gruppe28.model.PameldingData;
+import no.hiof.gruppe28.model.PameldingStatus;
 import no.hiof.gruppe28.service.PameldingException;
 
 import java.sql.Connection;
@@ -64,7 +65,8 @@ public class JdbcPameldingRepository implements PameldingRepository {
                                     r.getString("kurs_lokallag"),
                                     r.getBigDecimal("pris"),
                                     kurs.ledigePlasser(),
-                                    false
+                                    false, r.getString("status").toLowerCase()
+
                             );
 
                             c.commit();
@@ -74,6 +76,14 @@ public class JdbcPameldingRepository implements PameldingRepository {
                 }
 
                 PameldingRepository.kontrollerKurs(kurs, idag);
+                // Er det ledige plasser, blir personen påmeldt.
+                // Er kurset fullt, havner personen på venteliste.
+                PameldingStatus status;
+                if (kurs.ledigePlasser() > 0) {
+                    status = PameldingStatus.PAMELDT;
+                } else {
+                    status = PameldingStatus.VENTELISTE;
+                }
 
                 // Én påmelding per e-postadresse på samme kurs.
                 try (var s = c.prepareStatement(
@@ -121,11 +131,12 @@ public class JdbcPameldingRepository implements PameldingRepository {
                             kurs_dato,
                             kurs_tidspunkt,
                             kurs_sted,
-                            kurs_lokallag
+                            kurs_lokallag,
+                            status
                         )
                         VALUES (
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                            TRUE, ?, ?, ?, ?, ?, ?
+                            TRUE, ?, ?, ?, ?, ?, ?,?
                         )
                         """
                 )) {
@@ -146,34 +157,45 @@ public class JdbcPameldingRepository implements PameldingRepository {
                     s.setString(15, kurs.tidspunkt());
                     s.setString(16, kurs.sted());
                     s.setString(17, kurs.lokallag());
+                    s.setString(18, status.name());
+
 
                     s.executeUpdate();
                 }
-
+            if(status == PameldingStatus.PAMELDT) {
                 try (var s = c.prepareStatement(
-                        """
+                    """
                         UPDATE kurs
                         SET ledige_plasser = ledige_plasser - 1
                         WHERE id = ? AND ledige_plasser > 0
                         """
                 )) {
+
                     s.setLong(1, kursId);
 
                     if (s.executeUpdate() != 1) {
                         throw new PameldingException(
-                                409,
-                                "Kurset er fullt."
+                            409,
+                            "Kurset er fullt."
                         );
                     }
                 }
+            }
 
                 c.commit();
 
+                // Bare påmeldte tar en plass. Står man på venteliste, endres ikke antallet.
+                var kursEtterPamelding = kurs;
+                if (status == PameldingStatus.PAMELDT) {
+                    kursEtterPamelding = kurs.medLedigePlasser(kurs.ledigePlasser() - 1);
+                }
+
                 return PameldingKvittering.fra(
-                        kurs.medLedigePlasser(kurs.ledigePlasser() - 1),
-                        data.referanse(),
-                        pris,
-                        false
+                    kursEtterPamelding,
+                    data.referanse(),
+                    pris,
+                    false,
+                    status
                 );
 
             } catch (SQLException | RuntimeException e) {
