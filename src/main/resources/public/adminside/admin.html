@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../favicon.png">
+  <title>Logg inn – Administrasjon – Østfold Husflidslag</title>
+  <meta name="description" content="Innlogging til administrasjonen for Østfold Husflidslag.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
+</head>
+<body class="admin-innlogging">
+
+  <!--INNLOGGING-->
+  <main class="innlogging">
+    <a href="../index.html" class="innlogging-logo">
+      <img src="../hflogo.svg" alt="Norges Husflidslag – til forsiden" width="121" height="48">
+    </a>
+
+    <section class="innlogging-boks" aria-labelledby="innlogging-tittel">
+      <header>
+        <h1 id="innlogging-tittel">Administrasjon</h1>
+        <p>Logg inn for å administrere kurs, nyheter og påmeldinger.</p>
+      </header>
+
+      <form id="innlogging-skjema" class="skjema" novalidate>
+        <label for="admin-epost">E-post</label>
+        <input id="admin-epost" name="epost" type="email" autocomplete="username" required>
+
+        <label for="admin-passord">Passord</label>
+        <input id="admin-passord" name="passord" type="password" autocomplete="current-password" required>
+
+        <p class="skjema-feil" id="innlogging-feil" role="alert" hidden></p>
+
+        <button type="submit" class="knapp knapp-primar">Logg inn</button>
+      </form>
+    </section>
+
+    <p class="tilbake"><a href="../index.html">Til nettsiden</a></p>
+  </main>
+
+</body>
+</html>

@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="favicon.png">
   <title>Aktuelt – Østfold Husflidslag</title>
   <meta name="description" content="Nyheter, arrangementer og informasjon fra husflidslagene i Østfold.">
   <link rel="stylesheet" href="style.css">
@@ -13,8 +15,7 @@
   <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
-      <strong>Østfold</strong>
-      <span>Husflidslag</span>
+      <img src="hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
     </a>
 
     <nav class="hovedmeny" aria-label="Hovedmeny">
@@ -30,8 +31,8 @@
     <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="min-side.html">Min side</a></li>
+        <li><a href="bli-medlem.html" class="knapp-medlem">Bli medlem</a></li>
+        <li><a href="adminside/admin.html">Min side</a></li>
       </ul>
 
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
@@ -62,7 +63,7 @@
         <li><a href="om-oss.html">Om oss</a></li>
         <li><a href="kontakt.html">Kontakt oss</a></li>
         <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="min-side.html">Min side</a></li>
+        <li><a href="adminside/admin.html">Min side</a></li>
       </ul>
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
         <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
@@ -131,7 +132,7 @@
 
     <!--SE ALLE KURS-->
     <p class="alle-kurs aktuelt-knapp">
-      <a href="kurs.html" class="knapp knapp-gronn">Se alle kurs og aktiviteter</a>
+      <a href="kurs.html" class="knapp knapp-primar">Se alle kurs og aktiviteter</a>
     </p>
 
   </main>

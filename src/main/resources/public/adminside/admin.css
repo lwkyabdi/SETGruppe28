@@ -1,0 +1,456 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap");
+
+/*ADMINISTRASJON*/
+/*Egen stilfil for admin. Fargene og skriftene er de samme som på nettsiden.*/
+
+/*FARGER, SKRIFTER OG MÅL*/
+:root {
+  --background: #f7f7f7; /*lys grå bakgrunn*/
+  --foreground: #333132; /*kull, samme som teksten i logoen*/
+  --primary: #bb2a4d; /*logo-rød*/
+  --primary-foreground: #ffffff; /*tekst på rød*/
+  --muted: #eeedeb; /*grå flater*/
+  --muted-foreground: #66625f; /*svak tekst*/
+  --card: #ffffff; /*kort og tabeller*/
+  --border: #e4e1df; /*rammer*/
+  --footer: #333132; /*kull i menyen*/
+  --footer-tekst: #f4f3f2;
+
+  --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Lora", Georgia, serif;
+
+  --side-luft: 1rem; /*luft på sidene (1.5rem på PC)*/
+}
+
+/*GRUNNOPPSETT*/
+*, ::before, ::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+h1, h2, h3, p, figure { margin: 0; }
+h1, h2, h3 { font-family: var(--font-serif); }
+ol, ul, menu { list-style: none; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+button, select, input, textarea { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/*Skjult, men lest av skjermlesere*/
+.skjult {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/*KNAPPER*/
+.knapp {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border: 0;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+.knapp-primar { background-color: var(--primary); color: var(--primary-foreground); }
+.knapp-primar:hover { background-color: #9c2240; }
+.knapp-kant {
+  border: 2px solid var(--foreground);
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+/*SKJEMA*/
+.skjema {
+  display: flex;
+  flex-direction: column;
+}
+.skjema label {
+  margin-bottom: 0.375rem;
+  font-weight: 600;
+}
+.skjema input,
+.skjema select,
+.skjema textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--foreground);
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+.skjema select { cursor: pointer; }
+.skjema [aria-invalid="true"] {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 1px #b91c1c;
+}
+.skjema button { padding-block: 1rem; }
+
+/*Feilmelding*/
+.skjema-feil {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  color: #b91c1c;
+  background-color: #fee2e2;
+}
+.skjema-feil[hidden] { display: none; }
+
+/*Tilbake-lenke*/
+.tilbake a {
+  display: inline-flex;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+.tilbake a::before { content: "←"; }
+.tilbake a:hover { opacity: 0.7; }
+
+/*Merke for påmeldt og venteliste*/
+.plasser {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.plasser::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+.plasser-faa   { background-color: #fef3c7; color: #b45309; }
+.plasser-ledig { background-color: #dcfce7; color: #15803d; }
+
+/*INNLOGGING*/
+.admin-innlogging { background-color: var(--muted); }
+
+.innlogging {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 3rem var(--side-luft);
+}
+.innlogging-logo img { width: auto; height: 56px; }
+
+.innlogging-boks {
+  width: min(100%, 26rem);
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background-color: var(--card);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.innlogging-boks header { margin-bottom: 1.5rem; text-align: center; }
+.innlogging-boks h1 {
+  margin-bottom: 0.5rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.innlogging-boks header p { color: var(--muted-foreground); }
+
+/*ADMINSIDENE*/
+/*Skjules til admin.js har sjekket at man er logget inn*/
+body.admin:not(.innlogget) { visibility: hidden; }
+
+/*Toppen over hele bredden, menyen til venstre og innholdet til høyre*/
+body.admin {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /*hindrer at brede tabeller gjør siden bredere*/
+  grid-template-rows: auto auto 1fr;
+  background-color: var(--background);
+}
+
+/*HEADER*/
+.admin-topp {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem var(--side-luft);
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+.admin-topp .logo { padding-block: 0.25rem; }
+.admin-topp .logo img { width: auto; height: 44px; }
+
+.admin-merke {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+}
+
+.admin-topp-lenker {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+.admin-topp-lenker a,
+.logg-ut {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+  background: none;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+.admin-topp-lenker a:hover,
+.logg-ut:hover { background-color: var(--muted); }
+
+/*ADMINMENY*/
+/*På mobil: menyen ligger som en rad under toppen*/
+.admin-meny {
+  padding: 0.75rem var(--side-luft);
+  background-color: var(--footer);
+}
+.admin-meny ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+.admin-meny a {
+  display: block;
+  padding: 0.6rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  color: var(--footer-tekst);
+  transition: background-color 150ms;
+}
+.admin-meny a:hover { background-color: rgb(255 255 255 / 0.1); }
+.admin-meny a[aria-current="page"] {
+  font-weight: 700;
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+}
+
+/*INNHOLD*/
+.admin-innhold {
+  min-width: 0;
+  padding: 2rem var(--side-luft) 3rem;
+}
+
+.admin-sidetopp {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem 1.5rem;
+  align-items: end;
+  margin-bottom: 2rem;
+}
+.admin-sidetopp h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+.admin-sidetopp h1,
+.admin-sidetopp p { grid-column: 1; }
+.admin-sidetopp p { color: var(--muted-foreground); }
+.admin-sidetopp .knapp { justify-self: start; margin-top: 0.75rem; }
+
+/*TALL ØVERST PÅ KURSSIDEN*/
+.admin-tall {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.admin-tall li {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background-color: var(--card);
+  color: var(--muted-foreground);
+}
+.admin-tall strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+/*FILTER PÅ PÅMELDINGER*/
+.admin-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+.admin-filter label { font-weight: 600; }
+.admin-filter select {
+  min-width: min(100%, 18rem);
+  padding: 0.6rem 1rem;
+  font: inherit;
+  color: var(--foreground);
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+/*TABELLER*/
+/*Tabellen kan scrolles sidelengs på smale skjermer*/
+.admin-tabell {
+  position: relative; /*holder skjult tekst inne i tabellen*/
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background-color: var(--card);
+}
+.admin-tabell table {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+.admin-tabell caption {
+  padding: 1rem 1.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: left;
+}
+.admin-tabell th,
+.admin-tabell td {
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--border);
+  vertical-align: middle;
+}
+.admin-tabell thead th {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+  background-color: var(--muted);
+}
+.admin-tabell tbody th { font-weight: 600; }
+.admin-tabell tbody tr:hover { background-color: var(--background); }
+
+.admin-fullt { font-weight: 700; color: var(--primary); }
+
+.admin-kontakt a {
+  display: block;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+.admin-kontakt a:hover { text-decoration: underline; }
+
+.admin-tom {
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+/*Knapper i tabellen*/
+.admin-handlinger { white-space: nowrap; text-align: right; }
+.admin-knapp {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+  background-color: var(--card);
+  cursor: pointer;
+  transition: background-color 150ms, color 150ms;
+}
+.admin-knapp + .admin-knapp { margin-left: 0.5rem; }
+.admin-knapp:hover { background-color: var(--muted); }
+.admin-knapp-slett { color: var(--primary); }
+.admin-knapp-slett[data-bekreft] {
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+/*DIALOG FOR NYTT OG REDIGER*/
+.admin-dialog {
+  width: min(100% - 2rem, 32rem);
+  max-height: 90vh;
+  padding: 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  color: var(--foreground);
+  background-color: var(--card);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+.admin-dialog::backdrop { background-color: rgb(0 0 0 / 0.5); }
+.admin-dialog h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.5rem;
+}
+.admin-dialog textarea { resize: vertical; }
+
+.dialog-knapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.dialog-knapper .knapp { padding: 0.75rem 1.5rem; cursor: pointer; }
+.dialog-knapper .knapp-primar { border: 2px solid var(--primary); }
+.dialog-knapper .knapp-kant { background: none; }
+.dialog-knapper .knapp-kant:hover { background-color: var(--muted); }
+
+/*FRA 640 PX*/
+@media (min-width: 640px) {
+  .admin-tall { grid-template-columns: repeat(3, 1fr); }
+  .admin-sidetopp { grid-template-columns: 1fr auto; }
+  .admin-sidetopp .knapp { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
+}
+
+/*FRA 1024 PX: MENYEN SOM SIDEFELT*/
+@media (min-width: 1024px) {
+  :root { --side-luft: 1.5rem; }
+
+  body.admin {
+    grid-template-columns: 15rem minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+  .admin-topp { grid-column: 1 / -1; }
+
+  .admin-meny { padding: 1.5rem 1rem; }
+  .admin-meny ul {
+    position: sticky;
+    top: 6rem;
+    flex-direction: column;
+  }
+
+  .admin-innhold { padding: 2.5rem 2.5rem 4rem; }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../favicon.png">
+  <title>Nyheter – Administrasjon – Østfold Husflidslag</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
+</head>
+<body class="admin" data-admin-side="nyheter">
+
+  <!--HEADER-->
+  <header class="admin-topp">
+    <a href="admin-kurs.html" class="logo">
+      <img src="../hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+    </a>
+    <p class="admin-merke">Administrasjon</p>
+    <ul class="admin-topp-lenker">
+      <li><a href="../index.html">Se nettsiden</a></li>
+      <li><button type="button" class="logg-ut">Logg ut</button></li>
+    </ul>
+  </header>
+
+  <!--ADMINMENY-->
+  <nav class="admin-meny" aria-label="Administrasjonsmeny">
+    <ul>
+      <li><a href="admin-kurs.html">Kurs</a></li>
+      <li><a href="admin-nyheter.html" aria-current="page">Nyheter</a></li>
+      <li><a href="admin-pameldinger.html">Påmeldinger</a></li>
+    </ul>
+  </nav>
+
+  <main class="admin-innhold">
+
+    <!--SIDETOPP-->
+    <header class="admin-sidetopp">
+      <h1>Nyheter</h1>
+      <p>Skriv og rediger nyhetene som vises under Aktuelt.</p>
+      <button type="button" class="knapp knapp-primar" id="ny-nyhet">+ Ny nyhet</button>
+    </header>
+
+    <!--NYHETSLISTE-->
+    <!--Radene fylles inn av admin.js-->
+    <section class="admin-tabell" aria-labelledby="nyhet-tabell-tittel">
+      <table>
+        <caption id="nyhet-tabell-tittel">Alle nyheter</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tittel</th>
+            <th scope="col">Dato</th>
+            <th scope="col">Lokallag</th>
+            <th scope="col"><span class="skjult">Handlinger</span></th>
+          </tr>
+        </thead>
+        <tbody id="nyhet-rader"></tbody>
+      </table>
+      <p class="admin-tom" id="nyhet-tom" hidden>Ingen nyheter ennå.</p>
+    </section>
+
+  </main>
+
+  <!--SKJEMA FOR NYHET-->
+  <dialog class="admin-dialog" id="nyhet-dialog" aria-labelledby="nyhet-dialog-tittel">
+    <form class="skjema" id="nyhet-skjema" novalidate>
+      <h2 id="nyhet-dialog-tittel">Ny nyhet</h2>
+      <input type="hidden" name="id">
+
+      <label for="nyhet-tittel">Tittel</label>
+      <input id="nyhet-tittel" name="tittel" type="text" required>
+
+      <label for="nyhet-dato">Dato</label>
+      <input id="nyhet-dato" name="dato" type="date" required>
+
+      <label for="nyhet-lokallag">Lokallag</label>
+      <select id="nyhet-lokallag" name="lokallag" required>
+        <option value="">Velg lokallag</option>
+        <option>Østfold</option>
+        <option>Fredrikstad</option>
+        <option>Sarpsborg</option>
+        <option>Moss</option>
+        <option>Halden</option>
+        <option>Indre Østfold</option>
+      </select>
+
+      <label for="nyhet-ingress">Ingress</label>
+      <textarea id="nyhet-ingress" name="ingress" rows="4" required></textarea>
+
+      <p class="skjema-feil" role="alert" hidden></p>
+
+      <menu class="dialog-knapper">
+        <li><button type="submit" class="knapp knapp-primar">Lagre</button></li>
+        <li><button type="button" class="knapp knapp-kant lukk-dialog">Avbryt</button></li>
+      </menu>
+    </form>
+  </dialog>
+
+</body>
+</html>

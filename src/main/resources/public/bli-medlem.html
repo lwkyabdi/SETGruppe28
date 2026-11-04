@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="favicon.png">
   <title>Bli medlem – Østfold Husflidslag</title>
   <meta name="description" content="Bli medlem i Husflidslaget og få rabatt på kurs i hele landet.">
   <link rel="stylesheet" href="style.css">
@@ -13,8 +15,7 @@
   <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
-      <strong>Østfold</strong>
-      <span>Husflidslag</span>
+      <img src="hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
     </a>
 
     <nav class="hovedmeny" aria-label="Hovedmeny">
@@ -30,8 +31,8 @@
     <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
-        <li><a href="bli-medlem.html" aria-current="page">Bli medlem</a></li>
-        <li><a href="min-side.html">Min side</a></li>
+        <li><a href="bli-medlem.html" class="knapp-medlem" aria-current="page">Bli medlem</a></li>
+        <li><a href="adminside/admin.html">Min side</a></li>
       </ul>
 
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
@@ -62,7 +63,7 @@
         <li><a href="om-oss.html">Om oss</a></li>
         <li><a href="kontakt.html">Kontakt oss</a></li>
         <li><a href="bli-medlem.html" aria-current="page">Bli medlem</a></li>
-        <li><a href="min-side.html">Min side</a></li>
+        <li><a href="adminside/admin.html">Min side</a></li>
       </ul>
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
         <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
@@ -137,7 +138,7 @@
 
           <p class="skjema-feil" id="medlem-feil" role="alert" hidden></p>
 
-          <button type="submit" class="knapp knapp-gronn">Send</button>
+          <button type="submit" class="knapp knapp-primar">Send</button>
         </form>
 
         <!--Vises når skjemaet er sendt-->
@@ -151,8 +152,8 @@
       <h2 id="medlem-sporsmal-tittel">Har du spørsmål om medlemskap?</h2>
       <p>Ta kontakt med oss, så hjelper vi deg. Du kan også lese svar på vanlige spørsmål.</p>
       <ul class="om-knapper">
-        <li><a href="kontakt.html" class="knapp knapp-gronn">Kontakt oss</a></li>
-        <li><a href="faq.html" class="knapp knapp-gronn-kant">Ofte stilte spørsmål</a></li>
+        <li><a href="kontakt.html" class="knapp knapp-primar">Kontakt oss</a></li>
+        <li><a href="faq.html" class="knapp knapp-primar-kant">Ofte stilte spørsmål</a></li>
       </ul>
     </section>
 

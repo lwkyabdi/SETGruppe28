@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../favicon.png">
+  <title>Kurs – Administrasjon – Østfold Husflidslag</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
+</head>
+<body class="admin" data-admin-side="kurs">
+
+  <!--HEADER-->
+  <header class="admin-topp">
+    <a href="admin-kurs.html" class="logo">
+      <img src="../hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+    </a>
+    <p class="admin-merke">Administrasjon</p>
+    <ul class="admin-topp-lenker">
+      <li><a href="../index.html">Se nettsiden</a></li>
+      <li><button type="button" class="logg-ut">Logg ut</button></li>
+    </ul>
+  </header>
+
+  <!--ADMINMENY-->
+  <nav class="admin-meny" aria-label="Administrasjonsmeny">
+    <ul>
+      <li><a href="admin-kurs.html" aria-current="page">Kurs</a></li>
+      <li><a href="admin-nyheter.html">Nyheter</a></li>
+      <li><a href="admin-pameldinger.html">Påmeldinger</a></li>
+    </ul>
+  </nav>
+
+  <main class="admin-innhold">
+
+    <!--SIDETOPP-->
+    <header class="admin-sidetopp">
+      <h1>Kurs</h1>
+      <p>Oversikt over kursene og hvor mange som er påmeldt.</p>
+      <button type="button" class="knapp knapp-primar" id="nytt-kurs">+ Nytt kurs</button>
+    </header>
+
+    <!--OVERSIKT-->
+    <section aria-labelledby="oversikt-tittel">
+      <h2 id="oversikt-tittel" class="skjult">Oversikt</h2>
+      <ul class="admin-tall">
+        <li><strong id="tall-kurs">0</strong> aktive kurs</li>
+        <li><strong id="tall-pameldte">0</strong> påmeldte</li>
+        <li><strong id="tall-venteliste">0</strong> på venteliste</li>
+      </ul>
+    </section>
+
+    <!--KURSLISTE-->
+    <!--Radene fylles inn av admin.js-->
+    <section class="admin-tabell" aria-labelledby="kurs-tabell-tittel">
+      <table>
+        <caption id="kurs-tabell-tittel">Alle kurs</caption>
+        <thead>
+          <tr>
+            <th scope="col">Kurs</th>
+            <th scope="col">Dato</th>
+            <th scope="col">Lokallag</th>
+            <th scope="col">Påmeldte</th>
+            <th scope="col"><span class="skjult">Handlinger</span></th>
+          </tr>
+        </thead>
+        <tbody id="kurs-rader"></tbody>
+      </table>
+      <p class="admin-tom" id="kurs-tom" hidden>Ingen kurs ennå.</p>
+    </section>
+
+  </main>
+
+  <!--SKJEMA FOR KURS-->
+  <dialog class="admin-dialog" id="kurs-dialog" aria-labelledby="kurs-dialog-tittel">
+    <form class="skjema" id="kurs-skjema" novalidate>
+      <h2 id="kurs-dialog-tittel">Nytt kurs</h2>
+      <input type="hidden" name="id">
+
+      <label for="kurs-tittel">Tittel</label>
+      <input id="kurs-tittel" name="tittel" type="text" required>
+
+      <label for="kurs-dato">Dato</label>
+      <input id="kurs-dato" name="dato" type="date" required>
+
+      <label for="kurs-lokallag">Lokallag</label>
+      <select id="kurs-lokallag" name="lokallag" required>
+        <option value="">Velg lokallag</option>
+        <option>Fredrikstad</option>
+        <option>Sarpsborg</option>
+        <option>Moss</option>
+        <option>Halden</option>
+        <option>Indre Østfold</option>
+      </select>
+
+      <label for="kurs-plasser">Antall plasser</label>
+      <input id="kurs-plasser" name="plasser" type="number" min="1" max="100" inputmode="numeric" required>
+
+      <p class="skjema-feil" role="alert" hidden></p>
+
+      <menu class="dialog-knapper">
+        <li><button type="submit" class="knapp knapp-primar">Lagre</button></li>
+        <li><button type="button" class="knapp knapp-kant lukk-dialog">Avbryt</button></li>
+      </menu>
+    </form>
+  </dialog>
+
+</body>
+</html>

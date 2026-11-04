@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="favicon.png">
   <title>Østfold Husflidslag</title>
   <meta name="description" content="Kurs, aktiviteter og nyheter fra husflidslagene i Østfold.">
   <link rel="stylesheet" href="style.css">
@@ -13,8 +15,7 @@
   <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
-      <strong>Østfold</strong>
-      <span>Husflidslag</span>
+      <img src="hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
     </a>
 
     <nav class="hovedmeny" aria-label="Hovedmeny">
@@ -30,8 +31,8 @@
     <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="min-side.html">Min side</a></li>
+        <li><a href="bli-medlem.html" class="knapp-medlem">Bli medlem</a></li>
+        <li><a href="adminside/admin.html">Min side</a></li>
       </ul>
 
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
@@ -62,7 +63,7 @@
         <li><a href="om-oss.html">Om oss</a></li>
         <li><a href="kontakt.html">Kontakt oss</a></li>
         <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="min-side.html">Min side</a></li>
+        <li><a href="adminside/admin.html">Min side</a></li>
       </ul>
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
         <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
@@ -94,18 +95,25 @@
         <a href="aktuelt.html" class="knapp knapp-kant">Se hva som skjer</a>
       </div>
       <figure class="hero-bilde">
-        <img src="https://picsum.photos/id/237/200/300"
-             alt="Plassholderbilde">
+        <img src="hero.jpg" width="700" height="480"
+             alt="Tre kvinner strikker og lager håndarbeid sammen rundt et bord">
       </figure>
-      <svg class="hero-bolge" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,20 C300,40 900,0 1200,20 L1200,40 L0,40 Z"></path>
+      <svg class="hero-bolge" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+        <!--Masken lager et hull i streken, der stjernen står-->
+        <mask id="bolge-hull">
+          <rect width="1200" height="60" fill="#ffffff"></rect>
+          <rect x="530" width="140" height="60" fill="#000000"></rect>
+        </mask>
+        <path d="M0,14 C150,36 300,42 480,40 C680,37 820,12 1000,8 C1100,6 1160,8 1200,10 L1200,60 L0,60 Z"></path>
+        <!--Tynn strek langs bølgen-->
+        <path class="bolge-strek" mask="url(#bolge-hull)" vector-effect="non-scaling-stroke" d="M0,14 C150,36 300,42 480,40 C680,37 820,12 1000,8 C1100,6 1160,8 1200,10"></path>
       </svg>
     </section>
 
     <!--SISTE NYTT-->
     <section class="seksjon" aria-labelledby="nytt-tittel">
       <header class="seksjon-topp">
-        <h2 id="nytt-tittel">Siste nytt</h2>
+        <h2 id="nytt-tittel">Siste nytt fra organisasjonen</h2>
         <p>Oppdateringer og nyheter fra lagene i Østfold</p>
         <a href="aktuelt.html" class="pil-lenke">Se alle nyheter</a>
       </header>
@@ -114,7 +122,7 @@
         <li>
           <article class="kort nyhet">
             <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
+              <img src="nyhet-1.jpg" alt="">
             </figure>
             <p class="nyhet-meta"><time datetime="2024-09-02">2. september 2024</time> <span>Fredrikstad</span></p>
             <h3>Nytt bunadskurs i Fredrikstad – meld deg på nå!</h3>
@@ -125,7 +133,7 @@
         <li>
           <article class="kort nyhet">
             <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
+              <img src="nyhet-2.jpg" alt="">
             </figure>
             <p class="nyhet-meta"><time datetime="2024-09-05">5. september 2024</time> <span>Moss</span></p>
             <h3>Ledige plasser på vevkurs i Moss</h3>
@@ -136,7 +144,7 @@
         <li>
           <article class="kort nyhet">
             <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
+              <img src="nyhet-3.jpg" alt="">
             </figure>
             <p class="nyhet-meta"><time datetime="2024-08-28">28. august 2024</time> <span>Østfold</span></p>
             <h3>Høstprogrammet er klart – se alle kurs og aktiviteter</h3>
@@ -146,7 +154,7 @@
         </li>
       </ul>
 
-      <p class="kun-mobil"><a href="aktuelt.html" class="knapp knapp-gronn-kant">Se alle nyheter</a></p>
+      <p class="kun-mobil"><a href="aktuelt.html" class="knapp knapp-primar-kant">Se alle nyheter</a></p>
     </section>
 
     <!--KOMMENDE KURS-->
@@ -161,7 +169,7 @@
         <li>
           <article class="kort kurs">
             <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
+              <img src="kurs-1.jpg" alt="">
             </figure>
             <p class="kurs-tema">Bunad</p>
             <p class="kurs-lokallag">Fredrikstad Husflidslag</p>
@@ -174,13 +182,13 @@
               <p class="plasser plasser-faa">3 plasser igjen</p>
               <p class="pris"><strong>1&nbsp;500 kr</strong> for medlem</p>
             </footer>
-            <a href="kurs-detalj.html?id=1" class="knapp knapp-gronn">Se kurset<span class="skjult">: Bunadssøm for nybegynnere</span></a>
+            <a href="kurs-detalj.html?id=1" class="knapp knapp-primar">Se kurset<span class="skjult">: Bunadssøm for nybegynnere</span></a>
           </article>
         </li>
         <li>
           <article class="kort kurs">
             <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
+              <img src="kurs-2.jpg" alt="">
             </figure>
             <p class="kurs-tema">Strikking</p>
             <p class="kurs-lokallag">Sarpsborg Husflidslag</p>
@@ -199,7 +207,7 @@
         <li>
           <article class="kort kurs">
             <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
+              <img src="kurs-3.jpg" alt="">
             </figure>
             <p class="kurs-tema">Veving</p>
             <p class="kurs-lokallag">Moss Husflidslag</p>
@@ -212,12 +220,12 @@
               <p class="plasser plasser-ledig">6 ledige plasser</p>
               <p class="pris"><strong>900 kr</strong> for medlem</p>
             </footer>
-            <a href="kurs-detalj.html?id=3" class="knapp knapp-gronn">Se kurset<span class="skjult">: Vevkurs – grunnleggende båndbinding</span></a>
+            <a href="kurs-detalj.html?id=3" class="knapp knapp-primar">Se kurset<span class="skjult">: Vevkurs – grunnleggende båndbinding</span></a>
           </article>
         </li>
       </ul>
 
-      <p class="alle-kurs"><a href="kurs.html" class="knapp knapp-gronn">Se alle kurs og aktiviteter</a></p>
+      <p class="alle-kurs"><a href="kurs.html" class="knapp knapp-primar">Se alle kurs og aktiviteter</a></p>
     </section>
 
     <!--BLI MEDLEM-->
@@ -233,7 +241,7 @@
         <li>Støtter norsk håndverkstradisjon</li>
         <li>Fellesskap med likesinnede</li>
       </ul>
-      <a href="kontakt.html" class="knapp knapp-gronn">Ta kontakt for å bli medlem</a>
+      <a href="kontakt.html" class="knapp knapp-primar">Ta kontakt for å bli medlem</a>
       <figure>
         <img src="https://picsum.photos/id/237/200/300"
              alt="Plassholderbilde">
@@ -259,7 +267,7 @@
     <section class="seksjon hjelp" aria-labelledby="hjelp-tittel">
       <h2 id="hjelp-tittel">Trenger du hjelp?</h2>
       <p>Vi hjelper deg gjerne. Ta kontakt med oss via telefon eller e-post, eller besøk oss i lokalene våre.</p>
-      <a href="kontakt.html" class="knapp knapp-gronn knapp-stor">Kontakt oss</a>
+      <a href="kontakt.html" class="knapp knapp-primar knapp-stor">Kontakt oss</a>
     </section>
 
   </main>

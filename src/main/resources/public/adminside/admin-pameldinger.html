@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../favicon.png">
+  <title>Påmeldinger – Administrasjon – Østfold Husflidslag</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
+</head>
+<body class="admin" data-admin-side="pameldinger">
+
+  <!--HEADER-->
+  <header class="admin-topp">
+    <a href="admin-kurs.html" class="logo">
+      <img src="../hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+    </a>
+    <p class="admin-merke">Administrasjon</p>
+    <ul class="admin-topp-lenker">
+      <li><a href="../index.html">Se nettsiden</a></li>
+      <li><button type="button" class="logg-ut">Logg ut</button></li>
+    </ul>
+  </header>
+
+  <!--ADMINMENY-->
+  <nav class="admin-meny" aria-label="Administrasjonsmeny">
+    <ul>
+      <li><a href="admin-kurs.html">Kurs</a></li>
+      <li><a href="admin-nyheter.html">Nyheter</a></li>
+      <li><a href="admin-pameldinger.html" aria-current="page">Påmeldinger</a></li>
+    </ul>
+  </nav>
+
+  <main class="admin-innhold">
+
+    <!--SIDETOPP-->
+    <header class="admin-sidetopp">
+      <h1>Påmeldinger</h1>
+      <p>Hvem som er påmeldt hvilke kurs, og hvem som står på venteliste.</p>
+    </header>
+
+    <!--FILTER-->
+    <form class="admin-filter" role="search" aria-label="Filtrer påmeldinger">
+      <label for="filter-kurs">Vis påmeldinger til</label>
+      <select id="filter-kurs" name="kurs">
+        <option value="">Alle kurs</option>
+      </select>
+    </form>
+
+    <!--PÅMELDINGSLISTE-->
+    <!--Radene fylles inn av admin.js-->
+    <section class="admin-tabell" aria-labelledby="pamelding-tabell-tittel">
+      <table>
+        <caption id="pamelding-tabell-tittel">Påmeldinger <span id="pamelding-antall"></span></caption>
+        <thead>
+          <tr>
+            <th scope="col">Navn</th>
+            <th scope="col">Kontakt</th>
+            <th scope="col">Kurs</th>
+            <th scope="col">Medlem</th>
+            <th scope="col">Status</th>
+            <th scope="col"><span class="skjult">Handlinger</span></th>
+          </tr>
+        </thead>
+        <tbody id="pamelding-rader"></tbody>
+      </table>
+      <p class="admin-tom" id="pamelding-tom" hidden>Ingen påmeldinger her.</p>
+    </section>
+
+  </main>
+
+</body>
+</html>

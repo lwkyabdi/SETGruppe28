@@ -2,17 +2,18 @@
 
 /*FARGER, SKRIFTER OG MÅL*/
 :root {
-  --background: #faf8f4; /*lys, varm bakgrunn*/
-  --foreground: #1c2a1e; /*tekst*/
-  --primary: #2c5f2e; /*mørkegrønn*/
-  --primary-foreground: #ffffff; /*tekst på grønn*/
-  --accent: #c4622d; /*oransje*/
-  --muted: #f0ebe3; /*beige seksjoner*/
-  --muted-foreground: #6b6560; /*svak tekst*/
+  --background: #f7f7f7; /*lys grå bakgrunn*/
+  --foreground: #333132; /*kull, samme som teksten i logoen*/
+  --primary: #bb2a4d; /*logo-rød*/
+  --primary-foreground: #ffffff; /*tekst på rød*/
+  --primary-lys: #fbeef1; /*svak rød, til hover*/
+  --rosa: #f9eef0; /*svak rosa bakgrunn i heroen*/
+  --muted: #eeedeb; /*litt mørkere grå seksjoner*/
+  --muted-foreground: #66625f; /*svak tekst*/
   --card: #ffffff; /*kort*/
-  --border: #e3ddd3; /*rammer*/
-  --footer: #1a3a1c; /*mørk grønn i footeren*/
-  --footer-tekst: #e8e4dd;
+  --border: #e4e1df; /*rammer*/
+  --footer: #333132; /*kull i footeren*/
+  --footer-tekst: #f4f3f2;
 
   --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Lora", Georgia, serif;
@@ -76,10 +77,10 @@ address { font-style: normal; }
   text-align: center;
   transition: opacity 150ms, background-color 150ms;
 }
-.knapp-gronn { background-color: var(--primary); color: var(--primary-foreground); }
-.knapp-gronn:hover { opacity: 0.9; }
+.knapp-primar { background-color: var(--primary); color: var(--primary-foreground); }
+.knapp-primar:hover { background-color: #9c2240; }
 .knapp-gra { background-color: var(--muted); color: var(--muted-foreground); font-weight: 600; }
-.knapp-gronn-kant {
+.knapp-primar-kant {
   width: 100%;
   padding-block: 1rem;
   border: 2px solid var(--primary);
@@ -113,25 +114,17 @@ address { font-style: normal; }
   justify-content: space-between;
   column-gap: 1.5rem;
   min-height: 4rem;
-  background-color: var(--primary);
-  color: #ffffff;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  background-color: var(--background);
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 4px -2px rgb(0 0 0 / 0.08);
 }
 
-/*Logo (midlertidig: bare tekst)*/
-.logo {
-  display: flex;
-  align-items: baseline;
-  gap: 0.35rem;
-  white-space: nowrap;
-}
-.logo strong {
-  font-family: var(--font-serif);
-  font-size: 1.125rem;
-}
-.logo span {
-  font-size: 1.125rem;
-  opacity: 0.9;
+/*Logo*/
+.logo { display: flex; align-items: center; padding-block: 0.75rem; }
+.logo img {
+  width: auto;
+  height: 52px; /*større på PC, se nederst*/
 }
 
 /*Hovedmeny*/
@@ -144,13 +137,13 @@ address { font-style: normal; }
   border-radius: 0.25rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: rgb(255 255 255 / 0.9);
+  color: var(--foreground);
   transition: background-color 150ms, color 150ms;
 }
 .hovedmeny a:hover,
-.mobilmeny a:hover { background-color: rgb(255 255 255 / 0.1); color: #ffffff; }
+.mobilmeny a:hover { background-color: var(--muted); color: var(--primary); }
 .hovedmeny a[aria-current="page"],
-.mobilmeny a[aria-current="page"] { background-color: rgb(255 255 255 / 0.2); color: #ffffff; }
+.mobilmeny a[aria-current="page"] { background-color: var(--muted); color: var(--primary); font-weight: 700; }
 
 /*Lokallag og Finn kurs*/
 .finn-kurs { display: flex; gap: 0.75rem; }
@@ -168,22 +161,27 @@ address { font-style: normal; }
   border-radius: 0.25rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--foreground);
   transition: background-color 150ms;
 }
-.header-hoyre ul a:hover { background-color: rgb(255 255 255 / 0.1); }
-.header-hoyre ul a[aria-current="page"] { background-color: rgb(255 255 255 / 0.2); }
+.header-hoyre ul a:hover { background-color: var(--muted); }
+.header-hoyre ul a[aria-current="page"] { background-color: var(--muted); color: var(--primary); }
+
+/*Bli medlem som rød knapp*/
+.header-hoyre ul a.knapp-medlem { background-color: var(--primary); color: var(--primary-foreground); }
+.header-hoyre ul a.knapp-medlem:hover { background-color: #9c2240; }
+.header-hoyre ul a.knapp-medlem[aria-current="page"] { box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--primary); }
 
 .finn-kurs select {
   padding: 0.5rem 2rem 0.5rem 0.75rem;
   font-size: 0.875rem;
-  color: #ffffff;
-  background-color: rgb(255 255 255 / 0.15);
+  color: var(--foreground);
+  background-color: #ffffff;
   /*Pil i nedtrekkslisten*/
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23ffffffb3'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23333132'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.6rem center;
-  border: 1px solid rgb(255 255 255 / 0.3);
+  border: 1px solid #b5b0ad;
   border-radius: 0.25rem;
   appearance: none;
   cursor: pointer;
@@ -193,19 +191,19 @@ address { font-style: normal; }
   padding: 0.5rem 1.25rem;
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--accent);
-  background-color: #ffffff;
+  color: #ffffff;
+  background-color: var(--foreground);
   border: 0;
   border-radius: 0.25rem;
   cursor: pointer;
   transition: background-color 150ms;
 }
-.finn-kurs button:hover { background-color: #fffbeb; }
+.finn-kurs button:hover { background-color: #1f1d1e; }
 
 /*Menyknapp på mobil*/
 .menyknapp {
   padding: 0.5rem;
-  color: #ffffff;
+  color: var(--foreground);
   background: none;
   border: 0;
   border-radius: 0.25rem;
@@ -220,7 +218,7 @@ address { font-style: normal; }
   flex-direction: column;
   gap: 0.75rem;
   padding-block: 0.5rem 1.25rem;
-  border-top: 1px solid rgb(255 255 255 / 0.15);
+  border-top: 1px solid var(--border);
 }
 .mobilmeny[hidden] { display: none; }
 .mobilmeny a { padding: 0.75rem 1rem; font-size: 1rem; }
@@ -233,9 +231,9 @@ address { font-style: normal; }
   display: grid;
   align-items: center;
   column-gap: 2rem;
-  padding-block: 3rem;
-  background-color: var(--primary);
-  color: #ffffff;
+  padding-block: 3.5rem 4.5rem; /*litt ekstra luft over bølgen*/
+  background-color: var(--muted); /*samme grå som Kommende kurs*/
+  color: var(--foreground);
 }
 
 .hero-merke {
@@ -245,8 +243,9 @@ address { font-style: normal; }
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 600;
-  background-color: rgb(196 98 45 / 0.25);
-  color: rgb(245 200 154);
+  background-color: #ffffff;
+  color: var(--primary);
+  border: 1px solid var(--border);
 }
 
 .hero h1 {
@@ -260,7 +259,6 @@ address { font-style: normal; }
   margin-bottom: 2rem;
   font-size: 1.125rem;
   line-height: 1.625;
-  opacity: 0.9;
 }
 
 .hero-knapper {
@@ -272,14 +270,15 @@ address { font-style: normal; }
   padding: 1rem 2rem;
   font-size: 1.125rem;
 }
-.knapp-hvit { background-color: #ffffff; color: var(--accent); }
-.knapp-hvit:hover { background-color: #fffbeb; }
+/*Rød hovedknapp og kull-kant i heroen*/
+.knapp-hvit { background-color: var(--primary); color: var(--primary-foreground); }
+.knapp-hvit:hover { background-color: #9c2240; }
 .knapp-kant {
-  border: 2px solid rgb(255 255 255 / 0.5);
-  color: #ffffff;
+  border: 2px solid var(--foreground);
+  color: var(--foreground);
   font-weight: 600;
 }
-.knapp-kant:hover { background-color: rgb(255 255 255 / 0.1); }
+.knapp-kant:hover { background-color: #ffffff; }
 
 /*Bildet vises bare på PC*/
 .hero-bilde {
@@ -300,6 +299,25 @@ address { font-style: normal; }
   max-width: none;
   height: 40px;
   fill: var(--background);
+}
+.hero-bolge .bolge-strek {
+  fill: none;
+  stroke: var(--foreground);
+  stroke-width: 1px;
+  stroke-opacity: 0.5;
+}
+
+/*Stjernen fra logoen midt på bølgen*/
+/*Bare stjernen i hflogo.svg vises, teksten kuttes bort*/
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 16px; /*der bølgen er midt på*/
+  width: 30px; /*40px på PC*/
+  height: 30px;
+  transform: translate(-50%, 50%);
+  background: url("hflogo.svg") left center / auto 100% no-repeat;
 }
 
 /*SEKSJONER*/
@@ -401,16 +419,22 @@ address { font-style: normal; }
 }
 .nyhet-meta span::before { content: "·"; margin-right: 0.75rem; }
 
-.nyhet h3 { transition: text-decoration-color 150ms; }
+/*Større bilde og litt større tekst i nyhetskortene*/
+.nyhet { gap: 0.6rem; }
+.nyhet figure { height: 15rem; }
+.nyhet h3 { font-size: 1.25rem; transition: text-decoration-color 150ms; }
+.nyhet-meta { font-size: 0.9375rem; }
 .nyhet:hover h3 { text-decoration: underline; }
 
 .nyhet > p:not(.nyhet-meta) {
   flex: 1;
-  line-height: 1.625;
+  font-size: 1.0625rem;
+  line-height: 1.6;
   color: var(--muted-foreground);
 }
 
 .les-mer {
+  font-size: 1.0625rem;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -422,7 +446,7 @@ address { font-style: normal; }
 
 /*Kurskort*/
 .kurs { gap: 0.75rem; }
-.kurs figure { height: 11rem; }
+.kurs figure { height: 9.5rem; } /*litt mindre bilde, mer plass til tekst*/
 
 .kurs-tema {
   position: absolute;
@@ -438,18 +462,18 @@ address { font-style: normal; }
 
 .kurs-lokallag {
   margin-bottom: -0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   color: var(--muted-foreground);
 }
-.kurs h3 { line-height: 1.25; }
+.kurs h3 { font-size: 1.25rem; line-height: 1.25; }
 
 /*Dato og tid med ikon*/
 .kurs-info {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   color: var(--muted-foreground);
 }
 .kurs-info li {
@@ -500,7 +524,7 @@ address { font-style: normal; }
   background-color: currentColor;
 }
 .plasser-faa   { background-color: #fef3c7; color: #b45309; }
-.plasser-fullt { background-color: #fee2e2; color: #b91c1c; }
+.plasser-fullt { background-color: #ebe9e7; color: #4a4647; }
 .plasser-ledig { background-color: #dcfce7; color: #15803d; }
 
 .pris {
@@ -532,7 +556,7 @@ address { font-style: normal; }
   align-items: center;
   justify-items: start;
   border-radius: 0.75rem;
-  background-color: rgb(237 232 223);
+  background-color: var(--muted);
 }
 .bli-medlem h2 {
   margin-bottom: 1rem;
@@ -746,7 +770,7 @@ address { font-style: normal; }
   width: 100%;
   font: inherit;
   color: var(--foreground);
-  background-color: var(--background);
+  background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
 }
@@ -918,9 +942,10 @@ address { font-style: normal; }
 
 .ta-med {
   padding: 1.25rem;
-  border: 1px solid rgb(245 200 154);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
   border-radius: 0.75rem;
-  background-color: rgb(254 249 240);
+  background-color: var(--muted);
 }
 .ta-med h2 {
   margin-bottom: 0.75rem;
@@ -1114,7 +1139,7 @@ address { font-style: normal; }
   padding: 0.75rem 1rem;
   font: inherit;
   color: var(--foreground);
-  background-color: var(--background);
+  background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
 }
@@ -1355,7 +1380,7 @@ address { font-style: normal; }
   padding: 0.75rem 1.5rem;
   font-weight: 600;
 }
-.pameldt-knapper .knapp-gronn { border: 2px solid var(--primary); }
+.pameldt-knapper .knapp-primar { border: 2px solid var(--primary); }
 .knapp-kant-mork {
   border: 2px solid var(--border);
   color: var(--foreground);
@@ -1394,7 +1419,7 @@ address { font-style: normal; }
   cursor: pointer;
 }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary:hover { background-color: rgb(240 235 227 / 0.4); }
+.faq summary:hover { background-color: var(--muted); }
 
 /*Pluss-tegnet til høyre*/
 .faq summary::after {
@@ -1478,7 +1503,7 @@ address { font-style: normal; }
   margin-bottom: -0.75rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--accent);
+  color: var(--primary);
 }
 .person-sted {
   font-size: 0.875rem;
@@ -1493,7 +1518,7 @@ address { font-style: normal; }
 .person .knapp:first-of-type { margin-top: auto; }
 .person .knapp + .knapp { margin-top: -0.25rem; }
 .person .ring::before { content: "📞 "; }
-.knapp-gronn-kant:hover { background-color: #f0fdf4; }
+.knapp-primar-kant:hover { background-color: var(--primary-lys); }
 
 /*Finn oss og Send oss en melding*/
 .finn-oss,
@@ -1543,7 +1568,7 @@ address { font-style: normal; }
   padding: 0.75rem 1rem;
   font: inherit;
   color: var(--foreground);
-  background-color: var(--background);
+  background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
 }
@@ -1591,11 +1616,12 @@ address { font-style: normal; }
   padding-inline: var(--om-luft);
 }
 
-/*Grønn topp*/
+/*Grå topp med rød strek*/
 .om-topp {
   padding-block: 3.5rem;
-  background-color: var(--primary);
-  color: #ffffff;
+  background-color: var(--muted);
+  color: var(--foreground);
+  border-bottom: 4px solid var(--primary);
 }
 .om-topp h1 {
   margin-bottom: 1.25rem;
@@ -1607,7 +1633,6 @@ address { font-style: normal; }
   max-width: 42rem;
   font-size: 1.25rem;
   line-height: 1.625;
-  opacity: 0.9;
 }
 
 /*Seksjoner med strek mellom*/
@@ -1716,7 +1741,7 @@ address { font-style: normal; }
   padding: 0.75rem 2rem;
   font-weight: 700;
 }
-.om-knapper .knapp-gronn { border: 2px solid var(--primary); }
+.om-knapper .knapp-primar { border: 2px solid var(--primary); }
 
 /*NYHETSARTIKKEL*/
 .side-artikkel { --maks-bredde: 48rem; }
@@ -1922,18 +1947,11 @@ address { font-style: normal; }
 @media (min-width: 1024px) {
   :root { --side-luft: 1.5rem; }
 
-  .topp { min-height: 5rem; }
-
-  .hovedmeny { display: block; }
-  .header-hoyre { display: flex; }
-  .menyknapp,
-  .mobilmeny { display: none; }
-
   /*Hero: tekst til venstre, bilde til høyre*/
   .hero {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr repeat(4, auto) 1fr;
-    padding-block: 4rem;
+    padding-block: 5rem 6rem;
   }
   .hero > :not(.hero-bilde, .hero-bolge) { grid-column: 1; }
   .hero-merke   { grid-row: 2; }
@@ -1946,6 +1964,7 @@ address { font-style: normal; }
     grid-row: 1 / -1;
   }
   .hero h1 { font-size: 3rem; line-height: 1; }
+  .hero::after { width: 40px; height: 40px; }
   .hero-ingress { font-size: 1.25rem; line-height: 1.75rem; }
 
   /*Bli medlem: tekst til venstre, bilde til høyre*/
@@ -2001,20 +2020,22 @@ address { font-style: normal; }
   .side-kontakt > :not(.finn-oss, .send-melding) { grid-column: 1 / -1; }
 }
 
-/*1024–1439 PX (LITEN PC)*/
-@media (min-width: 1024px) and (max-width: 1439px) {
-  .topp { row-gap: 0; padding-top: 0.75rem; }
-  .hovedmeny {
-    order: 3;
-    flex-basis: 100%;
-    padding-block: 0.5rem 0.75rem;
-  }
+/*FRA 1150 PX: HELE MENYEN PÅ ÉN LINJE*/
+/*Under 1150 px er det ikke plass, så da brukes menyknappen*/
+@media (min-width: 1150px) {
+  .topp { min-height: 5rem; column-gap: 1rem; }
+  .logo img { height: 56px; }
+
+  .hovedmeny { display: block; }
+  .hovedmeny a { padding-inline: 0.6rem; }
+  .header-hoyre { display: flex; gap: 0.75rem; }
+  .header-hoyre ul a { padding-inline: 0.6rem; }
+  .menyknapp,
+  .mobilmeny { display: none; }
 }
 
 /*FRA 1440 PX (STOR PC)*/
 @media (min-width: 1440px) {
   .topp { column-gap: 1.25rem; }
-  .hovedmeny a { padding-inline: 0.6rem; }
-  .header-hoyre { gap: 0.75rem; }
-  .header-hoyre ul a { padding-inline: 0.6rem; }
+  .logo img { height: 64px; }
 }
