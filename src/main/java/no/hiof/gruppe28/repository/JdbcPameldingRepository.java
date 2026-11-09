@@ -4,8 +4,8 @@ import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.dto.PameldingKvittering;
 import no.hiof.gruppe28.model.PameldingData;
 import no.hiof.gruppe28.model.PameldingStatus;
+import no.hiof.gruppe28.model.Registrering;
 import no.hiof.gruppe28.service.PameldingException;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -21,7 +21,7 @@ public class JdbcPameldingRepository implements PameldingRepository {
     }
 
     @Override
-    public PameldingKvittering registrer(
+    public Registrering registrer(
             long kursId,
             PameldingData data,
             LocalDate idag
@@ -70,7 +70,7 @@ public class JdbcPameldingRepository implements PameldingRepository {
                             );
 
                             c.commit();
-                            return kvittering;
+                            return new Registrering (kvittering, false);
                         }
                     }
                 }
@@ -190,13 +190,14 @@ public class JdbcPameldingRepository implements PameldingRepository {
                     kursEtterPamelding = kurs.medLedigePlasser(kurs.ledigePlasser() - 1);
                 }
 
-                return PameldingKvittering.fra(
+                var kvittering = PameldingKvittering.fra(
                     kursEtterPamelding,
                     data.referanse(),
                     pris,
                     false,
                     status
                 );
+                return new Registrering(kvittering, true);
 
             } catch (SQLException | RuntimeException e) {
                 try {

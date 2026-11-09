@@ -3,6 +3,7 @@ package no.hiof.gruppe28.service;
 import no.hiof.gruppe28.dto.PameldingKvittering;
 import no.hiof.gruppe28.dto.PameldingRequest;
 import no.hiof.gruppe28.model.PameldingData;
+import no.hiof.gruppe28.model.Registrering;
 import no.hiof.gruppe28.repository.PameldingRepository;
 import no.hiof.gruppe28.epost.EpostTjeneste; // NY
 
@@ -124,18 +125,22 @@ public class PameldingService {
             kommentar
         );
 
-        // ENDRET: lagre først, send e-post, returner kvitteringen
-        PameldingKvittering kvittering = repository.registrer(kursId, data, idag);
+        // Lagre først. Send e-post bare hvis påmeldingen er ny.
+        Registrering registrering = repository.registrer(kursId, data, idag);
+        PameldingKvittering kvittering = registrering.kvittering();
 
-        try {
-            epostTjeneste.sendBekreftelse(epost, kvittering);
-        } catch (RuntimeException e) {
-            System.getLogger(PameldingService.class.getName())
-                .log(System.Logger.Level.WARNING, "Kunne ikke sende bekreftelse på e-post.", e);
+        if (registrering.ny()) {
+            try {
+                epostTjeneste.sendBekreftelse(epost, kvittering);
+            } catch (RuntimeException e) {
+                System.getLogger(PameldingService.class.getName())
+                    .log(System.Logger.Level.WARNING, "Kunne ikke sende bekreftelse på e-post.", e);
+            }
         }
 
         return kvittering;
     }
+
 
     private static String tekst(
         String verdi, String navn, int maks, boolean obligatorisk
@@ -152,6 +157,7 @@ public class PameldingService {
 
         return v;
     }
+
 
     private static String sha256(String verdi) {
         try {
