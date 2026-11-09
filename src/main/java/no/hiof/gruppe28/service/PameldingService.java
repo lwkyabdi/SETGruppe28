@@ -5,7 +5,7 @@ import no.hiof.gruppe28.dto.PameldingRequest;
 import no.hiof.gruppe28.model.PameldingData;
 import no.hiof.gruppe28.model.Registrering;
 import no.hiof.gruppe28.repository.PameldingRepository;
-import no.hiof.gruppe28.epost.EpostTjeneste; // NY
+import no.hiof.gruppe28.epost.EpostTjeneste;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -19,13 +19,13 @@ import java.util.UUID;
 public class PameldingService {
     private final PameldingRepository repository;
     private final Clock clock;
-    private final EpostTjeneste epostTjeneste; // NY
+    private final EpostTjeneste epostTjeneste;
 
-    // ENDRET: tar imot epostTjeneste
+
     public PameldingService(PameldingRepository repository, Clock clock, EpostTjeneste epostTjeneste) {
         this.repository = repository;
         this.clock = clock;
-        this.epostTjeneste = epostTjeneste; // NY
+        this.epostTjeneste = epostTjeneste;
     }
 
     public boolean erDemo() {
@@ -125,7 +125,7 @@ public class PameldingService {
             kommentar
         );
 
-        // Lagre først. Send e-post bare hvis påmeldingen er ny.
+
         Registrering registrering = repository.registrer(kursId, data, idag);
         PameldingKvittering kvittering = registrering.kvittering();
 
