@@ -5,15 +5,18 @@ import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
 import no.hiof.gruppe28.controller.KursController;
+import no.hiof.gruppe28.controller.NyhetController;
 import no.hiof.gruppe28.controller.PameldingController;
 import no.hiof.gruppe28.epost.EpostTjeneste;
 import no.hiof.gruppe28.epost.KonsollEpostTjeneste;
 import no.hiof.gruppe28.epost.SmtpEpostTjeneste;
 import no.hiof.gruppe28.repository.DatabaseException;
 import no.hiof.gruppe28.repository.DemoKursRepository;
+import no.hiof.gruppe28.repository.DemoNyhetRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.KursService;
+import no.hiof.gruppe28.service.NyhetService;
 import no.hiof.gruppe28.service.PameldingException;
 import no.hiof.gruppe28.service.PameldingService;
 
@@ -64,7 +67,10 @@ public class Application {
             lagEpostTjeneste()
         );
 
-        return create(kursService, pameldingService);
+        // Byttes til JdbcNyhetRepository når tabellen nyhet finnes i MySQL.
+        var nyhetService = new NyhetService(new DemoNyhetRepository());
+
+        return create(kursService, pameldingService, nyhetService);
     }
 
     private static EpostTjeneste lagEpostTjeneste() throws IOException {
@@ -81,14 +87,16 @@ public class Application {
     }
 
     public static Javalin create(KursService service) {
-        return create(service, null);
+        return create(service, null, new NyhetService(new DemoNyhetRepository()));
     }
 
     public static Javalin create(
         KursService service,
-        PameldingService pameldingService
+        PameldingService pameldingService,
+        NyhetService nyhetService
     ) {
         var kursController = new KursController(service);
+        var nyhetController = new NyhetController(nyhetService);
 
         return Javalin.create(config -> {
             config.staticFiles.add("/public", Location.CLASSPATH);
@@ -112,6 +120,16 @@ public class Application {
             config.routes.get(
                 "/api/kurs/{id}",
                 kursController::detalj
+            );
+
+            config.routes.get(
+                "/api/nyheter",
+                nyhetController::alle
+            );
+
+            config.routes.get(
+                "/api/nyheter/{id}",
+                nyhetController::detalj
             );
 
             if (pameldingService != null) {
