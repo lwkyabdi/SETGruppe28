@@ -4,12 +4,15 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.controller.KursController;
+import no.hiof.gruppe28.controller.NyhetController;
 import no.hiof.gruppe28.controller.PameldingController;
 import no.hiof.gruppe28.repository.DatabaseException;
 import no.hiof.gruppe28.repository.DemoKursRepository;
+import no.hiof.gruppe28.repository.DemoNyhetRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.KursService;
+import no.hiof.gruppe28.service.NyhetService;
 import no.hiof.gruppe28.service.PameldingException;
 import no.hiof.gruppe28.service.PameldingService;
 
@@ -37,10 +40,10 @@ public class Application {
 
         if (demo) {
             System.getLogger(Application.class.getName())
-                    .log(
-                            System.Logger.Level.INFO,
-                            "Starter med eksempeldata. Påmelding krever MySQL."
-                    );
+                .log(
+                    System.Logger.Level.INFO,
+                    "Starter med eksempeldata. Påmelding krever MySQL."
+                );
 
             var repository = new DemoKursRepository(LocalDate.now(clock));
 
@@ -50,93 +53,108 @@ public class Application {
         var database = DatabaseConfig.load();
 
         var kursService = new KursService(
-                new JdbcKursRepository(database),
-                clock
+            new JdbcKursRepository(database),
+            clock
         );
 
         var pameldingService = new PameldingService(
-                new JdbcPameldingRepository(database),
-                clock
+            new JdbcPameldingRepository(database),
+            clock
         );
 
-        return create(kursService, pameldingService);
+        // Byttes til JdbcNyhetRepository når tabellen nyhet finnes i MySQL.
+        var nyhetService = new NyhetService(new DemoNyhetRepository());
+
+        return create(kursService, pameldingService, nyhetService);
     }
 
     public static Javalin create(KursService service) {
-        return create(service, null);
+        return create(service, null, new NyhetService(new DemoNyhetRepository()));
     }
 
     public static Javalin create(
-            KursService service,
-            PameldingService pameldingService
+        KursService service,
+        PameldingService pameldingService,
+        NyhetService nyhetService
     ) {
         var kursController = new KursController(service);
+        var nyhetController = new NyhetController(nyhetService);
 
         return Javalin.create(config -> {
             config.staticFiles.add("/public", Location.CLASSPATH);
             config.staticFiles.enableWebjars();
 
             config.routes.get(
-                    "/api/health",
-                    ctx -> ctx.json(Map.of("status", "OK"))
+                "/api/health",
+                ctx -> ctx.json(Map.of("status", "OK"))
             );
 
             config.routes.get(
-                    "/api/kurs",
-                    kursController::alle
+                "/api/kurs",
+                kursController::alle
             );
 
             config.routes.get(
-                    "/api/kurs/kommende",
-                    kursController::kommende
+                "/api/kurs/kommende",
+                kursController::kommende
             );
 
             config.routes.get(
-                    "/api/kurs/{id}",
-                    kursController::detalj
+                "/api/kurs/{id}",
+                kursController::detalj
+            );
+
+            config.routes.get(
+                "/api/nyheter",
+                nyhetController::alle
+            );
+
+            config.routes.get(
+                "/api/nyheter/{id}",
+                nyhetController::detalj
             );
 
             if (pameldingService != null) {
                 var pameldingController =
-                        new PameldingController(pameldingService);
+                    new PameldingController(pameldingService);
 
                 config.routes.post(
-                        "/api/kurs/{id}/pameldinger",
-                        pameldingController::registrer
+                    "/api/kurs/{id}/pameldinger",
+                    pameldingController::registrer
                 );
             }
 
             config.routes.exception(
-                    PameldingException.class,
-                    (exception, ctx) -> {
-                        ctx.header("Cache-Control", "no-store");
+                PameldingException.class,
+                (exception, ctx) -> {
+                    ctx.header("Cache-Control", "no-store");
 
-                        ctx.status(exception.status()).json(
-                                Map.of("melding", exception.getMessage())
-                        );
-                    }
+                    ctx.status(exception.status()).json(
+                        Map.of("melding", exception.getMessage())
+                    );
+                }
             );
 
             config.routes.exception(
-                    DatabaseException.class,
-                    (exception, ctx) -> {
-                        System.getLogger(Application.class.getName())
-                                .log(
-                                        System.Logger.Level.ERROR,
-                                        "Databaseoperasjonen feilet.",
-                                        exception
-                                );
-
-                        ctx.header("Cache-Control", "no-store");
-
-                        ctx.status(503).json(
-                                Map.of(
-                                        "melding",
-                                        "Databasen er utilgjengelig. "
-                                                + "Prøv igjen senere."
-                                )
+                DatabaseException.class,
+                (exception, ctx) -> {
+                    System.getLogger(Application.class.getName())
+                        .log(
+                            System.Logger.Level.ERROR,
+                            "Databaseoperasjonen feilet.",
+                            exception
                         );
-                    }
+
+                    ctx.header("Cache-Control", "no-store");
+
+                    ctx.status(503).json(
+                        Map.of(
+                            "melding",
+                            "Databasen er utilgjengelig. "
+                                + "Prøv igjen senere."
+                        )
+                    );
+                }
             );
         });
     }
