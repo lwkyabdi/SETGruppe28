@@ -3,7 +3,9 @@ package no.hiof.gruppe28.service;
 import no.hiof.gruppe28.dto.PameldingKvittering;
 import no.hiof.gruppe28.dto.PameldingRequest;
 import no.hiof.gruppe28.model.PameldingData;
+import no.hiof.gruppe28.model.Registrering;
 import no.hiof.gruppe28.repository.PameldingRepository;
+import no.hiof.gruppe28.epost.EpostTjeneste;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -17,10 +19,13 @@ import java.util.UUID;
 public class PameldingService {
     private final PameldingRepository repository;
     private final Clock clock;
+    private final EpostTjeneste epostTjeneste;
 
-    public PameldingService(PameldingRepository repository, Clock clock) {
+
+    public PameldingService(PameldingRepository repository, Clock clock, EpostTjeneste epostTjeneste) {
         this.repository = repository;
         this.clock = clock;
+        this.epostTjeneste = epostTjeneste;
     }
 
     public boolean erDemo() {
@@ -48,7 +53,7 @@ public class PameldingService {
         String etternavn = tekst(r.etternavn(), "Etternavn", 80, true);
 
         String epost = tekst(r.epost(), "E-post", 150, true)
-                .toLowerCase(Locale.ROOT);
+            .toLowerCase(Locale.ROOT);
 
         if (!epost.matches("[^\\s@]+@[^\\s@]+\\.[^\\s@]+")) {
             throw feil("Oppgi en gyldig e-postadresse.");
@@ -57,15 +62,15 @@ public class PameldingService {
         String telefon = tekst(r.telefon(), "Telefon", 20, true);
 
         if (!telefon.matches("\\+?[0-9][0-9 ]{7,18}")
-                || !telefon.replaceAll("[+ ]", "").matches("[0-9]{8,15}")) {
+            || !telefon.replaceAll("[+ ]", "").matches("[0-9]{8,15}")) {
             throw feil("Oppgi et telefonnummer med 8–15 sifre.");
         }
 
         LocalDate idag = LocalDate.now(clock);
 
         if (r.fodselsar() == null
-                || r.fodselsar() < 1900
-                || r.fodselsar() > idag.getYear()) {
+            || r.fodselsar() < 1900
+            || r.fodselsar() > idag.getYear()) {
             throw feil("Oppgi et gyldig fødselsår.");
         }
 
@@ -80,7 +85,7 @@ public class PameldingService {
         boolean medlem = "ja".equals(r.medlem());
 
         String medlemsnummer = tekst(
-                r.medlemsnummer(), "Medlemsnummer", 40, false
+            r.medlemsnummer(), "Medlemsnummer", 40, false
         );
 
         if (!medlem) {
@@ -88,43 +93,57 @@ public class PameldingService {
         }
 
         String kommentar = tekst(
-                r.kommentar(), "Kommentar", 2000, false
+            r.kommentar(), "Kommentar", 2000, false
         );
 
         StringBuilder innhold = new StringBuilder();
 
         for (String verdi : new String[]{
-                Long.toString(kursId),
-                fornavn,
-                etternavn,
-                epost,
-                telefon,
-                r.fodselsar().toString(),
-                r.medlem(),
-                medlemsnummer,
-                kommentar
+            Long.toString(kursId),
+            fornavn,
+            etternavn,
+            epost,
+            telefon,
+            r.fodselsar().toString(),
+            r.medlem(),
+            medlemsnummer,
+            kommentar
         }) {
             innhold.append(verdi.length()).append(':').append(verdi);
         }
 
         PameldingData data = new PameldingData(
-                referanse,
-                sha256(innhold.toString()),
-                fornavn,
-                etternavn,
-                epost,
-                telefon,
-                r.fodselsar(),
-                medlem,
-                medlemsnummer,
-                kommentar
+            referanse,
+            sha256(innhold.toString()),
+            fornavn,
+            etternavn,
+            epost,
+            telefon,
+            r.fodselsar(),
+            medlem,
+            medlemsnummer,
+            kommentar
         );
 
-        return repository.registrer(kursId, data, idag);
+
+        Registrering registrering = repository.registrer(kursId, data, idag);
+        PameldingKvittering kvittering = registrering.kvittering();
+
+        if (registrering.ny()) {
+            try {
+                epostTjeneste.sendBekreftelse(epost, kvittering);
+            } catch (RuntimeException e) {
+                System.getLogger(PameldingService.class.getName())
+                    .log(System.Logger.Level.WARNING, "Kunne ikke sende bekreftelse på e-post.", e);
+            }
+        }
+
+        return kvittering;
     }
 
+
     private static String tekst(
-            String verdi, String navn, int maks, boolean obligatorisk
+        String verdi, String navn, int maks, boolean obligatorisk
     ) {
         String v = verdi == null ? "" : verdi.trim();
 
@@ -139,11 +158,12 @@ public class PameldingService {
         return v;
     }
 
+
     private static String sha256(String verdi) {
         try {
             return HexFormat.of().formatHex(
-                    MessageDigest.getInstance("SHA-256")
-                            .digest(verdi.getBytes(StandardCharsets.UTF_8))
+                MessageDigest.getInstance("SHA-256")
+                    .digest(verdi.getBytes(StandardCharsets.UTF_8))
             );
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
