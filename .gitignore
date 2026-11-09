@@ -12,6 +12,7 @@ out/
 # Lokal databasekonfigurasjon og hemmeligheter
 dbConfig.properties
 dbConfig.local.properties
+epostConfig.properties
 .env
 .env.*
 !.env.example

@@ -3,9 +3,13 @@ package no.hiof.gruppe28;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
+import no.hiof.gruppe28.config.EpostConfig;
 import no.hiof.gruppe28.controller.KursController;
 import no.hiof.gruppe28.controller.NyhetController;
 import no.hiof.gruppe28.controller.PameldingController;
+import no.hiof.gruppe28.epost.EpostTjeneste;
+import no.hiof.gruppe28.epost.KonsollEpostTjeneste;
+import no.hiof.gruppe28.epost.SmtpEpostTjeneste;
 import no.hiof.gruppe28.repository.DatabaseException;
 import no.hiof.gruppe28.repository.DemoKursRepository;
 import no.hiof.gruppe28.repository.DemoNyhetRepository;
@@ -59,13 +63,27 @@ public class Application {
 
         var pameldingService = new PameldingService(
             new JdbcPameldingRepository(database),
-            clock
+            clock,
+            lagEpostTjeneste()
         );
 
         // Byttes til JdbcNyhetRepository når tabellen nyhet finnes i MySQL.
         var nyhetService = new NyhetService(new DemoNyhetRepository());
 
         return create(kursService, pameldingService, nyhetService);
+    }
+
+    private static EpostTjeneste lagEpostTjeneste() throws IOException {
+        var logger = System.getLogger(Application.class.getName());
+
+        if (EpostConfig.finnes()) {
+            logger.log(System.Logger.Level.INFO, "Sender ekte e-post med SMTP.");
+            return new SmtpEpostTjeneste(EpostConfig.load());
+        }
+
+        logger.log(System.Logger.Level.INFO,
+            "Fant ikke epostConfig.properties. E-post skrives i terminalen.");
+        return new KonsollEpostTjeneste();
     }
 
     public static Javalin create(KursService service) {
@@ -159,3 +177,4 @@ public class Application {
         });
     }
 }
+
