@@ -12,6 +12,7 @@ import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.KursService;
 import no.hiof.gruppe28.service.PameldingException;
 import no.hiof.gruppe28.service.PameldingService;
+import no.hiof.gruppe28.epost.KonsollEpostTjeneste;
 
 import java.io.IOException;
 import java.time.Clock;
@@ -55,9 +56,11 @@ public class Application {
         );
 
         var pameldingService = new PameldingService(
-                new JdbcPameldingRepository(database),
-                clock
+            new JdbcPameldingRepository(database),
+            clock,
+            new KonsollEpostTjeneste()
         );
+
 
         return create(kursService, pameldingService);
     }
