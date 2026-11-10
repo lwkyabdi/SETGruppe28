@@ -5,6 +5,7 @@ import io.javalin.http.HttpResponseException;
 import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
+import no.hiof.gruppe28.controller.AdminKursController;
 import no.hiof.gruppe28.controller.AdminPameldingController;
 import no.hiof.gruppe28.controller.InnloggingController;
 import no.hiof.gruppe28.controller.KontaktpersonController;
@@ -23,6 +24,7 @@ import no.hiof.gruppe28.repository.DemoLokallagRepository;
 import no.hiof.gruppe28.repository.DemoPameldingRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
+import no.hiof.gruppe28.service.AdminKursService;
 import no.hiof.gruppe28.service.AdminPameldingService;
 import no.hiof.gruppe28.service.ApiException;
 import no.hiof.gruppe28.service.InnloggingService;
@@ -112,6 +114,10 @@ public class Application {
         // når Taulant har laget JdbcAdminPameldingRepository.
         AdminPameldingService adminPameldingService = null;
 
+        // Byttes til new AdminKursService(new JdbcAdminKursRepository(database))
+        // når Taulant har laget JdbcAdminKursRepository.
+        AdminKursService adminKursService = null;
+
         return create(
             kursService,
             pameldingService,
@@ -119,7 +125,8 @@ public class Application {
             innloggingService,
             lokallagService,
             kontaktpersonService,
-            adminPameldingService
+            adminPameldingService,
+            adminKursService
         );
     }
 
@@ -147,7 +154,7 @@ public class Application {
         );
     }
 
-    // Uten admin for påmeldinger. Brukes av testene som ikke trenger den.
+    // Uten admin. Brukes av testene som ikke trenger den.
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
@@ -160,6 +167,7 @@ public class Application {
             lokallagService, kontaktpersonService, null);
     }
 
+    // Med admin for påmeldinger, uten admin for kurs.
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
@@ -168,6 +176,20 @@ public class Application {
         LokallagService lokallagService,
         KontaktpersonService kontaktpersonService,
         AdminPameldingService adminPameldingService
+    ) {
+        return create(service, pameldingService, nyhetService, innloggingService,
+            lokallagService, kontaktpersonService, adminPameldingService, null);
+    }
+
+    public static Javalin create(
+        KursService service,
+        PameldingService pameldingService,
+        NyhetService nyhetService,
+        InnloggingService innloggingService,
+        LokallagService lokallagService,
+        KontaktpersonService kontaktpersonService,
+        AdminPameldingService adminPameldingService,
+        AdminKursService adminKursService
     ) {
         var kursController = new KursController(service);
         var nyhetController = new NyhetController(nyhetService);
@@ -284,6 +306,36 @@ public class Application {
                         adminPameldingController::meldPa
                     );
                 }
+
+                // Admin for kurs: også bare bak vakten
+                if (adminKursService != null) {
+                    var adminKursController = new AdminKursController(adminKursService);
+
+                    config.routes.get(
+                        "/api/admin/kurs",
+                        adminKursController::alle
+                    );
+
+                    config.routes.get(
+                        "/api/admin/kurs/{id}",
+                        adminKursController::finn
+                    );
+
+                    config.routes.post(
+                        "/api/admin/kurs",
+                        adminKursController::opprett
+                    );
+
+                    config.routes.put(
+                        "/api/admin/kurs/{id}",
+                        adminKursController::oppdater
+                    );
+
+                    config.routes.delete(
+                        "/api/admin/kurs/{id}",
+                        adminKursController::slett
+                    );
+                }
             }
 
             config.routes.exception(
@@ -349,3 +401,4 @@ public class Application {
         });
     }
 }
+
