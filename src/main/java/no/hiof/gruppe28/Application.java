@@ -7,6 +7,7 @@ import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
 import no.hiof.gruppe28.controller.InnloggingController;
 import no.hiof.gruppe28.controller.KursController;
+import no.hiof.gruppe28.controller.LokallagController;
 import no.hiof.gruppe28.controller.NyhetController;
 import no.hiof.gruppe28.controller.PameldingController;
 import no.hiof.gruppe28.epost.EpostTjeneste;
@@ -14,12 +15,14 @@ import no.hiof.gruppe28.epost.KonsollEpostTjeneste;
 import no.hiof.gruppe28.epost.SmtpEpostTjeneste;
 import no.hiof.gruppe28.repository.DatabaseException;
 import no.hiof.gruppe28.repository.DemoKursRepository;
+import no.hiof.gruppe28.repository.DemoLokallagRepository;
 import no.hiof.gruppe28.repository.DemoNyhetRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.ApiException;
 import no.hiof.gruppe28.service.InnloggingService;
 import no.hiof.gruppe28.service.KursService;
+import no.hiof.gruppe28.service.LokallagService;
 import no.hiof.gruppe28.service.NyhetService;
 import no.hiof.gruppe28.service.PameldingService;
 
@@ -77,7 +80,11 @@ public class Application {
         // når Taulant har laget JdbcAdministratorRepository.
         InnloggingService innloggingService = null;
 
-        return create(kursService, pameldingService, nyhetService, innloggingService);
+        // Byttes til new LokallagService(new JdbcLokallagRepository(database))
+        // når Taulant har laget JdbcLokallagRepository.
+        var lokallagService = new LokallagService(new DemoLokallagRepository());
+
+        return create(kursService, pameldingService, nyhetService, innloggingService, lokallagService);
     }
 
     private static EpostTjeneste lagEpostTjeneste() throws IOException {
@@ -94,17 +101,25 @@ public class Application {
     }
 
     public static Javalin create(KursService service) {
-        return create(service, null, new NyhetService(new DemoNyhetRepository()), null);
+        return create(
+            service,
+            null,
+            new NyhetService(new DemoNyhetRepository()),
+            null,
+            new LokallagService(new DemoLokallagRepository())
+        );
     }
 
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
         NyhetService nyhetService,
-        InnloggingService innloggingService
+        InnloggingService innloggingService,
+        LokallagService lokallagService
     ) {
         var kursController = new KursController(service);
         var nyhetController = new NyhetController(nyhetService);
+        var lokallagController = new LokallagController(lokallagService);
 
         return Javalin.create(config -> {
             config.staticFiles.add("/public", Location.CLASSPATH);
@@ -113,6 +128,11 @@ public class Application {
             config.routes.get(
                 "/api/health",
                 ctx -> ctx.json(Map.of("status", "OK"))
+            );
+
+            config.routes.get(
+                "/api/lokallag",
+                lokallagController::alle
             );
 
             config.routes.get(
