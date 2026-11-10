@@ -18,9 +18,13 @@ public class JdbcKursRepository implements KursRepository {
     private final DatabaseConfig database;
 
     private static final String SELECT = """
-            SELECT k.*, p.navn AS kontakt_navn, p.epost AS kontakt_epost,
-                   p.telefon AS kontakt_telefon, p.bilde AS kontakt_bilde
-            FROM kurs k JOIN kontaktperson p ON p.id = k.kontakt_id
+            SELECT k.*, COALESCE(l.navn, k.lokallag) AS lokallag_navn,
+                   p.navn AS kontakt_navn, p.epost AS kontakt_epost,
+                   p.telefon AS kontakt_telefon, p.bilde AS kontakt_bilde,
+                   p.verv AS kontakt_verv, p.sted AS kontakt_sted
+            FROM kurs k
+            JOIN kontaktperson p ON p.id = k.kontakt_id
+            LEFT JOIN lokallag l ON l.id = k.lokallag_id
             WHERE k.status = 'PUBLISERT'
             """;
 
@@ -87,7 +91,9 @@ public class JdbcKursRepository implements KursRepository {
                 r.getString("kontakt_navn"),
                 r.getString("kontakt_epost"),
                 r.getString("kontakt_telefon"),
-                r.getString("kontakt_bilde")
+                r.getString("kontakt_bilde"),
+                r.getString("kontakt_verv"),
+                r.getString("kontakt_sted")
         );
 
         return new Kurs(
@@ -98,7 +104,7 @@ public class JdbcKursRepository implements KursRepository {
                 r.getString("tidspunkt"),
                 r.getString("varighet"),
                 r.getString("sted"),
-                r.getString("lokallag"),
+                r.getString("lokallag_navn"),
                 r.getString("tema"),
                 r.getString("malgruppe"),
                 r.getString("niva"),
@@ -107,7 +113,9 @@ public class JdbcKursRepository implements KursRepository {
                 r.getBigDecimal("ordinaerpris"),
                 r.getInt("kapasitet"),
                 r.getInt("ledige_plasser"),
-                kontakt
+                kontakt,
+                r.getString("bildesti"),
+                r.getString("bildealt")
         );
     }
 }
