@@ -182,10 +182,14 @@ if (meldPaKnapp) {
 }
 
 //PÅMELDING
-//Kjører bare på pamelding.html
+//Kjører bare på pamelding.html. Kurset hentes fra Java.
 const skjema = document.getElementById("pamelding-skjema");
 
 if (skjema) {
+  visPameldingsskjema();
+}
+
+async function visPameldingsskjema() {
   const feilmelding = document.getElementById("skjema-feil");
   const prisboks = document.querySelector(".din-pris");
   const dinPris = document.getElementById("din-pris");
@@ -211,19 +215,35 @@ if (skjema) {
     lagret = null;
   }
 
-  //Kurset man melder seg på (fra ?kurs= i adressen, eller fra påmeldingen hvis man kom tilbake)
-  const kursId = hentKursId(lagret && lagret.kursId);
-  const kurs = KURS[kursId];
+  //Kurset fra ?kurs= i adressen, eller fra påmeldingen hvis man kom tilbake
+  const adresse = new URLSearchParams(window.location.search);
+  const kursId = Number(adresse.get("kurs") || (lagret && lagret.kursId));
+  const kurs = await hentKursFraApi(kursId);
+
+  if (!kurs) {
+    skjema.hidden = true;
+    feilmelding.textContent = "Vi fant ikke kurset. Gå tilbake til kursoversikten og velg kurset på nytt.";
+    feilmelding.hidden = false;
+    skjema.after(feilmelding);
+
+    //Skjul eksempelkurset i oppsummeringen, så det ikke ser ut som et ekte kurs
+    const oppsummering = document.getElementById("oppsummering-tittel");
+    if (oppsummering) oppsummering.closest("section, aside").hidden = true;
+
+    const brodsmule = document.getElementById("brodsmule-kurs");
+    brodsmule.textContent = "Ukjent kurs";
+    brodsmule.href = "kurs.html";
+    return;
+  }
+
   fyllKurs(kurs);
   document.title = "Påmelding: " + kurs.tittel + " – Østfold Husflidslag";
   document.getElementById("brodsmule-kurs").href = "kurs-detalj.html?id=" + kursId;
   prisboks.dataset.medlem = kurs.medlemspris.toLocaleString("nb-NO") + " kr";
   prisboks.dataset.ordinaer = kurs.ordinaerpris.toLocaleString("nb-NO") + " kr";
 
-  //Venteliste når kurset er fullt, eller når merket står i adressen
-  const erVenteliste = kurs.ledige === 0 ||
-    new URLSearchParams(window.location.search).get("venteliste") === "ja" ||
-    Boolean(lagret && lagret.venteliste);
+  //Venteliste når kurset er fullt
+  const erVenteliste = kurs.ledige === 0;
 
   if (erVenteliste) {
     document.getElementById("pamelding-tittel").textContent = "Sett deg på venteliste";
@@ -232,12 +252,14 @@ if (skjema) {
     document.getElementById("venteliste-pris").hidden = false;
     document.title = "Venteliste: " + kurs.tittel + " – Østfold Husflidslag";
   }
+
   if (lagret) {
     ["fornavn", "etternavn", "epost", "telefon", "fodselsar", "medlemsnummer", "kommentar"].forEach(function (navn) {
       skjema.elements[navn].value = lagret[navn] || "";
     });
     const medlemValg = skjema.querySelector('input[name="medlem"][value="' + lagret.medlem + '"]');
     if (medlemValg) medlemValg.checked = true;
+    skjema.elements.samtykke.checked = Boolean(lagret.samtykke);
     oppdaterMedlemskap();
   }
 
@@ -275,11 +297,13 @@ if (skjema) {
       return;
     }
 
-    //Lagre opplysningene til neste side
+    //Lagre opplysningene til neste side, med en ny, unik nøkkel
     const data = Object.fromEntries(new FormData(skjema));
+    data.samtykke = skjema.elements.samtykke.checked;
     data.pris = dinPris.textContent;
     data.venteliste = erVenteliste;
     data.kursId = kursId;
+    data.nokkel = crypto.randomUUID();
     lagrePamelding(data);
 
     window.location.href = skjema.getAttribute("action");
@@ -287,82 +311,162 @@ if (skjema) {
 }
 
 //BEKREFT PÅMELDING
-//Kjører bare på bekreft.html
+//Kjører bare på bekreft.html. Sender påmeldingen til Java.
 const bekreftSkjema = document.getElementById("bekreft-skjema");
 
 if (bekreftSkjema) {
-  const pamelding = hentPamelding();
+  visBekreftelse();
+}
 
-  if (!pamelding) {
+async function visBekreftelse() {
+  const pamelding = hentPamelding();
+  const knapp = document.getElementById("bekreft-knapp");
+
+  if (!pamelding || !pamelding.nokkel) {
     //Ingen påmelding: vis melding i stedet for tomt kort
     bekreftSkjema.hidden = true;
     document.getElementById("ingen-pamelding").hidden = false;
-  } else {
-    //Verdiene som skal inn i feltene med data-felt
-    const felter = {
-      navn: pamelding.fornavn + " " + pamelding.etternavn,
-      epost: pamelding.epost,
-      telefon: pamelding.telefon,
-      fodselsar: pamelding.fodselsar,
-      medlemskap: pamelding.medlem === "ja" ? "Ja, jeg er medlem" : "Nei, jeg er ikke medlem",
-      pris: pamelding.pris
-    };
-
-    bekreftSkjema.querySelectorAll("[data-felt]").forEach(function (felt) {
-      felt.textContent = felter[felt.dataset.felt] || "–";
-    });
-
-    //Kurset personen melder seg på
-    fyllKurs(KURS[pamelding.kursId] || KURS[1]);
-    document.querySelector("#tilbake a").href = "pamelding.html?kurs=" + (pamelding.kursId || 1);
-
-    //Venteliste: si nøyaktig hva knappen gjør
-    if (pamelding.venteliste) {
-      document.getElementById("bekreft-tittel").textContent = "Bekreft plass på ventelisten";
-      document.getElementById("bekreft-knapp").textContent = "Sett meg på venteliste";
-      document.title = "Bekreft venteliste – Østfold Husflidslag";
-    }
+    return;
   }
 
-  //Bekreft og gå videre til "Du er påmeldt"
-  bekreftSkjema.addEventListener("submit", function (hendelse) {
+  //Feilmelding over knappen. Den finnes ikke i HTML-en, så vi lager den her.
+  const feilmelding = document.createElement("p");
+  feilmelding.className = "skjema-feil";
+  feilmelding.setAttribute("role", "alert");
+  feilmelding.hidden = true;
+  knapp.before(feilmelding);
+
+  //Verdiene som skal inn i feltene med data-felt
+  const felter = {
+    navn: pamelding.fornavn + " " + pamelding.etternavn,
+    epost: pamelding.epost,
+    telefon: pamelding.telefon,
+    fodselsar: pamelding.fodselsar,
+    medlemskap: pamelding.medlem === "ja" ? "Ja, jeg er medlem" : "Nei, jeg er ikke medlem",
+    pris: pamelding.pris
+  };
+
+  bekreftSkjema.querySelectorAll("[data-felt]").forEach(function (felt) {
+    felt.textContent = felter[felt.dataset.felt] || "–";
+  });
+
+  //Kurset personen melder seg på, hentet fra Java
+  const kurs = await hentKursFraApi(pamelding.kursId);
+  if (kurs) fyllKurs(kurs);
+  document.querySelector("#tilbake a").href = "pamelding.html?kurs=" + pamelding.kursId;
+
+  //Venteliste: si nøyaktig hva knappen gjør
+  if (pamelding.venteliste) {
+    document.getElementById("bekreft-tittel").textContent = "Bekreft plass på ventelisten";
+    knapp.textContent = "Sett meg på venteliste";
+    document.title = "Bekreft venteliste – Østfold Husflidslag";
+  }
+
+  //Send påmeldingen til Java. Knappen kan ikke trykkes to ganger mens vi venter.
+  let sender = false;
+
+  bekreftSkjema.addEventListener("submit", async function (hendelse) {
     hendelse.preventDefault();
+    if (sender) return;
+    sender = true;
+    knapp.disabled = true;
+    feilmelding.hidden = true;
 
-    pamelding.bekreftet = true;
-    lagrePamelding(pamelding);
+    try {
+      const svar = await fetch("/api/kurs/" + pamelding.kursId + "/pameldinger", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tilPameldingJson(pamelding))
+      });
+      const innhold = await svar.json().catch(function () { return {}; });
 
-    window.location.href = bekreftSkjema.getAttribute("action");
+      if (!svar.ok) {
+        feilmelding.textContent = innhold.melding || "Påmeldingen kunne ikke lagres. Prøv igjen.";
+        feilmelding.hidden = false;
+        return;
+      }
+
+      //Lagret i Java: husk kvitteringen og gå videre
+      pamelding.bekreftet = true;
+      pamelding.kvittering = innhold;
+      lagrePamelding(pamelding);
+      window.location.href = bekreftSkjema.getAttribute("action");
+    } catch (feil) {
+      //Ingen kontakt. Samme nøkkel brukes neste gang, så påmeldingen lagres ikke to ganger.
+      console.error(feil);
+      feilmelding.textContent = "Fikk ikke kontakt med serveren. Sjekk nettet og trykk på knappen igjen.";
+      feilmelding.hidden = false;
+    } finally {
+      sender = false;
+      knapp.disabled = false;
+    }
   });
 }
 
+//Bare feltene Java tar imot, med riktige typer
+function tilPameldingJson(p) {
+  return {
+    nokkel: p.nokkel,
+    fornavn: p.fornavn,
+    etternavn: p.etternavn,
+    epost: p.epost,
+    telefon: p.telefon,
+    fodselsar: Number.parseInt(p.fodselsar, 10),
+    medlem: p.medlem,
+    medlemsnummer: p.medlem === "ja" ? (p.medlemsnummer || "") : "",
+    kommentar: p.kommentar || "",
+    samtykke: p.samtykke === true
+  };
+}
+
 //DU ER PÅMELDT
-//Kjører bare på pameldt.html
+//Kjører bare på pameldt.html. Viser svaret fra Java.
 const pameldt = document.getElementById("pameldt");
 
 if (pameldt) {
   const pamelding = hentPamelding();
+  const kvittering = pamelding && pamelding.bekreftet ? pamelding.kvittering : null;
 
-  if (pamelding && pamelding.bekreftet) {
+  if (kvittering) {
     //Vis e-posten personen meldte seg på med (textContent, ikke innerHTML, fordi brukeren har skrevet den)
     document.getElementById("pameldt-epost").textContent = pamelding.epost;
+    fyllKvittering(kvittering);
 
-    //Kurset personen meldte seg på
-    const kurs = KURS[pamelding.kursId] || KURS[1];
-    fyllKurs(kurs);
-    document.getElementById("pameldt-melding").textContent = "Påmeldingen til " + kurs.tittel + " er registrert";
+    document.getElementById("pameldt-melding").textContent =
+      "Påmeldingen til " + kvittering.kursTittel + " er registrert (referanse " + kvittering.referanse + ")";
 
-    //Venteliste: hun har ikke plass ennå, og det må stå tydelig
-    if (pamelding.venteliste) {
+    //Venteliste: personen har ikke plass ennå, og det må stå tydelig
+    if (kvittering.status === "venteliste") {
       document.getElementById("pameldt-tittel").textContent = "Du står på venteliste";
       document.getElementById("pameldt-melding").textContent =
-        "Kurset " + kurs.tittel + " er fullt. Du står på ventelisten. Når noen melder seg av, får førstemann på ventelisten plassen og beskjed på e-post. Du er registrert";
+        "Kurset " + kvittering.kursTittel + " er fullt. Du står på ventelisten (referanse " + kvittering.referanse +
+        "). Når noen melder seg av, får førstemann på ventelisten plassen og beskjed på e-post. Du er registrert";
       document.title = "Du står på venteliste – Østfold Husflidslag";
     }
+
+    //Personopplysningene trengs ikke lenger i nettleseren
+    lagrePamelding({ bekreftet: true, epost: pamelding.epost, kvittering: kvittering });
   } else {
     //Ingen bekreftet påmelding: vis melding i stedet
     pameldt.hidden = true;
     document.getElementById("ingen-pamelding").hidden = false;
   }
+}
+
+//Fyller kursfeltene på pameldt.html med opplysningene fra kvitteringen
+function fyllKvittering(kvittering) {
+  const verdier = {
+    tittel: kvittering.kursTittel,
+    dato: new Date(kvittering.dato + "T12:00").toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric" }),
+    tid: kvittering.tidspunkt,
+    sted: kvittering.sted,
+    lokallag: kortnavn(kvittering.lokallag),
+    lagnavn: kortnavn(kvittering.lokallag) + " Husflidslag"
+  };
+  document.querySelectorAll("[data-kurs]").forEach(function (felt) {
+    if (verdier[felt.dataset.kurs] !== undefined) felt.textContent = verdier[felt.dataset.kurs];
+    if (felt.dataset.kurs === "dato") felt.dateTime = kvittering.dato;
+  });
 }
 
 //NYHETSARTIKKEL
@@ -547,3 +651,56 @@ function slettPamelding() {
     //Ingenting å slette
   }
 }
+
+//HENTE DATA FRA JAVA
+//Felles hjelpefunksjon: henter JSON fra en adresse i API-et
+async function hentJson(adresse) {
+  const svar = await fetch(adresse);
+  if (!svar.ok) {
+    throw new Error("Feil fra serveren: " + svar.status);
+  }
+  return svar.json();
+}
+
+//"Fredrikstad Husflidslag" → "Fredrikstad"
+function kortnavn(navn) {
+  return (navn || "").replace(" Husflidslag", "");
+}
+
+//Gjør et kurs fra Java om til formatet fyllKurs() forventer
+function tilKursVisning(k) {
+  return {
+    id: k.id,
+    tittel: k.tittel,
+    tema: k.tema,
+    lokallag: kortnavn(k.lokallag),
+    dato: k.dato,
+    tid: k.tidspunkt,
+    varighet: k.varighet,
+    sted: k.sted,
+    kursleder: "",
+    malgruppe: k.malgruppe,
+    niva: k.niva,
+    plasser: k.kapasitet,
+    ledige: k.ledigePlasser,
+    medlemspris: Number(k.medlemspris),
+    ordinaerpris: Number(k.ordinaerpris),
+    beskrivelse: k.beskrivelse,
+    utstyr: k.utstyr,
+    kontakt: k.kontakt,
+    bildesti: k.bildesti,
+    bildealt: k.bildealt
+  };
+}
+
+//Henter ett kurs fra Java. Gir null hvis kurset ikke finnes.
+async function hentKursFraApi(id) {
+  if (!Number.isInteger(id) || id <= 0) return null;
+  try {
+    return tilKursVisning(await hentJson("/api/kurs/" + id));
+  } catch (feil) {
+    console.error(feil);
+    return null;
+  }
+}
+

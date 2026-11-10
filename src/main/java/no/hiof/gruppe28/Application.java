@@ -19,6 +19,7 @@ import no.hiof.gruppe28.repository.DemoArtikkelRepository;
 import no.hiof.gruppe28.repository.DemoKontaktpersonRepository;
 import no.hiof.gruppe28.repository.DemoKursRepository;
 import no.hiof.gruppe28.repository.DemoLokallagRepository;
+import no.hiof.gruppe28.repository.DemoPameldingRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.ApiException;
@@ -55,12 +56,25 @@ public class Application {
             System.getLogger(Application.class.getName())
                 .log(
                     System.Logger.Level.INFO,
-                    "Starter med eksempeldata. Påmelding krever MySQL."
+                    "Starter med eksempeldata. Påmeldinger lagres bare i minnet."
                 );
 
             var repository = new DemoKursRepository(LocalDate.now(clock));
 
-            return create(new KursService(repository, clock));
+            var demoPamelding = new PameldingService(
+                new DemoPameldingRepository(repository),
+                clock,
+                new KonsollEpostTjeneste()
+            );
+
+            return create(
+                new KursService(repository, clock),
+                demoPamelding,
+                new NyhetService(new DemoArtikkelRepository()),
+                null,
+                new LokallagService(new DemoLokallagRepository()),
+                new KontaktpersonService(new DemoKontaktpersonRepository())
+            );
         }
 
         var database = DatabaseConfig.load();

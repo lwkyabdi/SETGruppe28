@@ -29,7 +29,15 @@ public final class BekreftelsesTekst {
             + "Sted: " + kvittering.sted() + "\n"
             + "Pris: " + kvittering.pris() + " kr\n"
             + "Referanse: " + kvittering.referanse() + "\n\n"
-            + "Hilsen Fredrikstad Husflidslag";
+            + "Hilsen " + lagnavn(kvittering.lokallag());
+    }
+
+    // "Moss" og "Moss Husflidslag" gir begge "Moss Husflidslag". Mangler laget, brukes fylkeslaget.
+    static String lagnavn(String lokallag) {
+        if (lokallag == null || lokallag.isBlank()) {
+            return "Østfold Husflidslag";
+        }
+        String navn = lokallag.trim();
+        return navn.endsWith("Husflidslag") ? navn : navn + " Husflidslag";
     }
 }
-
