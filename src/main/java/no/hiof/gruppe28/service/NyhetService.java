@@ -1,7 +1,7 @@
 package no.hiof.gruppe28.service;
 
-import no.hiof.gruppe28.model.Nyhet;
-import no.hiof.gruppe28.repository.NyhetRepository;
+import no.hiof.gruppe28.model.Artikkel;
+import no.hiof.gruppe28.repository.ArtikkelRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -9,20 +9,20 @@ import java.util.Optional;
 
 public class NyhetService {
 
-    private final NyhetRepository repository;
+    private final ArtikkelRepository repository;
 
-    public NyhetService(NyhetRepository repository) {
+    public NyhetService(ArtikkelRepository repository) {
         this.repository = repository;
     }
 
-    public List<Nyhet> alle() {
-        return repository.findAlle().stream()
-            .sorted(Comparator.comparing(Nyhet::dato).reversed()
-                .thenComparing(Comparator.comparingLong(Nyhet::id).reversed()))
+    public List<Artikkel> alle() {
+        return repository.finnPubliserte().stream()
+            .sorted(Comparator.comparing(Artikkel::publisertTid).reversed()
+                .thenComparing(Comparator.comparingLong(Artikkel::id).reversed()))
             .toList();
     }
 
-    public Optional<Nyhet> finn(long id) {
-        return repository.findById(id);
+    public Optional<Artikkel> finn(long id) {
+        return repository.finnPublisert(id);
     }
 }

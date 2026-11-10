@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import no.hiof.gruppe28.model.Lokallag;
 import no.hiof.gruppe28.repository.DemoKontaktpersonRepository;
-import no.hiof.gruppe28.repository.DemoNyhetRepository;
+import no.hiof.gruppe28.repository.DemoArtikkelRepository;
 import no.hiof.gruppe28.repository.LokallagRepository;
 import no.hiof.gruppe28.service.KontaktpersonService;
 import no.hiof.gruppe28.service.KursService;
@@ -33,7 +33,7 @@ class LokallagApiTest {
         return Application.create(
             new KursService(repository(List.of()), Clock.systemUTC()),
             null,
-            new NyhetService(new DemoNyhetRepository()),
+            new NyhetService(new DemoArtikkelRepository()),
             null,
             new LokallagService(lokallagRepository),
             new KontaktpersonService(new DemoKontaktpersonRepository())
