@@ -4,6 +4,28 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record Kurs(
+    long id,
+    String tittel,
+    String beskrivelse,
+    LocalDate dato,
+    String tidspunkt,
+    String varighet,
+    String sted,
+    String lokallag,
+    String tema,
+    String malgruppe,
+    String niva,
+    String utstyr,
+    BigDecimal medlemspris,
+    BigDecimal ordinaerpris,
+    int kapasitet,
+    int ledigePlasser,
+    Kontaktperson kontakt,
+    String bildesti,
+    String bildealt
+) {
+
+    public Kurs(
         long id,
         String tittel,
         String beskrivelse,
@@ -21,26 +43,33 @@ public record Kurs(
         int kapasitet,
         int ledigePlasser,
         Kontaktperson kontakt
-) {
+    ) {
+        this(id, tittel, beskrivelse, dato, tidspunkt, varighet, sted, lokallag,
+            tema, malgruppe, niva, utstyr, medlemspris, ordinaerpris,
+            kapasitet, ledigePlasser, kontakt, null, null);
+    }
+
     public Kurs medLedigePlasser(int antall) {
         return new Kurs(
-                id,
-                tittel,
-                beskrivelse,
-                dato,
-                tidspunkt,
-                varighet,
-                sted,
-                lokallag,
-                tema,
-                malgruppe,
-                niva,
-                utstyr,
-                medlemspris,
-                ordinaerpris,
-                kapasitet,
-                antall,
-                kontakt
+            id,
+            tittel,
+            beskrivelse,
+            dato,
+            tidspunkt,
+            varighet,
+            sted,
+            lokallag,
+            tema,
+            malgruppe,
+            niva,
+            utstyr,
+            medlemspris,
+            ordinaerpris,
+            kapasitet,
+            antall,
+            kontakt,
+            bildesti,
+            bildealt
         );
     }
 }
