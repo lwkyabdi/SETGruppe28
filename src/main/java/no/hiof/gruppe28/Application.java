@@ -1,10 +1,10 @@
 package no.hiof.gruppe28;
 
 import io.javalin.Javalin;
+import io.javalin.http.HttpResponseException;
 import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
-import no.hiof.gruppe28.controller.IkkeInnloggetException;
 import no.hiof.gruppe28.controller.InnloggingController;
 import no.hiof.gruppe28.controller.KursController;
 import no.hiof.gruppe28.controller.NyhetController;
@@ -17,10 +17,10 @@ import no.hiof.gruppe28.repository.DemoKursRepository;
 import no.hiof.gruppe28.repository.DemoNyhetRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
+import no.hiof.gruppe28.service.ApiException;
 import no.hiof.gruppe28.service.InnloggingService;
 import no.hiof.gruppe28.service.KursService;
 import no.hiof.gruppe28.service.NyhetService;
-import no.hiof.gruppe28.service.PameldingException;
 import no.hiof.gruppe28.service.PameldingService;
 
 import java.io.IOException;
@@ -176,18 +176,7 @@ public class Application {
             }
 
             config.routes.exception(
-                IkkeInnloggetException.class,
-                (exception, ctx) -> {
-                    ctx.header("Cache-Control", "no-store");
-
-                    ctx.status(401).json(
-                        Map.of("melding", exception.getMessage())
-                    );
-                }
-            );
-
-            config.routes.exception(
-                PameldingException.class,
+                ApiException.class,
                 (exception, ctx) -> {
                     ctx.header("Cache-Control", "no-store");
 
@@ -214,6 +203,34 @@ public class Application {
                             "melding",
                             "Databasen er utilgjengelig. "
                                 + "Prøv igjen senere."
+                        )
+                    );
+                }
+            );
+
+            config.routes.exception(
+                Exception.class,
+                (exception, ctx) -> {
+                    if (exception instanceof HttpResponseException javalinFeil) {
+                        ctx.status(javalinFeil.getStatus()).json(
+                            Map.of("melding", javalinFeil.getMessage())
+                        );
+                        return;
+                    }
+
+                    System.getLogger(Application.class.getName())
+                        .log(
+                            System.Logger.Level.ERROR,
+                            "Uventet feil.",
+                            exception
+                        );
+
+                    ctx.header("Cache-Control", "no-store");
+
+                    ctx.status(500).json(
+                        Map.of(
+                            "melding",
+                            "Noe gikk galt. Prøv igjen senere."
                         )
                     );
                 }

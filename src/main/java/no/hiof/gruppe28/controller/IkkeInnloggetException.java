@@ -1,10 +1,11 @@
 package no.hiof.gruppe28.controller;
 
-public class IkkeInnloggetException extends RuntimeException {
+import no.hiof.gruppe28.service.ApiException;
+
+public class IkkeInnloggetException extends ApiException {
 
     public IkkeInnloggetException() {
-        super("Du er ikke logget inn.");
+        super(401, "Du er ikke logget inn.");
     }
 }
-
 
