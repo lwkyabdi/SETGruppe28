@@ -6,6 +6,7 @@ import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
 import no.hiof.gruppe28.controller.InnloggingController;
+import no.hiof.gruppe28.controller.KontaktpersonController;
 import no.hiof.gruppe28.controller.KursController;
 import no.hiof.gruppe28.controller.LokallagController;
 import no.hiof.gruppe28.controller.NyhetController;
@@ -14,6 +15,7 @@ import no.hiof.gruppe28.epost.EpostTjeneste;
 import no.hiof.gruppe28.epost.KonsollEpostTjeneste;
 import no.hiof.gruppe28.epost.SmtpEpostTjeneste;
 import no.hiof.gruppe28.repository.DatabaseException;
+import no.hiof.gruppe28.repository.DemoKontaktpersonRepository;
 import no.hiof.gruppe28.repository.DemoKursRepository;
 import no.hiof.gruppe28.repository.DemoLokallagRepository;
 import no.hiof.gruppe28.repository.DemoNyhetRepository;
@@ -21,6 +23,7 @@ import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.ApiException;
 import no.hiof.gruppe28.service.InnloggingService;
+import no.hiof.gruppe28.service.KontaktpersonService;
 import no.hiof.gruppe28.service.KursService;
 import no.hiof.gruppe28.service.LokallagService;
 import no.hiof.gruppe28.service.NyhetService;
@@ -84,7 +87,18 @@ public class Application {
         // når Taulant har laget JdbcLokallagRepository.
         var lokallagService = new LokallagService(new DemoLokallagRepository());
 
-        return create(kursService, pameldingService, nyhetService, innloggingService, lokallagService);
+        // Byttes til new KontaktpersonService(new JdbcKontaktpersonRepository(database))
+        // når Taulant har laget JdbcKontaktpersonRepository.
+        var kontaktpersonService = new KontaktpersonService(new DemoKontaktpersonRepository());
+
+        return create(
+            kursService,
+            pameldingService,
+            nyhetService,
+            innloggingService,
+            lokallagService,
+            kontaktpersonService
+        );
     }
 
     private static EpostTjeneste lagEpostTjeneste() throws IOException {
@@ -106,7 +120,8 @@ public class Application {
             null,
             new NyhetService(new DemoNyhetRepository()),
             null,
-            new LokallagService(new DemoLokallagRepository())
+            new LokallagService(new DemoLokallagRepository()),
+            new KontaktpersonService(new DemoKontaktpersonRepository())
         );
     }
 
@@ -115,11 +130,13 @@ public class Application {
         PameldingService pameldingService,
         NyhetService nyhetService,
         InnloggingService innloggingService,
-        LokallagService lokallagService
+        LokallagService lokallagService,
+        KontaktpersonService kontaktpersonService
     ) {
         var kursController = new KursController(service);
         var nyhetController = new NyhetController(nyhetService);
         var lokallagController = new LokallagController(lokallagService);
+        var kontaktpersonController = new KontaktpersonController(kontaktpersonService);
 
         return Javalin.create(config -> {
             config.staticFiles.add("/public", Location.CLASSPATH);
@@ -133,6 +150,11 @@ public class Application {
             config.routes.get(
                 "/api/lokallag",
                 lokallagController::alle
+            );
+
+            config.routes.get(
+                "/api/kontaktpersoner",
+                kontaktpersonController::forKontaktside
             );
 
             config.routes.get(
@@ -258,3 +280,4 @@ public class Application {
         });
     }
 }
+

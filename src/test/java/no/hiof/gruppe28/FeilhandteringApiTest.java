@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import no.hiof.gruppe28.model.Kurs;
 import no.hiof.gruppe28.repository.AdministratorRepository;
+import no.hiof.gruppe28.repository.DemoKontaktpersonRepository;
 import no.hiof.gruppe28.repository.DemoLokallagRepository;
 import no.hiof.gruppe28.repository.DemoNyhetRepository;
 import no.hiof.gruppe28.repository.KursRepository;
 import no.hiof.gruppe28.service.ApiException;
 import no.hiof.gruppe28.service.InnloggingService;
+import no.hiof.gruppe28.service.KontaktpersonService;
 import no.hiof.gruppe28.service.KursService;
 import no.hiof.gruppe28.service.LokallagService;
 import no.hiof.gruppe28.service.NyhetService;
@@ -79,7 +81,8 @@ class FeilhandteringApiTest {
             null,
             new NyhetService(new DemoNyhetRepository()),
             new InnloggingService(ingenAdministratorer),
-            new LokallagService(new DemoLokallagRepository())
+            new LokallagService(new DemoLokallagRepository()),
+            new KontaktpersonService(new DemoKontaktpersonRepository())
         ).start(0);
         try {
             var svar = get(app, "/api/admin/oversikt");
@@ -91,3 +94,4 @@ class FeilhandteringApiTest {
         }
     }
 }
+
