@@ -15,10 +15,10 @@ import no.hiof.gruppe28.epost.EpostTjeneste;
 import no.hiof.gruppe28.epost.KonsollEpostTjeneste;
 import no.hiof.gruppe28.epost.SmtpEpostTjeneste;
 import no.hiof.gruppe28.repository.DatabaseException;
+import no.hiof.gruppe28.repository.DemoArtikkelRepository;
 import no.hiof.gruppe28.repository.DemoKontaktpersonRepository;
 import no.hiof.gruppe28.repository.DemoKursRepository;
 import no.hiof.gruppe28.repository.DemoLokallagRepository;
-import no.hiof.gruppe28.repository.DemoNyhetRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.ApiException;
@@ -76,8 +76,9 @@ public class Application {
             lagEpostTjeneste()
         );
 
-        // Byttes til JdbcNyhetRepository når tabellen nyhet finnes i MySQL.
-        var nyhetService = new NyhetService(new DemoNyhetRepository());
+        // Byttes til new NyhetService(new JdbcArtikkelRepository(database))
+        // når Taulant har laget JdbcArtikkelRepository.
+        var nyhetService = new NyhetService(new DemoArtikkelRepository());
 
         // Byttes til new InnloggingService(new JdbcAdministratorRepository(database))
         // når Taulant har laget JdbcAdministratorRepository.
@@ -118,7 +119,7 @@ public class Application {
         return create(
             service,
             null,
-            new NyhetService(new DemoNyhetRepository()),
+            new NyhetService(new DemoArtikkelRepository()),
             null,
             new LokallagService(new DemoLokallagRepository()),
             new KontaktpersonService(new DemoKontaktpersonRepository())

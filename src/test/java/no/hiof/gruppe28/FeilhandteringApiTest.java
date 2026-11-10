@@ -6,7 +6,7 @@ import no.hiof.gruppe28.model.Kurs;
 import no.hiof.gruppe28.repository.AdministratorRepository;
 import no.hiof.gruppe28.repository.DemoKontaktpersonRepository;
 import no.hiof.gruppe28.repository.DemoLokallagRepository;
-import no.hiof.gruppe28.repository.DemoNyhetRepository;
+import no.hiof.gruppe28.repository.DemoArtikkelRepository;
 import no.hiof.gruppe28.repository.KursRepository;
 import no.hiof.gruppe28.service.ApiException;
 import no.hiof.gruppe28.service.InnloggingService;
@@ -79,7 +79,7 @@ class FeilhandteringApiTest {
         Javalin app = Application.create(
             new KursService(repository(List.of()), Clock.systemUTC()),
             null,
-            new NyhetService(new DemoNyhetRepository()),
+            new NyhetService(new DemoArtikkelRepository()),
             new InnloggingService(ingenAdministratorer),
             new LokallagService(new DemoLokallagRepository()),
             new KontaktpersonService(new DemoKontaktpersonRepository())

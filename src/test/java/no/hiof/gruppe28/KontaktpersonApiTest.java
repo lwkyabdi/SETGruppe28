@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import no.hiof.gruppe28.model.Kontaktperson;
 import no.hiof.gruppe28.repository.DemoLokallagRepository;
-import no.hiof.gruppe28.repository.DemoNyhetRepository;
+import no.hiof.gruppe28.repository.DemoArtikkelRepository;
 import no.hiof.gruppe28.repository.KontaktpersonRepository;
 import no.hiof.gruppe28.service.KontaktpersonService;
 import no.hiof.gruppe28.service.KursService;
@@ -33,7 +33,7 @@ class KontaktpersonApiTest {
         return Application.create(
             new KursService(repository(List.of()), Clock.systemUTC()),
             null,
-            new NyhetService(new DemoNyhetRepository()),
+            new NyhetService(new DemoArtikkelRepository()),
             null,
             new LokallagService(new DemoLokallagRepository()),
             new KontaktpersonService(kontaktpersonRepository)

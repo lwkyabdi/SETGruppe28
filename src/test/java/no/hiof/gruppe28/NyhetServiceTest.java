@@ -1,7 +1,7 @@
 package no.hiof.gruppe28;
 
-import no.hiof.gruppe28.model.Nyhet;
-import no.hiof.gruppe28.repository.DemoNyhetRepository;
+import no.hiof.gruppe28.model.Artikkel;
+import no.hiof.gruppe28.repository.DemoArtikkelRepository;
 import no.hiof.gruppe28.service.NyhetService;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NyhetServiceTest {
 
-    private final NyhetService service = new NyhetService(new DemoNyhetRepository());
+    private final NyhetService service = new NyhetService(new DemoArtikkelRepository());
 
     @Test
     void alle_gir_nyeste_nyhet_forst() {
         List<Long> ider = service.alle().stream()
-            .map(Nyhet::id)
+            .map(Artikkel::id)
             .toList();
 
         assertEquals(List.of(2L, 1L, 3L, 4L), ider);
@@ -25,7 +25,7 @@ class NyhetServiceTest {
 
     @Test
     void finn_gir_riktig_nyhet() {
-        Nyhet nyhet = service.finn(2).orElseThrow();
+        Artikkel nyhet = service.finn(2).orElseThrow();
 
         assertEquals("Ledige plasser på vevkurs i Moss", nyhet.tittel());
     }
