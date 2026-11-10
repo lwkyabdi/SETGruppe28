@@ -4,6 +4,8 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
+import no.hiof.gruppe28.controller.IkkeInnloggetException;
+import no.hiof.gruppe28.controller.InnloggingController;
 import no.hiof.gruppe28.controller.KursController;
 import no.hiof.gruppe28.controller.NyhetController;
 import no.hiof.gruppe28.controller.PameldingController;
@@ -15,6 +17,7 @@ import no.hiof.gruppe28.repository.DemoKursRepository;
 import no.hiof.gruppe28.repository.DemoNyhetRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
+import no.hiof.gruppe28.service.InnloggingService;
 import no.hiof.gruppe28.service.KursService;
 import no.hiof.gruppe28.service.NyhetService;
 import no.hiof.gruppe28.service.PameldingException;
@@ -70,7 +73,11 @@ public class Application {
         // Byttes til JdbcNyhetRepository når tabellen nyhet finnes i MySQL.
         var nyhetService = new NyhetService(new DemoNyhetRepository());
 
-        return create(kursService, pameldingService, nyhetService);
+        // Byttes til new InnloggingService(new JdbcAdministratorRepository(database))
+        // når Taulant har laget JdbcAdministratorRepository.
+        InnloggingService innloggingService = null;
+
+        return create(kursService, pameldingService, nyhetService, innloggingService);
     }
 
     private static EpostTjeneste lagEpostTjeneste() throws IOException {
@@ -87,13 +94,14 @@ public class Application {
     }
 
     public static Javalin create(KursService service) {
-        return create(service, null, new NyhetService(new DemoNyhetRepository()));
+        return create(service, null, new NyhetService(new DemoNyhetRepository()), null);
     }
 
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
-        NyhetService nyhetService
+        NyhetService nyhetService,
+        InnloggingService innloggingService
     ) {
         var kursController = new KursController(service);
         var nyhetController = new NyhetController(nyhetService);
@@ -142,6 +150,42 @@ public class Application {
                 );
             }
 
+            if (innloggingService != null) {
+                var innloggingController =
+                    new InnloggingController(innloggingService);
+
+                config.routes.post(
+                    "/api/login",
+                    innloggingController::loggInn
+                );
+
+                config.routes.post(
+                    "/api/logout",
+                    innloggingController::loggUt
+                );
+
+                config.routes.get(
+                    "/api/meg",
+                    innloggingController::meg
+                );
+
+                config.routes.before(
+                    "/api/admin/*",
+                    innloggingController::krevInnlogging
+                );
+            }
+
+            config.routes.exception(
+                IkkeInnloggetException.class,
+                (exception, ctx) -> {
+                    ctx.header("Cache-Control", "no-store");
+
+                    ctx.status(401).json(
+                        Map.of("melding", exception.getMessage())
+                    );
+                }
+            );
+
             config.routes.exception(
                 PameldingException.class,
                 (exception, ctx) -> {
@@ -177,4 +221,3 @@ public class Application {
         });
     }
 }
-
