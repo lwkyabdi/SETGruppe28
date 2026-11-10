@@ -5,6 +5,7 @@ import io.javalin.http.HttpResponseException;
 import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
+import no.hiof.gruppe28.controller.AdminPameldingController;
 import no.hiof.gruppe28.controller.InnloggingController;
 import no.hiof.gruppe28.controller.KontaktpersonController;
 import no.hiof.gruppe28.controller.KursController;
@@ -22,6 +23,7 @@ import no.hiof.gruppe28.repository.DemoLokallagRepository;
 import no.hiof.gruppe28.repository.DemoPameldingRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
+import no.hiof.gruppe28.service.AdminPameldingService;
 import no.hiof.gruppe28.service.ApiException;
 import no.hiof.gruppe28.service.InnloggingService;
 import no.hiof.gruppe28.service.KontaktpersonService;
@@ -106,13 +108,18 @@ public class Application {
         // når Taulant har laget JdbcKontaktpersonRepository.
         var kontaktpersonService = new KontaktpersonService(new DemoKontaktpersonRepository());
 
+        // Byttes til new AdminPameldingService(new JdbcAdminPameldingRepository(database))
+        // når Taulant har laget JdbcAdminPameldingRepository.
+        AdminPameldingService adminPameldingService = null;
+
         return create(
             kursService,
             pameldingService,
             nyhetService,
             innloggingService,
             lokallagService,
-            kontaktpersonService
+            kontaktpersonService,
+            adminPameldingService
         );
     }
 
@@ -140,6 +147,7 @@ public class Application {
         );
     }
 
+    // Uten admin for påmeldinger. Brukes av testene som ikke trenger den.
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
@@ -147,6 +155,19 @@ public class Application {
         InnloggingService innloggingService,
         LokallagService lokallagService,
         KontaktpersonService kontaktpersonService
+    ) {
+        return create(service, pameldingService, nyhetService, innloggingService,
+            lokallagService, kontaktpersonService, null);
+    }
+
+    public static Javalin create(
+        KursService service,
+        PameldingService pameldingService,
+        NyhetService nyhetService,
+        InnloggingService innloggingService,
+        LokallagService lokallagService,
+        KontaktpersonService kontaktpersonService,
+        AdminPameldingService adminPameldingService
     ) {
         var kursController = new KursController(service);
         var nyhetController = new NyhetController(nyhetService);
@@ -230,6 +251,39 @@ public class Application {
                     "/api/admin/*",
                     innloggingController::krevInnlogging
                 );
+
+                // Admin for påmeldinger: bare når innloggingen er på, så vakten alltid beskytter dem
+                if (adminPameldingService != null && pameldingService != null) {
+                    var adminPameldingController = new AdminPameldingController(
+                        adminPameldingService,
+                        new PameldingController(pameldingService)
+                    );
+
+                    config.routes.get(
+                        "/api/admin/oversikt",
+                        adminPameldingController::oversikt
+                    );
+
+                    config.routes.get(
+                        "/api/admin/pameldinger",
+                        adminPameldingController::pameldinger
+                    );
+
+                    config.routes.post(
+                        "/api/admin/pameldinger/{referanse}/gi-plass",
+                        adminPameldingController::giPlass
+                    );
+
+                    config.routes.delete(
+                        "/api/admin/pameldinger/{referanse}",
+                        adminPameldingController::slett
+                    );
+
+                    config.routes.post(
+                        "/api/admin/kurs/{id}/pameldinger",
+                        adminPameldingController::meldPa
+                    );
+                }
             }
 
             config.routes.exception(
@@ -295,4 +349,3 @@ public class Application {
         });
     }
 }
-
