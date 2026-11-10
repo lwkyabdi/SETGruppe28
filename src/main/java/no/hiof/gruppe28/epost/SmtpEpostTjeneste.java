@@ -42,7 +42,7 @@ public class SmtpEpostTjeneste implements EpostTjeneste {
     public void sendBekreftelse(String mottaker, PameldingKvittering kvittering) {
         try {
             MimeMessage melding = new MimeMessage(session);
-            melding.setFrom(new InternetAddress(avsender, "Fredrikstad Husflidslag", "UTF-8"));
+            melding.setFrom(new InternetAddress(avsender, "Østfold Husflidslag", "UTF-8"));
             melding.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mottaker));
             melding.setSubject(BekreftelsesTekst.emne(kvittering), "UTF-8");
             melding.setText(BekreftelsesTekst.tekst(kvittering), "UTF-8");
