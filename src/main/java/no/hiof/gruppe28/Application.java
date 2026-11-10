@@ -4,8 +4,9 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
-import no.hiof.gruppe28.controller.KursController;
+import no.hiof.gruppe28.controller.IkkeInnloggetException;
 import no.hiof.gruppe28.controller.InnloggingController;
+import no.hiof.gruppe28.controller.KursController;
 import no.hiof.gruppe28.controller.NyhetController;
 import no.hiof.gruppe28.controller.PameldingController;
 import no.hiof.gruppe28.epost.EpostTjeneste;
@@ -72,8 +73,11 @@ public class Application {
         // Byttes til JdbcNyhetRepository når tabellen nyhet finnes i MySQL.
         var nyhetService = new NyhetService(new DemoNyhetRepository());
 
+        // Byttes til new InnloggingService(new JdbcAdministratorRepository(database))
+        // når Taulant har laget JdbcAdministratorRepository.
         InnloggingService innloggingService = null;
-        return create (kursService, pameldingService, nyhetService, innloggingService);
+
+        return create(kursService, pameldingService, nyhetService, innloggingService);
     }
 
     private static EpostTjeneste lagEpostTjeneste() throws IOException {
@@ -96,7 +100,8 @@ public class Application {
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
-        NyhetService nyhetService, InnloggingService innloggingService
+        NyhetService nyhetService,
+        InnloggingService innloggingService
     ) {
         var kursController = new KursController(service);
         var nyhetController = new NyhetController(nyhetService);
@@ -144,6 +149,7 @@ public class Application {
                     pameldingController::registrer
                 );
             }
+
             if (innloggingService != null) {
                 var innloggingController =
                     new InnloggingController(innloggingService);
@@ -162,8 +168,23 @@ public class Application {
                     "/api/meg",
                     innloggingController::meg
                 );
+
+                config.routes.before(
+                    "/api/admin/*",
+                    innloggingController::krevInnlogging
+                );
             }
 
+            config.routes.exception(
+                IkkeInnloggetException.class,
+                (exception, ctx) -> {
+                    ctx.header("Cache-Control", "no-store");
+
+                    ctx.status(401).json(
+                        Map.of("melding", exception.getMessage())
+                    );
+                }
+            );
 
             config.routes.exception(
                 PameldingException.class,
@@ -200,4 +221,3 @@ public class Application {
         });
     }
 }
-

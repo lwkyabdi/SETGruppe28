@@ -60,8 +60,14 @@ public class InnloggingController {
         ctx.json(bruker);
     }
 
+    public void krevInnlogging(Context ctx) {
+        InnloggetBruker bruker = ctx.sessionAttribute(SESJON_NOKKEL);
+        if (bruker == null) {
+            throw new IkkeInnloggetException();
+        }
+    }
+
     private boolean erTom(String tekst) {
         return tekst == null || tekst.isBlank();
     }
 }
-
