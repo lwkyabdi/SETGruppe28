@@ -60,6 +60,127 @@ if (kursfilter) {
   filtrerKurs();
 }
 
+//KURSENE
+//Demo-data for de seks kursene på kursoversikten. Erstattes av GET /api/kurs/{id} senere.
+//ledige = antall ledige plasser. Strikkekurset (id 2) er fullt, så det viser ventelisten.
+const KURS = {
+  1: { tittel: "Bunadssøm for nybegynnere", tema: "Bunad", lokallag: "Fredrikstad",
+    dato: "2024-09-20", tid: "18:00–21:00", varighet: "8 kvelder", sted: "Fredrikstad Husflidssenter, Nygårdsgt. 14",
+    kursleder: "Marit Andersen", malgruppe: "Voksne", niva: "Nybegynner", plasser: 8, ledige: 3, medlemspris: 1500, ordinaerpris: 2000,
+    beskrivelse: "Lær å sy din egen bunad fra bunnen av. Kurset passer deg som aldri har sydd bunad før. Vi går gjennom alt fra valg av stoff til ferdig plagg. Du vil lære tradisjonelle syteknikker og bli kjent med bunadens kulturhistorie i Østfold.",
+    utstyr: "Symaskin hvis du har, stoff og tråd." },
+  2: { tittel: "Strikk din egen genser", tema: "Strikking", lokallag: "Sarpsborg",
+    dato: "2024-09-27", tid: "10:00–14:00", varighet: "6 lørdager", sted: "Sarpsborg Husflidslag, Glengsgata 15",
+    kursleder: "Anne Berg", malgruppe: "Voksne", niva: "Litt erfaren", plasser: 8, ledige: 0, medlemspris: 1200, ordinaerpris: 1600,
+    beskrivelse: "Strikk en klassisk genser i ditt eget tempo. Du lærer å lese oppskrift, måle og strikke sammen, med god hjelp fra erfarne strikkere.",
+    utstyr: "Rundpinner nr. 3,5 og 4. Garn kan kjøpes på kurset." },
+  3: { tittel: "Vevkurs – grunnleggende båndbinding", tema: "Veving", lokallag: "Moss",
+    dato: "2024-10-05", tid: "10:00–15:00", varighet: "2 dager", sted: "Moss Husflidslag, vevstudioet",
+    kursleder: "Liv Johansen", malgruppe: "Alle", niva: "Nybegynner", plasser: 10, ledige: 6, medlemspris: 900, ordinaerpris: 1200,
+    beskrivelse: "Lær grunnleggende båndveving på bandgrind. Kurset passer for nybegynnere, og du går hjem med ditt eget bånd.",
+    utstyr: "Alt utstyr finnes i vevstudioet." },
+  4: { tittel: "Broderi og korssting – nybegynnerkurs", tema: "Brodering", lokallag: "Halden",
+    dato: "2024-10-12", tid: "13:00–16:00", varighet: "4 lørdager", sted: "Halden Husflidslag",
+    kursleder: "Eva Karlsen", malgruppe: "Alle", niva: "Nybegynner", plasser: 10, ledige: 8, medlemspris: 800, ordinaerpris: 1100,
+    beskrivelse: "Lær korssting og enkle broderisting. Du lager en liten løper med tradisjonelle mønstre fra Østfold.",
+    utstyr: "Broderisaks. Stoff og garn får du på kurset." },
+  5: { tittel: "Trearbeid – tradisjonell skjæring", tema: "Trearbeid", lokallag: "Fredrikstad",
+    dato: "2024-10-19", tid: "09:00–15:00", varighet: "1 hel lørdag", sted: "Fredrikstad Husflidssenter, Nygårdsgt. 14",
+    kursleder: "Per Olsen", malgruppe: "Voksne", niva: "Nybegynner", plasser: 6, ledige: 2, medlemspris: 1100, ordinaerpris: 1500,
+    beskrivelse: "Lær å skjære i tre med kniv og huljern. Du lager en smørkniv eller en liten skål i bjørk.",
+    utstyr: "Arbeidsklær. Verktøy kan lånes." },
+  6: { tittel: "Søm og enkel konfeksjon", tema: "Søm", lokallag: "Sarpsborg",
+    dato: "2024-11-02", tid: "10:00–14:00", varighet: "5 lørdager", sted: "Sarpsborg Husflidslag, Glengsgata 15",
+    kursleder: "Anne Berg", malgruppe: "Voksne", niva: "Nybegynner", plasser: 8, ledige: 5, medlemspris: 1100, ordinaerpris: 1500,
+    beskrivelse: "Lær å bruke symaskin og sy enkle plagg etter mønster, som et skjørt eller en pute.",
+    utstyr: "Symaskin hvis du har. Stoff kjøper du selv." }
+};
+
+//Finner kurset ut fra adressen (?id= eller ?kurs=). Uten nummer brukes kurs 1.
+function hentKursId(reserve) {
+  const adresse = new URLSearchParams(window.location.search);
+  const id = Number(adresse.get("id") || adresse.get("kurs") || reserve || 1);
+  return KURS[id] ? id : 1;
+}
+
+//Fyller alle elementer med data-kurs="..." med opplysninger om kurset
+function fyllKurs(kurs) {
+  const kr = function (tall) { return tall.toLocaleString("nb-NO") + " kr"; };
+  const verdier = {
+    tittel: kurs.tittel, tema: kurs.tema, lokallag: kurs.lokallag, lagnavn: kurs.lokallag + " Husflidslag",
+    dato: new Date(kurs.dato + "T12:00").toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric" }),
+    tid: kurs.tid, varighet: kurs.varighet, sted: kurs.sted, kursleder: kurs.kursleder,
+    malgruppe: kurs.malgruppe, niva: kurs.niva, beskrivelse: kurs.beskrivelse, utstyr: kurs.utstyr,
+    plasser: kurs.ledige === 0 ? "Fullt" : kurs.ledige + " av " + kurs.plasser,
+    plasserLedige: kurs.ledige === 0 ? "Fullt (" + kurs.plasser + " plasser)" : kurs.ledige + " av " + kurs.plasser + " ledige",
+    medlemspris: kr(kurs.medlemspris), ordinaerpris: kr(kurs.ordinaerpris)
+  };
+  document.querySelectorAll("[data-kurs]").forEach(function (felt) {
+    felt.textContent = verdier[felt.dataset.kurs];
+    if (felt.dataset.kurs === "dato") felt.dateTime = kurs.dato;
+  });
+}
+
+//KURSSIDEN
+//Kjører bare på kurs-detalj.html. Viser kurset fra ?id= i adressen.
+//Er kurset fullt, blir «Meld deg på» til «Sett meg på venteliste».
+const meldPaKnapp = document.getElementById("meld-pa-knapp");
+
+if (meldPaKnapp) {
+  const kursId = hentKursId();
+  const kurs = KURS[kursId];
+  fyllKurs(kurs);
+  document.title = kurs.tittel + " – Østfold Husflidslag";
+  document.querySelector(".brodsmuler [aria-current]").href = "kurs-detalj.html?id=" + kursId;
+
+  //Plass-måleren øverst i påmeldingsboksen
+  const maler = document.getElementById("ledige-plasser");
+  maler.max = kurs.plasser;
+  maler.value = kurs.ledige;
+  maler.textContent = kurs.ledige + " av " + kurs.plasser;
+
+  meldPaKnapp.href = "pamelding.html?kurs=" + kursId;
+
+  if (kurs.ledige === 0) {
+    //Klassen kurs-fullt endrer farger og utseende i style.css
+    document.querySelector("main").classList.add("kurs-fullt");
+    document.querySelectorAll(".fullt-merke, .fullt-etikett, .fullt-banner").forEach(function (felt) {
+      felt.hidden = false;
+    });
+
+    //Stolpen viser at alle plassene er tatt
+    document.querySelector(".ledige label").textContent = "Påmeldte";
+    document.querySelector(".ledige span").textContent = kurs.plasser + " av " + kurs.plasser + " – fullt";
+    maler.value = kurs.plasser;
+    maler.textContent = "Fullt";
+
+    meldPaKnapp.textContent = "Sett meg på venteliste";
+    meldPaKnapp.href += "&venteliste=ja";
+    document.getElementById("venteliste-info").hidden = false;
+
+    //Forslag til kurs med ledige plasser, samme tema først (B7)
+    const liste = document.getElementById("alternativ-liste");
+    Object.keys(KURS)
+      .map(Number)
+      .filter(function (id) { return KURS[id].ledige > 0; })
+      .sort(function (a, b) { return (KURS[b].tema === kurs.tema) - (KURS[a].tema === kurs.tema); })
+      .slice(0, 3)
+      .forEach(function (id) {
+        const lenke = document.createElement("a");
+        lenke.href = "kurs-detalj.html?id=" + id;
+        const tittel = document.createElement("strong");
+        tittel.textContent = KURS[id].tittel;
+        const info = document.createElement("span");
+        info.textContent = KURS[id].lokallag + " · " + KURS[id].ledige + " ledige plasser";
+        lenke.append(tittel, info);
+        const li = document.createElement("li");
+        li.append(lenke);
+        liste.append(li);
+      });
+    document.getElementById("ledige-alternativ").hidden = false;
+  }
+}
+
 //PÅMELDING
 //Kjører bare på pamelding.html
 const skjema = document.getElementById("pamelding-skjema");
@@ -88,6 +209,28 @@ if (skjema) {
   if (lagret && lagret.bekreftet) {
     slettPamelding();
     lagret = null;
+  }
+
+  //Kurset man melder seg på (fra ?kurs= i adressen, eller fra påmeldingen hvis man kom tilbake)
+  const kursId = hentKursId(lagret && lagret.kursId);
+  const kurs = KURS[kursId];
+  fyllKurs(kurs);
+  document.title = "Påmelding: " + kurs.tittel + " – Østfold Husflidslag";
+  document.getElementById("brodsmule-kurs").href = "kurs-detalj.html?id=" + kursId;
+  prisboks.dataset.medlem = kurs.medlemspris.toLocaleString("nb-NO") + " kr";
+  prisboks.dataset.ordinaer = kurs.ordinaerpris.toLocaleString("nb-NO") + " kr";
+
+  //Venteliste når kurset er fullt, eller når merket står i adressen
+  const erVenteliste = kurs.ledige === 0 ||
+    new URLSearchParams(window.location.search).get("venteliste") === "ja" ||
+    Boolean(lagret && lagret.venteliste);
+
+  if (erVenteliste) {
+    document.getElementById("pamelding-tittel").textContent = "Sett deg på venteliste";
+    document.getElementById("pamelding-ingress").textContent =
+      "Kurset er fullt. Fyll ut skjemaet for å stå på ventelisten. Når noen melder seg av, får førstemann på ventelisten plassen og beskjed på e-post.";
+    document.getElementById("venteliste-pris").hidden = false;
+    document.title = "Venteliste: " + kurs.tittel + " – Østfold Husflidslag";
   }
   if (lagret) {
     ["fornavn", "etternavn", "epost", "telefon", "fodselsar", "medlemsnummer", "kommentar"].forEach(function (navn) {
@@ -135,6 +278,8 @@ if (skjema) {
     //Lagre opplysningene til neste side
     const data = Object.fromEntries(new FormData(skjema));
     data.pris = dinPris.textContent;
+    data.venteliste = erVenteliste;
+    data.kursId = kursId;
     lagrePamelding(data);
 
     window.location.href = skjema.getAttribute("action");
@@ -166,6 +311,17 @@ if (bekreftSkjema) {
     bekreftSkjema.querySelectorAll("[data-felt]").forEach(function (felt) {
       felt.textContent = felter[felt.dataset.felt] || "–";
     });
+
+    //Kurset personen melder seg på
+    fyllKurs(KURS[pamelding.kursId] || KURS[1]);
+    document.querySelector("#tilbake a").href = "pamelding.html?kurs=" + (pamelding.kursId || 1);
+
+    //Venteliste: si nøyaktig hva knappen gjør
+    if (pamelding.venteliste) {
+      document.getElementById("bekreft-tittel").textContent = "Bekreft plass på ventelisten";
+      document.getElementById("bekreft-knapp").textContent = "Sett meg på venteliste";
+      document.title = "Bekreft venteliste – Østfold Husflidslag";
+    }
   }
 
   //Bekreft og gå videre til "Du er påmeldt"
@@ -187,61 +343,26 @@ if (pameldt) {
   const pamelding = hentPamelding();
 
   if (pamelding && pamelding.bekreftet) {
-    //Vis e-posten som bekreftelsen sendes til
+    //Vis e-posten personen meldte seg på med (textContent, ikke innerHTML, fordi brukeren har skrevet den)
     document.getElementById("pameldt-epost").textContent = pamelding.epost;
+
+    //Kurset personen meldte seg på
+    const kurs = KURS[pamelding.kursId] || KURS[1];
+    fyllKurs(kurs);
+    document.getElementById("pameldt-melding").textContent = "Påmeldingen til " + kurs.tittel + " er registrert";
+
+    //Venteliste: hun har ikke plass ennå, og det må stå tydelig
+    if (pamelding.venteliste) {
+      document.getElementById("pameldt-tittel").textContent = "Du står på venteliste";
+      document.getElementById("pameldt-melding").textContent =
+        "Kurset " + kurs.tittel + " er fullt. Du står på ventelisten. Når noen melder seg av, får førstemann på ventelisten plassen og beskjed på e-post. Du er registrert";
+      document.title = "Du står på venteliste – Østfold Husflidslag";
+    }
   } else {
     //Ingen bekreftet påmelding: vis melding i stedet
     pameldt.hidden = true;
     document.getElementById("ingen-pamelding").hidden = false;
   }
-}
-
-//KONTAKTSKJEMA
-//Kjører bare på kontakt.html
-const kontaktSkjema = document.getElementById("kontakt-skjema");
-
-if (kontaktSkjema) {
-  const kontaktFeil = document.getElementById("kontakt-feil");
-  const kontaktTakk = document.getElementById("kontakt-takk");
-
-  //Fjern rød ramme når feltet blir riktig
-  kontaktSkjema.addEventListener("input", function (hendelse) {
-    if (hendelse.target.checkValidity()) {
-      hendelse.target.removeAttribute("aria-invalid");
-    }
-  });
-
-  //Sjekk skjemaet og vis takk
-  kontaktSkjema.addEventListener("submit", function (hendelse) {
-    hendelse.preventDefault();
-
-    const ugyldige = Array.from(kontaktSkjema.elements).filter(function (felt) {
-      return felt.willValidate && !felt.checkValidity();
-    });
-
-    kontaktSkjema.querySelectorAll("[aria-invalid]").forEach(function (felt) {
-      felt.removeAttribute("aria-invalid");
-    });
-
-    if (ugyldige.length > 0) {
-      ugyldige.forEach(function (felt) {
-        felt.setAttribute("aria-invalid", "true");
-      });
-      kontaktFeil.textContent = "Fyll ut navn, en gyldig e-post og en melding.";
-      kontaktFeil.hidden = false;
-      ugyldige[0].focus();
-      return;
-    }
-
-    //Meldingen sendes ikke noe sted ennå. Det kommer med backend.
-    const navn = document.getElementById("kontakt-navn").value.trim();
-    const epost = document.getElementById("kontakt-epost").value.trim();
-
-    kontaktTakk.textContent = "Takk, " + navn + "! Vi har mottatt meldingen din og svarer til " + epost + " så snart vi kan.";
-    kontaktSkjema.hidden = true;
-    kontaktTakk.hidden = false;
-    kontaktTakk.focus();
-  });
 }
 
 //NYHETSARTIKKEL

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="bilder/favicon.png">
   <title>Påmelding: Bunadssøm for nybegynnere – Østfold Husflidslag</title>
   <meta name="description" content="Meld deg på kurs hos Østfold Husflidslag.">
   <link rel="stylesheet" href="style.css">
@@ -12,10 +12,13 @@
 </head>
 <body>
 
+  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
+  <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
+
   <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
-      <img src="hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+      <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
     </a>
 
     <nav class="hovedmeny" aria-label="Hovedmeny">
@@ -31,13 +34,8 @@
     <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
-<<<<<<< HEAD
-        <li><a href="bli-medlem.html" class="knapp-medlem">Bli medlem</a></li>
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
 
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
@@ -67,12 +65,8 @@
         <li><a href="aktuelt.html">Aktuelt</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
         <li><a href="kontakt.html">Kontakt oss</a></li>
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-<<<<<<< HEAD
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
         <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
@@ -88,14 +82,14 @@
     </nav>
   </header>
 
-  <main class="side side-smal" id="pameldingsside">
+  <main class="side side-smal" id="hovedinnhold" tabindex="-1">
 
     <!--BRØDSMULESTI-->
     <nav class="brodsmuler" aria-label="Brødsmulesti">
       <ol>
         <li><a href="index.html">Hjem</a></li>
         <li><a href="kurs.html">Kurs og aktiviteter</a></li>
-        <li><a href="kurs-detalj.html?id=1">Bunadssøm for nybegynnere</a></li>
+        <li><a href="kurs-detalj.html?id=1" id="brodsmule-kurs" data-kurs="tittel">Bunadssøm for nybegynnere</a></li>
         <li><a href="pamelding.html" aria-current="page">Påmelding</a></li>
       </ol>
     </nav>
@@ -104,7 +98,7 @@
     <section class="pameldingsskjema" aria-labelledby="pamelding-tittel">
       <header class="sidetopp">
         <h1 id="pamelding-tittel">Meld deg på kurs</h1>
-        <p>Fyll ut skjemaet. På neste side ser du over opplysningene før du bekrefter.</p>
+        <p id="pamelding-ingress">Fyll ut skjemaet. På neste side ser du over opplysningene før du bekrefter.</p>
       </header>
 
       <!--Skjemaet sender deg videre til bekreft.html (se script.js)-->
@@ -169,20 +163,20 @@
     <!--KURSET DU MELDER DEG PÅ-->
     <aside class="kurs-oppsummering" aria-labelledby="oppsummering-tittel">
       <h2 id="oppsummering-tittel">Du melder deg på</h2>
-      <p class="kurs-tema">Bunad</p>
-      <h3>Bunadssøm for nybegynnere</h3>
+      <p class="kurs-tema" data-kurs="tema">Bunad</p>
+      <h3 data-kurs="tittel">Bunadssøm for nybegynnere</h3>
 
       <dl class="info-list">
         <dt>Dato</dt>
-        <dd><time datetime="2024-09-20T18:00">20. september 2024, kl. 18:00–21:00</time></dd>
+        <dd><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time>, kl. <span data-kurs="tid">18:00–21:00</span></dd>
         <dt>Varighet</dt>
-        <dd>8 kvelder</dd>
+        <dd data-kurs="varighet">8 kvelder</dd>
         <dt>Sted</dt>
-        <dd>Fredrikstad Husflidssenter, Nygårdsgt. 14</dd>
+        <dd data-kurs="sted">Fredrikstad Husflidssenter, Nygårdsgt. 14</dd>
         <dt>Lokallag</dt>
-        <dd>Fredrikstad Husflidslag</dd>
+        <dd data-kurs="lagnavn">Fredrikstad Husflidslag</dd>
         <dt>Ledige plasser</dt>
-        <dd>3 av 8</dd>
+        <dd data-kurs="plasser">3 av 8</dd>
       </dl>
 
       <!--Prisen endres når man velger medlem eller ikke (data-medlem og data-ordinaer brukes av script.js)-->
@@ -190,6 +184,8 @@
         <span>Din pris</span>
         <strong id="din-pris">Velg medlemskap</strong>
       </p>
+      <!--Vises bare ved venteliste-->
+      <p class="venteliste-info" id="venteliste-pris" hidden>Du betaler bare hvis du får plass.</p>
     </aside>
 
   </main>
@@ -213,6 +209,7 @@
         <li><a href="kontakt.html">Kontakt oss</a></li>
         <li><a href="faq.html">Ofte stilte spørsmål</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="minside/admin.html">Logg inn for lokallag</a></li>
       </ul>
     </nav>
 
@@ -226,7 +223,7 @@
       </address>
     </section>
 
-    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+    <p class="copyright"><small>© 2026 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
   </footer>
 
 </body>

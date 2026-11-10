@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="bilder/favicon.png">
   <title>Østfold Husflidslag</title>
   <meta name="description" content="Kurs, aktiviteter og nyheter fra husflidslagene i Østfold.">
   <link rel="stylesheet" href="style.css">
@@ -12,10 +12,13 @@
 </head>
 <body>
 
+  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
+  <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
+
   <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
-      <img src="hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+      <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
     </a>
 
     <nav class="hovedmeny" aria-label="Hovedmeny">
@@ -31,13 +34,8 @@
     <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
-<<<<<<< HEAD
-        <li><a href="bli-medlem.html" class="knapp-medlem">Bli medlem</a></li>
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
 
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
@@ -67,12 +65,8 @@
         <li><a href="aktuelt.html">Aktuelt</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
         <li><a href="kontakt.html">Kontakt oss</a></li>
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-<<<<<<< HEAD
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
         <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
@@ -88,7 +82,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="hovedinnhold" tabindex="-1">
 
     <!--HERO-->
     <section class="hero" aria-labelledby="hero-tittel">
@@ -104,7 +98,7 @@
         <a href="aktuelt.html" class="knapp knapp-kant">Se hva som skjer</a>
       </div>
       <figure class="hero-bilde">
-        <img src="hero.jpg" width="700" height="480"
+        <img src="bilder/hero.jpg" width="700" height="480"
              alt="Tre kvinner strikker og lager håndarbeid sammen rundt et bord">
       </figure>
       <svg class="hero-bolge" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
@@ -131,7 +125,7 @@
         <li>
           <article class="kort nyhet">
             <figure>
-              <img src="nyhet-1.jpg" alt="">
+              <img src="bilder/nyhet-1.jpg" alt="">
             </figure>
             <p class="nyhet-meta"><time datetime="2024-09-02">2. september 2024</time> <span>Fredrikstad</span></p>
             <h3>Nytt bunadskurs i Fredrikstad – meld deg på nå!</h3>
@@ -142,7 +136,7 @@
         <li>
           <article class="kort nyhet">
             <figure>
-              <img src="nyhet-2.jpg" alt="">
+              <img src="bilder/nyhet-2.jpg" alt="">
             </figure>
             <p class="nyhet-meta"><time datetime="2024-09-05">5. september 2024</time> <span>Moss</span></p>
             <h3>Ledige plasser på vevkurs i Moss</h3>
@@ -153,7 +147,7 @@
         <li>
           <article class="kort nyhet">
             <figure>
-              <img src="nyhet-3.jpg" alt="">
+              <img src="bilder/nyhet-3.jpg" alt="">
             </figure>
             <p class="nyhet-meta"><time datetime="2024-08-28">28. august 2024</time> <span>Østfold</span></p>
             <h3>Høstprogrammet er klart – se alle kurs og aktiviteter</h3>
@@ -178,7 +172,7 @@
         <li>
           <article class="kort kurs">
             <figure>
-              <img src="kurs-1.jpg" alt="">
+              <img src="bilder/kurs-1.jpg" alt="">
             </figure>
             <p class="kurs-tema">Bunad</p>
             <p class="kurs-lokallag">Fredrikstad Husflidslag</p>
@@ -197,7 +191,7 @@
         <li>
           <article class="kort kurs">
             <figure>
-              <img src="kurs-2.jpg" alt="">
+              <img src="bilder/kurs-2.jpg" alt="">
             </figure>
             <p class="kurs-tema">Strikking</p>
             <p class="kurs-lokallag">Sarpsborg Husflidslag</p>
@@ -210,13 +204,13 @@
               <p class="plasser plasser-fullt">Fullt</p>
               <p class="pris"><strong>1&nbsp;200 kr</strong> for medlem</p>
             </footer>
-            <a href="kurs-detalj.html?id=2" class="knapp knapp-gra">Se kurset (fullt)<span class="skjult">: Strikk din egen genser</span></a>
+            <a href="kurs-detalj.html?id=2" class="knapp knapp-gra">Se kurset og ventelisten<span class="skjult">: Strikk din egen genser</span></a>
           </article>
         </li>
         <li>
           <article class="kort kurs">
             <figure>
-              <img src="kurs-3.jpg" alt="">
+              <img src="bilder/kurs-3.jpg" alt="">
             </figure>
             <p class="kurs-tema">Veving</p>
             <p class="kurs-lokallag">Moss Husflidslag</p>
@@ -250,7 +244,7 @@
         <li>Støtter norsk håndverkstradisjon</li>
         <li>Fellesskap med likesinnede</li>
       </ul>
-      <a href="kontakt.html" class="knapp knapp-primar">Ta kontakt for å bli medlem</a>
+      <a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp knapp-primar">Bli medlem hos Norges Husflidslag</a>
       <figure>
         <img src="https://picsum.photos/id/237/200/300"
              alt="Plassholderbilde">
@@ -300,6 +294,7 @@
         <li><a href="kontakt.html">Kontakt oss</a></li>
         <li><a href="faq.html">Ofte stilte spørsmål</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="minside/admin.html">Logg inn for lokallag</a></li>
       </ul>
     </nav>
 
@@ -313,7 +308,7 @@
       </address>
     </section>
 
-    <p class="copyright"><small>© 2026 Østfold Husflidslag.</small></p>
+    <p class="copyright"><small>© 2026 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
   </footer>
 
 </body>

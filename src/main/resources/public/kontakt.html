@@ -3,19 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="bilder/favicon.png">
   <title>Kontakt oss – Østfold Husflidslag</title>
-  <meta name="description" content="Kontaktpersoner, adresser og kontaktskjema for Østfold Husflidslag.">
+  <meta name="description" content="Kontaktpersoner og adresser for Østfold Husflidslag.">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
 
+  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
+  <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
+
   <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
-      <img src="hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+      <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
     </a>
 
     <nav class="hovedmeny" aria-label="Hovedmeny">
@@ -31,13 +34,8 @@
     <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
-<<<<<<< HEAD
-        <li><a href="bli-medlem.html" class="knapp-medlem">Bli medlem</a></li>
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
 
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
@@ -67,12 +65,8 @@
         <li><a href="aktuelt.html">Aktuelt</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
         <li><a href="kontakt.html" aria-current="page">Kontakt oss</a></li>
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-<<<<<<< HEAD
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
         <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
@@ -88,12 +82,12 @@
     </nav>
   </header>
 
-  <main class="side side-kontakt">
+  <main class="side side-kontakt" id="hovedinnhold" tabindex="-1">
 
     <!--SIDETOPP-->
     <header class="sidetopp">
       <h1>Kontakt oss</h1>
-      <p>Vi hjelper deg gjerne. Ta kontakt med oss på telefon, e-post eller besøk oss i lokalene våre. Vi svarer så snart vi kan.</p>
+      <p>Vi hjelper deg gjerne. Ring eller send e-post direkte til den som kan svare deg, eller besøk oss i lokalene våre.</p>
     </header>
 
     <!--KONTAKTPERSONER-->
@@ -106,8 +100,10 @@
             <h3>Silje Ole</h3>
             <p class="person-rolle">Sekretær og nettansvarlig</p>
             <p class="person-sted">Fredrikstad</p>
-            <a href="tel:+4790012345" class="knapp knapp-primar-kant ring">Ring: 900 12 345<span class="skjult"> (Silje Ole)</span></a>
-            <a href="mailto:silje@fredrikstad-husflid.no" class="knapp knapp-primar">Send e-post<span class="skjult"> til Silje Ole</span></a>
+            <ul class="person-kontakt">
+              <li>Tlf: <a href="tel:+4790012345">900 12 345</a></li>
+              <li>E-post: <a href="mailto:silje@fredrikstad-husflid.no">silje@fredrikstad-husflid.no</a></li>
+            </ul>
           </article>
         </li>
         <li>
@@ -116,8 +112,10 @@
             <h3>Kari Hansen</h3>
             <p class="person-rolle">Kursansvarlig</p>
             <p class="person-sted">Fredrikstad</p>
-            <a href="tel:+4791123456" class="knapp knapp-primar-kant ring">Ring: 911 23 456<span class="skjult"> (Kari Hansen)</span></a>
-            <a href="mailto:kari@fredrikstad-husflid.no" class="knapp knapp-primar">Send e-post<span class="skjult"> til Kari Hansen</span></a>
+            <ul class="person-kontakt">
+              <li>Tlf: <a href="tel:+4791123456">911 23 456</a></li>
+              <li>E-post: <a href="mailto:kari@fredrikstad-husflid.no">kari@fredrikstad-husflid.no</a></li>
+            </ul>
           </article>
         </li>
         <li>
@@ -126,8 +124,10 @@
             <h3>Bjørg Nilsen</h3>
             <p class="person-rolle">Leder</p>
             <p class="person-sted">Østfold</p>
-            <a href="tel:+4792234567" class="knapp knapp-primar-kant ring">Ring: 922 34 567<span class="skjult"> (Bjørg Nilsen)</span></a>
-            <a href="mailto:bjorg@ostfold-husflid.no" class="knapp knapp-primar">Send e-post<span class="skjult"> til Bjørg Nilsen</span></a>
+            <ul class="person-kontakt">
+              <li>Tlf: <a href="tel:+4792234567">922 34 567</a></li>
+              <li>E-post: <a href="mailto:bjorg@ostfold-husflid.no">bjorg@ostfold-husflid.no</a></li>
+            </ul>
           </article>
         </li>
         <li>
@@ -136,14 +136,16 @@
             <h3>Per Kristiansen</h3>
             <p class="person-rolle">Kasserer</p>
             <p class="person-sted">Østfold</p>
-            <a href="tel:+4793345678" class="knapp knapp-primar-kant ring">Ring: 933 45 678<span class="skjult"> (Per Kristiansen)</span></a>
-            <a href="mailto:per@ostfold-husflid.no" class="knapp knapp-primar">Send e-post<span class="skjult"> til Per Kristiansen</span></a>
+            <ul class="person-kontakt">
+              <li>Tlf: <a href="tel:+4793345678">933 45 678</a></li>
+              <li>E-post: <a href="mailto:per@ostfold-husflid.no">per@ostfold-husflid.no</a></li>
+            </ul>
           </article>
         </li>
       </ul>
     </section>
 
-    <!--FINN OSS OG SEND MELDING-->
+    <!--FINN OSS-->
     <section class="finn-oss" aria-labelledby="finn-oss-tittel">
       <h2 id="finn-oss-tittel">Finn oss</h2>
       <ul>
@@ -162,28 +164,6 @@
           </address>
         </li>
       </ul>
-    </section>
-
-    <section class="send-melding" aria-labelledby="melding-tittel">
-      <h2 id="melding-tittel">Send oss en melding</h2>
-
-      <form id="kontakt-skjema" class="skjema" novalidate>
-        <label for="kontakt-navn">Navn</label>
-        <input id="kontakt-navn" name="navn" type="text" autocomplete="name" required>
-
-        <label for="kontakt-epost">E-post</label>
-        <input id="kontakt-epost" name="epost" type="email" autocomplete="email" required>
-
-        <label for="kontakt-melding">Melding</label>
-        <textarea id="kontakt-melding" name="melding" rows="4" required></textarea>
-
-        <p class="skjema-feil" id="kontakt-feil" role="alert" hidden></p>
-
-        <button type="submit" class="knapp knapp-primar">Send melding</button>
-      </form>
-
-      <!--Vises når meldingen er sendt-->
-      <p class="kontakt-takk" id="kontakt-takk" tabindex="-1" hidden></p>
     </section>
 
     <!--SPØRSMÅL OM KURS-->
@@ -214,6 +194,7 @@
         <li><a href="kontakt.html">Kontakt oss</a></li>
         <li><a href="faq.html">Ofte stilte spørsmål</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="minside/admin.html">Logg inn for lokallag</a></li>
       </ul>
     </nav>
 
@@ -227,7 +208,7 @@
       </address>
     </section>
 
-    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+    <p class="copyright"><small>© 2026 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
   </footer>
 
 </body>

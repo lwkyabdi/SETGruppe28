@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="bilder/favicon.png">
   <title>Du er påmeldt – Østfold Husflidslag</title>
   <meta name="description" content="Påmeldingen din er registrert.">
   <link rel="stylesheet" href="style.css">
@@ -12,10 +12,13 @@
 </head>
 <body>
 
+  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
+  <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
+
   <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
-      <img src="hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+      <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
     </a>
 
     <nav class="hovedmeny" aria-label="Hovedmeny">
@@ -31,13 +34,8 @@
     <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
-<<<<<<< HEAD
-        <li><a href="bli-medlem.html" class="knapp-medlem">Bli medlem</a></li>
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
 
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
@@ -67,12 +65,8 @@
         <li><a href="aktuelt.html">Aktuelt</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
         <li><a href="kontakt.html">Kontakt oss</a></li>
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-<<<<<<< HEAD
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
         <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
@@ -88,22 +82,24 @@
     </nav>
   </header>
 
-  <main class="side side-bekreft">
+  <main class="side side-bekreft" id="hovedinnhold" tabindex="-1">
 
     <!--DU ER PÅMELDT-->
     <section class="pameldt" id="pameldt" aria-labelledby="pameldt-tittel">
-      <p class="pameldt-ikon" aria-hidden="true">✅</p>
+      <svg class="pameldt-ikon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 12.5l5 5L20 6.5"></path>
+      </svg>
       <h1 id="pameldt-tittel">Du er påmeldt!</h1>
       <p class="pameldt-tekst">
-        Påmeldingen til Bunadssøm for nybegynnere er registrert.
-        En bekreftelse sendes til <span id="pameldt-epost">e-posten din</span>.
+        <span id="pameldt-melding">Påmeldingen til Bunadssøm for nybegynnere er registrert</span>
+        med e-postadressen <span id="pameldt-epost">du oppga</span>.
       </p>
 
       <!--Kurset du er påmeldt-->
       <article class="pameldt-kurs" aria-labelledby="pameldt-kurs">
-        <h2 id="pameldt-kurs">Bunadssøm for nybegynnere</h2>
-        <p><time datetime="2024-09-20T18:00">20. september 2024</time> · 18:00–21:00</p>
-        <p>Fredrikstad Husflidslag · Fredrikstad Husflidssenter, Nygårdsgt. 14</p>
+        <h2 id="pameldt-kurs" data-kurs="tittel">Bunadssøm for nybegynnere</h2>
+        <p><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time> · <span data-kurs="tid">18:00–21:00</span></p>
+        <p><span data-kurs="lagnavn">Fredrikstad Husflidslag</span> · <span data-kurs="sted">Fredrikstad Husflidssenter, Nygårdsgt. 14</span></p>
       </article>
 
       <!--Videre herfra-->
@@ -141,6 +137,7 @@
         <li><a href="kontakt.html">Kontakt oss</a></li>
         <li><a href="faq.html">Ofte stilte spørsmål</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="minside/admin.html">Logg inn for lokallag</a></li>
       </ul>
     </nav>
 
@@ -154,7 +151,7 @@
       </address>
     </section>
 
-    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+    <p class="copyright"><small>© 2026 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
   </footer>
 
 </body>

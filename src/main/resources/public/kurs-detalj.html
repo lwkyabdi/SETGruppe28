@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="bilder/favicon.png">
   <title>Bunadssøm for nybegynnere – Østfold Husflidslag</title>
   <meta name="description" content="Lær å sy din egen bunad fra bunnen av. Kurs hos Fredrikstad Husflidslag.">
   <link rel="stylesheet" href="style.css">
@@ -12,10 +12,13 @@
 </head>
 <body>
 
+  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
+  <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
+
   <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
-      <img src="hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+      <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
     </a>
 
     <nav class="hovedmeny" aria-label="Hovedmeny">
@@ -31,13 +34,8 @@
     <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
-<<<<<<< HEAD
-        <li><a href="bli-medlem.html" class="knapp-medlem">Bli medlem</a></li>
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
 
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
@@ -67,12 +65,8 @@
         <li><a href="aktuelt.html">Aktuelt</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
         <li><a href="kontakt.html">Kontakt oss</a></li>
-        <li><a href="bli-medlem.html">Bli medlem</a></li>
-<<<<<<< HEAD
-        <li><a href="adminside/admin.html">Min side</a></li>
-=======
-        <li><a href="admin.html">Min side</a></li>
->>>>>>> 48710c634eef3e8d0e4e4eab2bb63928c2a02501
+        <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/">Bli medlem</a></li>
+        <li><a href="https://husflid.no/medlemssider/">Min side</a></li>
       </ul>
       <form class="finn-kurs" action="kurs.html" method="get" role="search">
         <label for="lokallag-mobil" class="skjult">Velg lokallag</label>
@@ -88,14 +82,14 @@
     </nav>
   </header>
 
-  <main class="side side-smal">
+  <main class="side side-smal" id="hovedinnhold" tabindex="-1">
 
     <!--BRØDSMULESTI-->
     <nav class="brodsmuler" aria-label="Brødsmulesti">
       <ol>
         <li><a href="index.html">Hjem</a></li>
         <li><a href="kurs.html">Kurs og aktiviteter</a></li>
-        <li><a href="kurs-detalj.html?id=1" aria-current="page">Bunadssøm for nybegynnere</a></li>
+        <li><a href="kurs-detalj.html?id=1" aria-current="page" data-kurs="tittel">Bunadssøm for nybegynnere</a></li>
       </ol>
     </nav>
 
@@ -103,40 +97,55 @@
     <article class="kursdetalj" aria-labelledby="kurs-tittel">
       <figure class="kursdetalj-bilde">
         <img src="https://picsum.photos/id/237/200/300" alt="Plassholderbilde">
+        <!--Merke over bildet når kurset er fullt-->
+        <figcaption class="fullt-merke" hidden>Fullt – venteliste</figcaption>
       </figure>
 
       <p class="kursdetalj-merker">
-        <span class="kurs-tema">Bunad</span>
-        Fredrikstad Husflidslag
+        <span class="kurs-tema" data-kurs="tema">Bunad</span>
+        <span data-kurs="lagnavn">Fredrikstad Husflidslag</span>
+        <span class="fullt-etikett" hidden>Fullt</span>
       </p>
 
-      <h1 id="kurs-tittel">Bunadssøm for nybegynnere</h1>
+      <h1 id="kurs-tittel" data-kurs="tittel">Bunadssøm for nybegynnere</h1>
 
       <!--Fakta om kurset-->
       <dl class="fakta">
         <dt class="startdato">Startdato</dt>
-        <dd><time datetime="2024-09-20">20. september 2024</time></dd>
+        <dd><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time></dd>
 
         <dt class="tidspunkt">Tidspunkt</dt>
-        <dd>18:00–21:00</dd>
+        <dd data-kurs="tid">18:00–21:00</dd>
 
         <dt class="varighet">Varighet</dt>
-        <dd>8 kvelder</dd>
+        <dd data-kurs="varighet">8 kvelder</dd>
 
         <dt class="sted">Sted</dt>
-        <dd>Fredrikstad Husflidssenter, Nygårdsgt. 14</dd>
+        <dd data-kurs="sted">Fredrikstad Husflidssenter, Nygårdsgt. 14</dd>
 
         <dt class="kursleder">Kursleder</dt>
-        <dd>Marit Andersen</dd>
+        <dd data-kurs="kursleder">Marit Andersen</dd>
 
         <dt class="plasser-fakta">Plasser</dt>
-        <dd>3 av 8 ledige</dd>
+        <dd data-kurs="plasserLedige">3 av 8 ledige</dd>
       </dl>
+
+      <!--Kontaktperson: den som har hovedansvaret for kurset-->
+      <section class="kurs-kontakt" aria-labelledby="kontakt-tittel">
+        <h2 id="kontakt-tittel">Kontaktperson</h2>
+        <img src="https://picsum.photos/id/237/200/300" alt="" width="64" height="64">
+        <p class="kurs-kontakt-navn">Kari Hansen</p>
+        <p class="kurs-kontakt-rolle">Kursansvarlig, Fredrikstad Husflidslag</p>
+        <ul>
+          <li><a href="tel:+4791123456">911 23 456<span class="skjult"> (ring Kari Hansen)</span></a></li>
+          <li><a href="mailto:kari@fredrikstad-husflid.no">kari@fredrikstad-husflid.no</a></li>
+        </ul>
+      </section>
 
       <!--Om kurset-->
       <section class="om-kurset" aria-labelledby="om-tittel">
         <h2 id="om-tittel">Om kurset</h2>
-        <p>
+        <p data-kurs="beskrivelse">
           Lær å sy din egen bunad fra bunnen av. Kurset passer deg som aldri har sydd bunad før.
           Vi går gjennom alt fra valg av stoff til ferdig plagg. Du vil lære tradisjonelle syteknikker
           og bli kjent med bunadens kulturhistorie i Østfold.
@@ -146,7 +155,7 @@
       <!--Hva du bør ta med-->
       <section class="ta-med" aria-labelledby="ta-med-tittel">
         <h2 id="ta-med-tittel">Hva du bør ta med</h2>
-        <p>Symaskin hvis du har, stoff og tråd. Se full liste i e-post ved påmelding.</p>
+        <p data-kurs="utstyr">Symaskin hvis du har, stoff og tråd.</p>
       </section>
 
       <!--Andre kurs-->
@@ -172,40 +181,61 @@
     </article>
 
     <!--PÅMELDING-->
+    <!--Fylles inn av script.js ut fra ?id= i adressen. Kommer fra backend senere.-->
     <aside class="pamelding" aria-label="Påmelding">
+      <!--Vises bare når kurset er fullt-->
+      <p class="fullt-banner" hidden>
+        <strong>Kurset er fullt</strong>
+        <span>Alle plassene er tatt, men du kan stå på venteliste.</span>
+      </p>
+
       <p class="ledige">
         <label for="ledige-plasser">Ledige plasser</label>
-        <span>3 av 8</span>
+        <span data-kurs="plasser">3 av 8</span>
       </p>
       <meter id="ledige-plasser" min="0" max="8" low="3" high="5" optimum="8" value="3">3 av 8</meter>
 
       <!--Kort info om kurset-->
       <dl class="info-list">
         <dt>Dato</dt>
-        <dd><time datetime="2024-09-20T18:00">20. september kl. 18–21</time></dd>
+        <dd><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time></dd>
+        <dt>Tid</dt>
+        <dd data-kurs="tid">18:00–21:00</dd>
         <dt>Sted</dt>
-        <dd>Husflidssenteret, Fredrikstad</dd>
+        <dd data-kurs="lagnavn">Fredrikstad Husflidslag</dd>
         <dt>Målgruppe</dt>
-        <dd>Voksne</dd>
+        <dd data-kurs="malgruppe">Voksne</dd>
         <dt>Nivå</dt>
-        <dd>Nybegynner</dd>
-        <dt>Medlemspris</dt>
-        <dd>1&nbsp;500 kr</dd>
-        <dt>Pris ikke-medlem</dt>
-        <dd>2&nbsp;000 kr</dd>
-        <dt>Utstyr</dt>
-        <dd>Symaskin hvis du har</dd>
+        <dd data-kurs="niva">Nybegynner</dd>
       </dl>
 
       <!--Pris-->
       <dl class="priser">
         <dt>Medlemspris</dt>
-        <dd>1&nbsp;500 kr</dd>
+        <dd data-kurs="medlemspris">1&nbsp;500 kr</dd>
         <dt>Ikke-medlem</dt>
-        <dd>2&nbsp;000 kr</dd>
+        <dd data-kurs="ordinaerpris">2&nbsp;000 kr</dd>
       </dl>
 
-      <a href="pamelding.html?kurs=1" class="knapp knapp-primar knapp-stor">Meld deg på</a>
+      <!--Vises bare når kurset er fullt: slik fungerer ventelisten-->
+      <section class="venteliste-steg" id="venteliste-info" aria-labelledby="venteliste-tittel" hidden>
+        <h2 id="venteliste-tittel">Slik fungerer ventelisten</h2>
+        <ol>
+          <li>Du setter deg på ventelisten. Det er gratis.</li>
+          <li>Når noen melder seg av, får førstemann på ventelisten plassen og beskjed på e-post.</li>
+          <li>Du betaler bare hvis du får plass.</li>
+        </ol>
+      </section>
+
+      <!--Blir til «Sett meg på venteliste» når kurset er fullt (script.js)-->
+      <a href="pamelding.html?kurs=1" class="knapp knapp-primar knapp-stor" id="meld-pa-knapp">Meld deg på</a>
+
+      <!--Vises bare når kurset er fullt: kurs med ledige plasser (fylles inn av script.js)-->
+      <section class="ledige-alternativ" id="ledige-alternativ" aria-labelledby="alternativ-tittel" hidden>
+        <h2 id="alternativ-tittel">Vil du heller ha plass nå?</h2>
+        <p>Disse kursene har ledige plasser:</p>
+        <ul id="alternativ-liste"></ul>
+      </section>
 
       <footer>
         <p>Spørsmål om kurset?</p>
@@ -234,6 +264,7 @@
         <li><a href="kontakt.html">Kontakt oss</a></li>
         <li><a href="faq.html">Ofte stilte spørsmål</a></li>
         <li><a href="om-oss.html">Om oss</a></li>
+        <li><a href="minside/admin.html">Logg inn for lokallag</a></li>
       </ul>
     </nav>
 
@@ -247,7 +278,7 @@
       </address>
     </section>
 
-    <p class="copyright"><small>© 2024 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
+    <p class="copyright"><small>© 2026 Østfold Husflidslag. Alle rettigheter forbeholdt.</small></p>
   </footer>
 
 </body>
