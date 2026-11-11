@@ -25,6 +25,7 @@ import no.hiof.gruppe28.repository.DemoKursRepository;
 import no.hiof.gruppe28.repository.DemoLokallagRepository;
 import no.hiof.gruppe28.repository.DemoPameldingRepository;
 import no.hiof.gruppe28.repository.JdbcAdminKursRepository;
+import no.hiof.gruppe28.repository.JdbcAdminArtikkelRepository;
 import no.hiof.gruppe28.repository.JdbcAdminPameldingRepository;
 import no.hiof.gruppe28.repository.JdbcAdministratorRepository;
 import no.hiof.gruppe28.repository.JdbcArtikkelRepository;
@@ -117,9 +118,7 @@ public class Application {
 
         var adminKursService = new AdminKursService(new JdbcAdminKursRepository(database));
 
-        // Byttes til new AdminNyhetService(new JdbcAdminArtikkelRepository(database), clock)
-        // når Taulant har laget JdbcAdminArtikkelRepository.
-        AdminNyhetService adminNyhetService = null;
+        var adminNyhetService = new AdminNyhetService(new JdbcAdminArtikkelRepository(database), clock);
 
         // Opplastede bilder lagres i mappen opplastinger/ og vises på /opplastinger/...
         var bildeService = new BildeService(Path.of("opplastinger"), "/opplastinger");
@@ -225,6 +224,13 @@ public class Application {
         return Javalin.create(config -> {
             config.staticFiles.add("/public", Location.CLASSPATH);
             config.staticFiles.enableWebjars();
+
+            config.routes.after("/api/*", ctx -> {
+                String type = ctx.res().getContentType();
+                if (type != null && type.startsWith("application/json")) {
+                    ctx.header("Content-Type", "application/json; charset=utf-8");
+                }
+            });
 
             // Opplastede bilder vises fra en egen mappe utenfor koden
             if (bildeService != null) {

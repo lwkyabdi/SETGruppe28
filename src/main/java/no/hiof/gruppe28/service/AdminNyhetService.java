@@ -67,11 +67,11 @@ public class AdminNyhetService {
         }
 
         return new ArtikkelData(
-            tekst(s.tittel(), "Tittel", 200),
+            tekst(s.tittel(), "Tittel", 180),
             tekst(s.ingress(), "Ingress", 500),
             tekst(s.innhold(), "Innhold", 20000),
-            valgfri(s.bildesti(), "Bildesti", 300),
-            valgfri(s.bildealt(), "Bildetekst", 300),
+            valgfri(s.bildesti(), "Bildesti", 255),
+            valgfri(s.bildealt(), "Bildetekst", 180),
             riktigLag(bruker, s.lokallagId()),
             status,
             publiseringstid(s.dato(), status, tidligereTid)
