@@ -78,24 +78,24 @@ public class AdminKursService {
         }
 
         return new KursData(
-            tekst(s.tittel(), "Tittel", 200),
+            tekst(s.tittel(), "Tittel", 180),
             tekst(s.beskrivelse(), "Beskrivelse", 5000),
             dato,
-            tekst(s.tidspunkt(), "Tidspunkt", 100),
-            tekst(s.varighet(), "Varighet", 100),
-            tekst(s.sted(), "Sted", 200),
+            tekst(s.tidspunkt(), "Tidspunkt", 60),
+            tekst(s.varighet(), "Varighet", 80),
+            tekst(s.sted(), "Sted", 180),
             riktigLag(bruker, s.lokallagId()),
-            tekst(s.tema(), "Tema", 100),
+            tekst(s.tema(), "Tema", 60),
             tekst(s.malgruppe(), "Målgruppe", 100),
-            tekst(s.niva(), "Nivå", 100),
+            tekst(s.niva(), "Nivå", 60),
             tekst(s.utstyr(), "Utstyr", 2000),
             pris(s.medlemspris(), "Medlemspris"),
             pris(s.ordinaerpris(), "Ordinær pris"),
             s.kapasitet(),
             status,
             s.kontaktId(),
-            valgfri(s.bildesti(), "Bildesti", 300),
-            valgfri(s.bildealt(), "Bildetekst", 300)
+            valgfri(s.bildesti(), "Bildesti", 255),
+            valgfri(s.bildealt(), "Bildetekst", 180)
         );
     }
 
@@ -146,7 +146,11 @@ public class AdminKursService {
         if (verdi == null || verdi.signum() < 0) {
             throw new ApiException(400, navn + " må fylles ut og kan ikke være negativ.");
         }
-        return verdi;
+        if (verdi.compareTo(new BigDecimal("99999999.99")) > 0
+                || verdi.stripTrailingZeros().scale() > 2) {
+            throw new ApiException(400, navn + " kan ha maks to desimaler og være høyst 99999999,99.");
+        }
+        return verdi.setScale(2);
     }
 
     // ADMIN ser alle lag (null). LOKALLAG ser bare sitt eget.
