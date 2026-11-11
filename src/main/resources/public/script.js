@@ -495,87 +495,7 @@ function fyllKvittering(kvittering) {
 const artikkel = document.getElementById("artikkel");
 
 if (artikkel) {
-  const nyheter = [
-    {
-      id: 1,
-      dato: "2024-09-02",
-      datoTekst: "2. september 2024",
-      lokallag: "Fredrikstad Husflidslag",
-      tittel: "Nytt bunadskurs i Fredrikstad – meld deg på nå!",
-      ingress: "Vi åpner nå påmelding til høstens bunadskurs i Fredrikstad. Det er kun 8 plasser, og de fylles raskt.",
-      tekst: [
-        "Vi er glade for å melde at Fredrikstad Husflidslag setter opp nytt bunadskurs til høsten. Kurset starter 20. september og går over 8 tirsdagskvelder.",
-        "Kursleder er den erfarne Marit Andersen, som har over 20 år med bunadssøm bak seg. Hun tar imot alle nivåer og har stor tålmodighet med nybegynnere.",
-        "Dette er en ypperlig mulighet til å lære en gammel håndverkstradisjon i et hyggelig miljø. Mange av deltakerne fra tidligere kurs fremhever de sosiale sidene som noe av det beste med å delta.",
-        "Meld deg på så snart som mulig – det er allerede 5 av 8 plasser tatt."
-      ]
-    },
-    {
-      id: 2,
-      dato: "2024-09-05",
-      datoTekst: "5. september 2024",
-      lokallag: "Moss Husflidslag",
-      tittel: "Ledige plasser på vevkurs i Moss",
-      ingress: "Det er fortsatt ledige plasser på høstens vevkurs i Moss. Et flott kurs for deg som vil lære tradisjonell båndbinding.",
-      tekst: [
-        "Moss Husflidslag arrangerer grunnkurs i båndveving 5. og 6. oktober. Kurset passer for nybegynnere, og alt utstyr finnes i vevstudioet vårt.",
-        "Du lærer å sette opp en båndvev, velge garn og veve enkle mønstre. Etter to dager har du et ferdig bånd med deg hjem.",
-        "Det er 6 ledige plasser igjen. Meld deg på via kurssiden."
-      ]
-    },
-    {
-      id: 3,
-      dato: "2024-08-28",
-      datoTekst: "28. august 2024",
-      lokallag: "Østfold Husflidslag",
-      tittel: "Høstprogrammet er klart – se alle kurs og aktiviteter",
-      ingress: "Vi har satt opp et rikt høstprogram med kurs innen strikking, veving, søm, broderi, bunad og trearbeid.",
-      tekst: [
-        "Høstens program er nå publisert, og lokallagene i hele Østfold har satt opp kurs for både nybegynnere og erfarne håndverkere.",
-        "Nytt i år er flere helgekurs og et eget kurs i tradisjonell treskjæring i Fredrikstad.",
-        "Du kan delta på kurs i alle lokallag, uansett hvor du bor. Se hele oversikten under Kurs og aktiviteter."
-      ]
-    },
-    {
-      id: 4,
-      dato: "2024-08-20",
-      datoTekst: "20. august 2024",
-      lokallag: "Fredrikstad Husflidslag",
-      tittel: "Velkommen til medlemskveld i september",
-      ingress: "Alle medlemmer inviteres til en hyggelig sammenkomst hos Fredrikstad Husflidslag 14. september.",
-      tekst: [
-        "Vi samles i lokalene våre i Nygårdsgata 14 lørdag 14. september klokken 18.",
-        "Det blir kaffe og kake, en kort gjennomgang av høstens kurs og god tid til å vise frem det du har laget.",
-        "Ta gjerne med en venn som er nysgjerrig på husflid. Alle er velkomne."
-      ]
-    }
-  ];
-
-  const id = Number(new URLSearchParams(window.location.search).get("id")) || 1;
-  const nyhet = nyheter.find(function (n) { return n.id === id; });
-
-  if (nyhet) {
-    document.title = nyhet.tittel + " – Østfold Husflidslag";
-    document.getElementById("artikkel-tittel").textContent = nyhet.tittel;
-    document.getElementById("artikkel-ingress").textContent = nyhet.ingress;
-    document.getElementById("artikkel-lokallag").textContent = nyhet.lokallag;
-
-    const dato = document.getElementById("artikkel-dato");
-    dato.textContent = nyhet.datoTekst;
-    dato.setAttribute("datetime", nyhet.dato);
-
-    const brodsmule = document.getElementById("brodsmule-tittel");
-    brodsmule.textContent = nyhet.tittel;
-    brodsmule.href = "nyhet.html?id=" + nyhet.id;
-
-    const tekst = document.getElementById("artikkel-tekst");
-    tekst.replaceChildren();
-    nyhet.tekst.forEach(function (avsnitt) {
-      const p = document.createElement("p");
-      p.textContent = avsnitt;
-      tekst.append(p);
-    });
-  }
+  visNyhet();
 
   const delFacebook = document.getElementById("del-facebook");
   delFacebook.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href);
@@ -914,3 +834,133 @@ async function visKurs() {
 }
 
 visKurs();
+
+function lagNyhetskort(n) {
+  const kort = document.createElement("article");
+  kort.className = "kort nyhet";
+
+  const figur = document.createElement("figure");
+  const bilde = document.createElement("img");
+  bilde.src = bildeAdresse(n.bildesti) || "bilder/hero.jpg";
+  bilde.alt = n.bildealt || "";
+  figur.append(bilde);
+
+  const meta = document.createElement("p");
+  meta.className = "nyhet-meta";
+  const tid = document.createElement("time");
+  tid.dateTime = n.dato;
+  tid.textContent = n.datoTekst;
+  const lag = document.createElement("span");
+  lag.textContent = kortnavn(n.lokallag);
+  meta.append(tid, " ", lag);
+
+  const tittel = document.createElement("h3");
+  tittel.textContent = n.tittel;
+
+  const ingress = document.createElement("p");
+  ingress.textContent = n.ingress;
+
+  const lenke = document.createElement("a");
+  lenke.href = "nyhet.html?id=" + n.id;
+  lenke.className = "les-mer";
+  const skjult = document.createElement("span");
+  skjult.className = "skjult";
+  skjult.textContent = ": " + n.tittel;
+  lenke.append("Les mer", skjult);
+
+  kort.append(figur, meta, tittel, ingress, lenke);
+  const li = document.createElement("li");
+  li.append(kort);
+  return li;
+}
+
+function fyllNyhetsliste(liste, nyheter) {
+  if (nyheter.length === 0) {
+    const li = document.createElement("li");
+    const tekst = document.createElement("p");
+    tekst.textContent = "Det er ingen nyheter ennå.";
+    li.append(tekst);
+    liste.replaceChildren(li);
+    return;
+  }
+  liste.replaceChildren(...nyheter.map(lagNyhetskort));
+}
+
+async function visNyheter() {
+  const aktuelt = document.querySelector("ul.nyhetsliste");
+  const forsideTittel = document.getElementById("nytt-tittel");
+  const forsideliste = forsideTittel ? forsideTittel.closest("section").querySelector(".kortliste") : null;
+  if (!aktuelt && !forsideliste) return;
+
+  let nyheter;
+  try {
+    nyheter = await hentJson("/api/nyheter");
+  } catch (feil) {
+    console.error(feil);
+    return;
+  }
+
+  if (aktuelt) fyllNyhetsliste(aktuelt, nyheter);
+  if (forsideliste) fyllNyhetsliste(forsideliste, nyheter.slice(0, 3));
+}
+
+visNyheter();
+
+async function visNyhet() {
+  const id = Number(new URLSearchParams(window.location.search).get("id"));
+  let nyhet = null;
+  if (Number.isInteger(id) && id > 0) {
+    try {
+      nyhet = await hentJson("/api/nyheter/" + id);
+    } catch (feil) {
+      console.error(feil);
+    }
+  }
+
+  if (!nyhet) {
+    const main = document.querySelector("main");
+    const tittel = document.createElement("h1");
+    tittel.textContent = "Vi fant ikke nyheten";
+    const tekst = document.createElement("p");
+    tekst.textContent = "Nyheten finnes ikke, eller den er ikke publisert.";
+    const lenke = document.createElement("a");
+    lenke.href = "aktuelt.html";
+    lenke.className = "knapp knapp-primar";
+    lenke.textContent = "Se alle nyheter";
+    main.replaceChildren(tittel, tekst, lenke);
+    document.title = "Fant ikke nyheten – Østfold Husflidslag";
+    return;
+  }
+
+  document.title = nyhet.tittel + " – Østfold Husflidslag";
+  document.getElementById("artikkel-tittel").textContent = nyhet.tittel;
+  document.getElementById("artikkel-ingress").textContent = nyhet.ingress;
+  document.getElementById("artikkel-lokallag").textContent = nyhet.lokallag;
+
+  const dato = document.getElementById("artikkel-dato");
+  dato.textContent = nyhet.datoTekst;
+  dato.setAttribute("datetime", nyhet.dato);
+
+  const brodsmule = document.getElementById("brodsmule-tittel");
+  brodsmule.textContent = nyhet.tittel;
+  brodsmule.href = "nyhet.html?id=" + nyhet.id;
+
+  const bilde = document.querySelector(".artikkel-bilde img");
+  if (bilde) {
+    if (nyhet.bildesti) {
+      bilde.src = bildeAdresse(nyhet.bildesti);
+      bilde.alt = nyhet.bildealt || "";
+    } else {
+      bilde.closest("figure").hidden = true;
+    }
+  }
+
+  const tekst = document.getElementById("artikkel-tekst");
+  tekst.replaceChildren();
+  (nyhet.innhold || "").split(/\n\s*\n/).forEach(function (avsnitt) {
+    if (!avsnitt.trim()) return;
+    const p = document.createElement("p");
+    p.textContent = avsnitt.trim();
+    tekst.append(p);
+  });
+}
