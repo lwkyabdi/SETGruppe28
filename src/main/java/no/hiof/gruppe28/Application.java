@@ -22,7 +22,13 @@ import no.hiof.gruppe28.repository.DemoKontaktpersonRepository;
 import no.hiof.gruppe28.repository.DemoKursRepository;
 import no.hiof.gruppe28.repository.DemoLokallagRepository;
 import no.hiof.gruppe28.repository.DemoPameldingRepository;
+import no.hiof.gruppe28.repository.JdbcAdminKursRepository;
+import no.hiof.gruppe28.repository.JdbcAdminPameldingRepository;
+import no.hiof.gruppe28.repository.JdbcAdministratorRepository;
+import no.hiof.gruppe28.repository.JdbcArtikkelRepository;
+import no.hiof.gruppe28.repository.JdbcKontaktpersonRepository;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
+import no.hiof.gruppe28.repository.JdbcLokallagRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.AdminKursService;
 import no.hiof.gruppe28.service.AdminPameldingService;
@@ -94,29 +100,17 @@ public class Application {
             lagEpostTjeneste()
         );
 
-        // Byttes til new NyhetService(new JdbcArtikkelRepository(database))
-        // når Taulant har laget JdbcArtikkelRepository.
-        var nyhetService = new NyhetService(new DemoArtikkelRepository());
+        var nyhetService = new NyhetService(new JdbcArtikkelRepository(database));
 
-        // Byttes til new InnloggingService(new JdbcAdministratorRepository(database))
-        // når Taulant har laget JdbcAdministratorRepository.
-        InnloggingService innloggingService = null;
+        var innloggingService = new InnloggingService(new JdbcAdministratorRepository(database));
 
-        // Byttes til new LokallagService(new JdbcLokallagRepository(database))
-        // når Taulant har laget JdbcLokallagRepository.
-        var lokallagService = new LokallagService(new DemoLokallagRepository());
+        var lokallagService = new LokallagService(new JdbcLokallagRepository(database));
 
-        // Byttes til new KontaktpersonService(new JdbcKontaktpersonRepository(database))
-        // når Taulant har laget JdbcKontaktpersonRepository.
-        var kontaktpersonService = new KontaktpersonService(new DemoKontaktpersonRepository());
+        var kontaktpersonService = new KontaktpersonService(new JdbcKontaktpersonRepository(database));
 
-        // Byttes til new AdminPameldingService(new JdbcAdminPameldingRepository(database))
-        // når Taulant har laget JdbcAdminPameldingRepository.
-        AdminPameldingService adminPameldingService = null;
+        var adminPameldingService = new AdminPameldingService(new JdbcAdminPameldingRepository(database));
 
-        // Byttes til new AdminKursService(new JdbcAdminKursRepository(database))
-        // når Taulant har laget JdbcAdminKursRepository.
-        AdminKursService adminKursService = null;
+        var adminKursService = new AdminKursService(new JdbcAdminKursRepository(database));
 
         return create(
             kursService,
