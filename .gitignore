@@ -22,6 +22,9 @@ database/backups/
 *.sql.gz
 *.dump
 
+# Bilder som lastes opp fra admin-siden
+opplastinger/
+
 # Frontend-bygg
 node_modules/
 dist/
@@ -29,4 +32,3 @@ dist/
 # Operativsystem
 .DS_Store
 Thumbs.db
-
