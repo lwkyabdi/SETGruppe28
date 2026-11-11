@@ -6,7 +6,9 @@ import io.javalin.http.staticfiles.Location;
 import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.config.EpostConfig;
 import no.hiof.gruppe28.controller.AdminKursController;
+import no.hiof.gruppe28.controller.AdminNyhetController;
 import no.hiof.gruppe28.controller.AdminPameldingController;
+import no.hiof.gruppe28.controller.BildeController;
 import no.hiof.gruppe28.controller.InnloggingController;
 import no.hiof.gruppe28.controller.KontaktpersonController;
 import no.hiof.gruppe28.controller.KursController;
@@ -31,8 +33,10 @@ import no.hiof.gruppe28.repository.JdbcKursRepository;
 import no.hiof.gruppe28.repository.JdbcLokallagRepository;
 import no.hiof.gruppe28.repository.JdbcPameldingRepository;
 import no.hiof.gruppe28.service.AdminKursService;
+import no.hiof.gruppe28.service.AdminNyhetService;
 import no.hiof.gruppe28.service.AdminPameldingService;
 import no.hiof.gruppe28.service.ApiException;
+import no.hiof.gruppe28.service.BildeService;
 import no.hiof.gruppe28.service.InnloggingService;
 import no.hiof.gruppe28.service.KontaktpersonService;
 import no.hiof.gruppe28.service.KursService;
@@ -41,6 +45,7 @@ import no.hiof.gruppe28.service.NyhetService;
 import no.hiof.gruppe28.service.PameldingService;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -112,6 +117,13 @@ public class Application {
 
         var adminKursService = new AdminKursService(new JdbcAdminKursRepository(database));
 
+        // Byttes til new AdminNyhetService(new JdbcAdminArtikkelRepository(database), clock)
+        // når Taulant har laget JdbcAdminArtikkelRepository.
+        AdminNyhetService adminNyhetService = null;
+
+        // Opplastede bilder lagres i mappen opplastinger/ og vises på /opplastinger/...
+        var bildeService = new BildeService(Path.of("opplastinger"), "/opplastinger");
+
         return create(
             kursService,
             pameldingService,
@@ -120,7 +132,9 @@ public class Application {
             lokallagService,
             kontaktpersonService,
             adminPameldingService,
-            adminKursService
+            adminKursService,
+            adminNyhetService,
+            bildeService
         );
     }
 
@@ -161,7 +175,7 @@ public class Application {
             lokallagService, kontaktpersonService, null);
     }
 
-    // Med admin for påmeldinger, uten admin for kurs.
+    // Med admin for påmeldinger.
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
@@ -175,6 +189,7 @@ public class Application {
             lokallagService, kontaktpersonService, adminPameldingService, null);
     }
 
+    // Med admin for påmeldinger og kurs.
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
@@ -185,6 +200,23 @@ public class Application {
         AdminPameldingService adminPameldingService,
         AdminKursService adminKursService
     ) {
+        return create(service, pameldingService, nyhetService, innloggingService,
+            lokallagService, kontaktpersonService, adminPameldingService, adminKursService,
+            null, null);
+    }
+
+    public static Javalin create(
+        KursService service,
+        PameldingService pameldingService,
+        NyhetService nyhetService,
+        InnloggingService innloggingService,
+        LokallagService lokallagService,
+        KontaktpersonService kontaktpersonService,
+        AdminPameldingService adminPameldingService,
+        AdminKursService adminKursService,
+        AdminNyhetService adminNyhetService,
+        BildeService bildeService
+    ) {
         var kursController = new KursController(service);
         var nyhetController = new NyhetController(nyhetService);
         var lokallagController = new LokallagController(lokallagService);
@@ -193,6 +225,15 @@ public class Application {
         return Javalin.create(config -> {
             config.staticFiles.add("/public", Location.CLASSPATH);
             config.staticFiles.enableWebjars();
+
+            // Opplastede bilder vises fra en egen mappe utenfor koden
+            if (bildeService != null) {
+                config.staticFiles.add(filer -> {
+                    filer.hostedPath = bildeService.adresse();
+                    filer.directory = bildeService.mappe().toAbsolutePath().toString();
+                    filer.location = Location.EXTERNAL;
+                });
+            }
 
             config.routes.get(
                 "/api/health",
@@ -330,6 +371,46 @@ public class Application {
                         adminKursController::slett
                     );
                 }
+
+                // Admin for nyheter: også bare bak vakten
+                if (adminNyhetService != null) {
+                    var adminNyhetController = new AdminNyhetController(adminNyhetService);
+
+                    config.routes.get(
+                        "/api/admin/nyheter",
+                        adminNyhetController::alle
+                    );
+
+                    config.routes.get(
+                        "/api/admin/nyheter/{id}",
+                        adminNyhetController::finn
+                    );
+
+                    config.routes.post(
+                        "/api/admin/nyheter",
+                        adminNyhetController::opprett
+                    );
+
+                    config.routes.put(
+                        "/api/admin/nyheter/{id}",
+                        adminNyhetController::oppdater
+                    );
+
+                    config.routes.delete(
+                        "/api/admin/nyheter/{id}",
+                        adminNyhetController::slett
+                    );
+                }
+
+                // Bildeopplasting: også bare bak vakten
+                if (bildeService != null) {
+                    var bildeController = new BildeController(bildeService);
+
+                    config.routes.post(
+                        "/api/admin/bilder",
+                        bildeController::lastOpp
+                    );
+                }
             }
 
             config.routes.exception(
@@ -395,4 +476,3 @@ public class Application {
         });
     }
 }
-
