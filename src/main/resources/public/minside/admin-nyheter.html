@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="../favicon.png">
+  <link rel="icon" href="../bilder/favicon.svg" type="image/svg+xml">
   <title>Nyheter – Administrasjon – Østfold Husflidslag</title>
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="admin.css">
@@ -12,90 +11,110 @@
 </head>
 <body class="admin" data-admin-side="nyheter">
 
-  <!--HEADER-->
-  <header class="admin-topp">
-    <a href="admin-kurs.html" class="logo">
-      <img src="../hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
-    </a>
-    <p class="admin-merke">Administrasjon</p>
-    <ul class="admin-topp-lenker">
-      <li><a href="../index.html">Se nettsiden</a></li>
-      <li><button type="button" class="logg-ut">Logg ut</button></li>
-    </ul>
+<a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
+
+<!--HEADER-->
+<header class="admin-topp">
+  <a href="admin-kurs.html" class="logo">
+    <img src="../bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+  </a>
+  <p class="admin-merke">Administrasjon</p>
+  <ul class="admin-topp-lenker">
+    <li><a href="../index.html">Se nettsiden</a></li>
+    <li><button type="button" class="logg-ut">Logg ut</button></li>
+  </ul>
+</header>
+
+<!--ADMINMENY-->
+<nav class="admin-meny" aria-label="Administrasjonsmeny">
+  <ul>
+    <li><a href="admin-kurs.html">Kurs</a></li>
+    <li><a href="admin-nyheter.html" aria-current="page">Nyheter</a></li>
+    <li><a href="admin-pameldinger.html">Påmeldinger</a></li>
+  </ul>
+</nav>
+
+<main class="admin-innhold" id="hovedinnhold" tabindex="-1">
+
+  <!--SIDETOPP-->
+  <header class="admin-sidetopp">
+    <h1>Nyheter</h1>
+    <p>Skriv og rediger nyhetene som vises under Aktuelt.</p>
+    <button type="button" class="knapp knapp-primar" id="ny-nyhet">+ Ny nyhet</button>
   </header>
 
-  <!--ADMINMENY-->
-  <nav class="admin-meny" aria-label="Administrasjonsmeny">
-    <ul>
-      <li><a href="admin-kurs.html">Kurs</a></li>
-      <li><a href="admin-nyheter.html" aria-current="page">Nyheter</a></li>
-      <li><a href="admin-pameldinger.html">Påmeldinger</a></li>
-    </ul>
-  </nav>
+  <!--NYHETSLISTE-->
+  <!--Radene fylles inn av admin.js-->
+  <section class="admin-tabell" aria-labelledby="nyhet-tabell-tittel">
+    <table>
+      <caption id="nyhet-tabell-tittel">Alle nyheter</caption>
+      <thead>
+      <tr>
+        <th scope="col">Bilde</th>
+        <th scope="col">Tittel</th>
+        <th scope="col">Dato</th>
+        <th scope="col">Lokallag</th>
+        <th scope="col"><span class="skjult">Handlinger</span></th>
+      </tr>
+      </thead>
+      <tbody id="nyhet-rader"></tbody>
+    </table>
+    <p class="admin-tom" id="nyhet-tom" hidden>Ingen nyheter ennå.</p>
+  </section>
 
-  <main class="admin-innhold">
+</main>
 
-    <!--SIDETOPP-->
-    <header class="admin-sidetopp">
-      <h1>Nyheter</h1>
-      <p>Skriv og rediger nyhetene som vises under Aktuelt.</p>
-      <button type="button" class="knapp knapp-primar" id="ny-nyhet">+ Ny nyhet</button>
-    </header>
+<!--SKJEMA FOR NYHET-->
+<dialog class="admin-dialog admin-dialog-bred" id="nyhet-dialog" aria-labelledby="nyhet-dialog-tittel">
+  <form class="skjema" id="nyhet-skjema" novalidate>
+    <h2 id="nyhet-dialog-tittel">Ny nyhet</h2>
+    <input type="hidden" name="id">
 
-    <!--NYHETSLISTE-->
-    <!--Radene fylles inn av admin.js-->
-    <section class="admin-tabell" aria-labelledby="nyhet-tabell-tittel">
-      <table>
-        <caption id="nyhet-tabell-tittel">Alle nyheter</caption>
-        <thead>
-          <tr>
-            <th scope="col">Tittel</th>
-            <th scope="col">Dato</th>
-            <th scope="col">Lokallag</th>
-            <th scope="col"><span class="skjult">Handlinger</span></th>
-          </tr>
-        </thead>
-        <tbody id="nyhet-rader"></tbody>
-      </table>
-      <p class="admin-tom" id="nyhet-tom" hidden>Ingen nyheter ennå.</p>
-    </section>
+    <label for="nyhet-tittel">Tittel</label>
+    <input id="nyhet-tittel" name="tittel" type="text" required>
 
-  </main>
+    <label for="nyhet-dato">Dato</label>
+    <input id="nyhet-dato" name="dato" type="date" required>
 
-  <!--SKJEMA FOR NYHET-->
-  <dialog class="admin-dialog" id="nyhet-dialog" aria-labelledby="nyhet-dialog-tittel">
-    <form class="skjema" id="nyhet-skjema" novalidate>
-      <h2 id="nyhet-dialog-tittel">Ny nyhet</h2>
-      <input type="hidden" name="id">
+    <label for="nyhet-lokallag">Lokallag</label>
+    <select id="nyhet-lokallag" name="lokallag" required>
+      <option value="">Velg lokallag</option>
+      <option>Østfold</option>
+      <option>Fredrikstad</option>
+      <option>Sarpsborg</option>
+      <option>Moss</option>
+      <option>Halden</option>
+      <option>Indre Østfold</option>
+    </select>
 
-      <label for="nyhet-tittel">Tittel</label>
-      <input id="nyhet-tittel" name="tittel" type="text" required>
+    <label for="nyhet-ingress">Ingress</label>
+    <textarea id="nyhet-ingress" name="ingress" rows="3" aria-describedby="nyhet-ingress-hjelp" required></textarea>
+    <p class="admin-hjelp" id="nyhet-ingress-hjelp">Én eller to setninger som vises på forsiden og under Aktuelt.</p>
 
-      <label for="nyhet-dato">Dato</label>
-      <input id="nyhet-dato" name="dato" type="date" required>
+    <label for="nyhet-tekst">Tekst</label>
+    <textarea id="nyhet-tekst" name="tekst" rows="8" required></textarea>
 
-      <label for="nyhet-lokallag">Lokallag</label>
-      <select id="nyhet-lokallag" name="lokallag" required>
-        <option value="">Velg lokallag</option>
-        <option>Østfold</option>
-        <option>Fredrikstad</option>
-        <option>Sarpsborg</option>
-        <option>Moss</option>
-        <option>Halden</option>
-        <option>Indre Østfold</option>
-      </select>
+    <label for="nyhet-bilde">Bilde</label>
+    <input id="nyhet-bilde" name="bildefil" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="nyhet-bilde-hjelp">
+    <p class="admin-hjelp" id="nyhet-bilde-hjelp">JPG, PNG eller WebP, maks 10 MB. Bildet tilpasser seg automatisk.</p>
+    <input type="hidden" name="bilde">
+    <figure class="bilde-forhandsvisning" hidden>
+      <img alt="Forhåndsvisning av bildet">
+      <figcaption><button type="button" class="admin-knapp fjern-bilde">Fjern bilde</button></figcaption>
+    </figure>
 
-      <label for="nyhet-ingress">Ingress</label>
-      <textarea id="nyhet-ingress" name="ingress" rows="4" required></textarea>
+    <label for="nyhet-bilde-alt">Bildetekst</label>
+    <input id="nyhet-bilde-alt" name="bildeAlt" type="text" aria-describedby="nyhet-bilde-alt-hjelp">
+    <p class="admin-hjelp" id="nyhet-bilde-alt-hjelp">Beskriv kort hva bildet viser. Leses opp for de som bruker skjermleser.</p>
 
-      <p class="skjema-feil" role="alert" hidden></p>
+    <p class="skjema-feil" role="alert" hidden></p>
 
-      <menu class="dialog-knapper">
-        <li><button type="submit" class="knapp knapp-primar">Lagre</button></li>
-        <li><button type="button" class="knapp knapp-kant lukk-dialog">Avbryt</button></li>
-      </menu>
-    </form>
-  </dialog>
+    <menu class="dialog-knapper">
+      <li><button type="submit" class="knapp knapp-primar">Lagre</button></li>
+      <li><button type="button" class="knapp knapp-kant lukk-dialog">Avbryt</button></li>
+    </menu>
+  </form>
+</dialog>
 
 </body>
 </html>

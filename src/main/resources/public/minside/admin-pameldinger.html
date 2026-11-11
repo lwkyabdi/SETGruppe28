@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="../favicon.png">
+  <link rel="icon" href="../bilder/favicon.svg" type="image/svg+xml">
   <title>Påmeldinger – Administrasjon – Østfold Husflidslag</title>
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="admin.css">
@@ -12,64 +11,122 @@
 </head>
 <body class="admin" data-admin-side="pameldinger">
 
-  <!--HEADER-->
-  <header class="admin-topp">
-    <a href="admin-kurs.html" class="logo">
-      <img src="../hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
-    </a>
-    <p class="admin-merke">Administrasjon</p>
-    <ul class="admin-topp-lenker">
-      <li><a href="../index.html">Se nettsiden</a></li>
-      <li><button type="button" class="logg-ut">Logg ut</button></li>
-    </ul>
+<a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
+
+<!--HEADER-->
+<header class="admin-topp">
+  <a href="admin-kurs.html" class="logo">
+    <img src="../bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
+  </a>
+  <p class="admin-merke">Administrasjon</p>
+  <ul class="admin-topp-lenker">
+    <li><a href="../index.html">Se nettsiden</a></li>
+    <li><button type="button" class="logg-ut">Logg ut</button></li>
+  </ul>
+</header>
+
+<!--ADMINMENY-->
+<nav class="admin-meny" aria-label="Administrasjonsmeny">
+  <ul>
+    <li><a href="admin-kurs.html">Kurs</a></li>
+    <li><a href="admin-nyheter.html">Nyheter</a></li>
+    <li><a href="admin-pameldinger.html" aria-current="page">Påmeldinger</a></li>
+  </ul>
+</nav>
+
+<main class="admin-innhold" id="hovedinnhold" tabindex="-1">
+
+  <!--SIDETOPP-->
+  <header class="admin-sidetopp">
+    <h1>Påmeldinger</h1>
+    <p>Hvem som er påmeldt hvilke kurs, og hvem som står på venteliste.</p>
+    <button type="button" class="knapp knapp-primar" id="ny-pamelding">+ Legg til påmelding</button>
   </header>
 
-  <!--ADMINMENY-->
-  <nav class="admin-meny" aria-label="Administrasjonsmeny">
-    <ul>
-      <li><a href="admin-kurs.html">Kurs</a></li>
-      <li><a href="admin-nyheter.html">Nyheter</a></li>
-      <li><a href="admin-pameldinger.html" aria-current="page">Påmeldinger</a></li>
-    </ul>
-  </nav>
+  <!--Melding etter at noen er lagt til-->
+  <p class="admin-melding" id="pamelding-melding" role="status" hidden></p>
 
-  <main class="admin-innhold">
+  <!--FILTER-->
+  <form class="admin-filter" role="search" aria-label="Filtrer påmeldinger">
+    <label for="filter-kurs">Vis påmeldinger til</label>
+    <select id="filter-kurs" name="kurs">
+      <option value="">Alle kurs</option>
+    </select>
+  </form>
 
-    <!--SIDETOPP-->
-    <header class="admin-sidetopp">
-      <h1>Påmeldinger</h1>
-      <p>Hvem som er påmeldt hvilke kurs, og hvem som står på venteliste.</p>
-    </header>
+  <!--PÅMELDINGSLISTE-->
+  <!--Radene fylles inn av admin.js-->
+  <section class="admin-tabell" aria-labelledby="pamelding-tabell-tittel">
+    <table>
+      <caption id="pamelding-tabell-tittel">Påmeldinger <span id="pamelding-antall"></span></caption>
+      <thead>
+      <tr>
+        <th scope="col">Navn</th>
+        <th scope="col">Kontakt</th>
+        <th scope="col">Kurs</th>
+        <th scope="col">Medlem</th>
+        <th scope="col">Status</th>
+        <th scope="col"><span class="skjult">Handlinger</span></th>
+      </tr>
+      </thead>
+      <tbody id="pamelding-rader"></tbody>
+    </table>
+    <p class="admin-tom" id="pamelding-tom" hidden>Ingen påmeldinger her.</p>
+  </section>
 
-    <!--FILTER-->
-    <form class="admin-filter" role="search" aria-label="Filtrer påmeldinger">
-      <label for="filter-kurs">Vis påmeldinger til</label>
-      <select id="filter-kurs" name="kurs">
-        <option value="">Alle kurs</option>
-      </select>
-    </form>
+</main>
 
-    <!--PÅMELDINGSLISTE-->
-    <!--Radene fylles inn av admin.js-->
-    <section class="admin-tabell" aria-labelledby="pamelding-tabell-tittel">
-      <table>
-        <caption id="pamelding-tabell-tittel">Påmeldinger <span id="pamelding-antall"></span></caption>
-        <thead>
-          <tr>
-            <th scope="col">Navn</th>
-            <th scope="col">Kontakt</th>
-            <th scope="col">Kurs</th>
-            <th scope="col">Medlem</th>
-            <th scope="col">Status</th>
-            <th scope="col"><span class="skjult">Handlinger</span></th>
-          </tr>
-        </thead>
-        <tbody id="pamelding-rader"></tbody>
-      </table>
-      <p class="admin-tom" id="pamelding-tom" hidden>Ingen påmeldinger her.</p>
-    </section>
+<!--SKJEMA FOR NY PÅMELDING-->
+<!--For de som melder seg på via telefon, e-post eller i lokalet-->
+<dialog class="admin-dialog" id="pamelding-dialog" aria-labelledby="pamelding-dialog-tittel">
+  <form class="skjema" id="pamelding-skjema" novalidate>
+    <h2 id="pamelding-dialog-tittel">Legg til påmelding</h2>
+    <input type="hidden" name="id">
 
-  </main>
+    <label for="pam-kurs">Kurs</label>
+    <select id="pam-kurs" name="kursId" aria-describedby="pam-plasser" required>
+      <option value="">Velg kurs</option>
+    </select>
+    <p class="admin-hjelp" id="pam-plasser" aria-live="polite"></p>
+
+    <label for="pam-fornavn">Fornavn</label>
+    <input id="pam-fornavn" name="fornavn" type="text" autocomplete="off" required>
+
+    <label for="pam-etternavn">Etternavn</label>
+    <input id="pam-etternavn" name="etternavn" type="text" autocomplete="off" required>
+
+    <label for="pam-epost">E-post</label>
+    <input id="pam-epost" name="epost" type="email" autocomplete="off" required>
+
+    <label for="pam-telefon">Telefon</label>
+    <input id="pam-telefon" name="telefon" type="tel" inputmode="numeric" pattern="[0-9 +]{8,15}" autocomplete="off" required>
+
+    <label for="pam-fodselsar">Fødselsår</label>
+    <input id="pam-fodselsar" name="fodselsar" type="text" inputmode="numeric" pattern="(19|20)[0-9]{2}" maxlength="4" required>
+
+    <label for="pam-medlem">Medlem av Husflidslaget</label>
+    <select id="pam-medlem" name="medlem" required>
+      <option value="">Velg</option>
+      <option value="ja">Ja</option>
+      <option value="nei">Nei</option>
+    </select>
+
+    <label for="pam-kommentar">Kommentar (valgfritt)</label>
+    <textarea id="pam-kommentar" name="kommentar" rows="3" placeholder="F.eks. meldte seg på via telefon"></textarea>
+
+    <label class="valg">
+      <input type="checkbox" name="samtykke" required>
+      Personen har gitt samtykke til at opplysningene lagres.
+    </label>
+
+    <p class="skjema-feil" role="alert" hidden></p>
+
+    <menu class="dialog-knapper">
+      <li><button type="submit" class="knapp knapp-primar">Legg til</button></li>
+      <li><button type="button" class="knapp knapp-kant lukk-dialog">Avbryt</button></li>
+    </menu>
+  </form>
+</dialog>
 
 </body>
 </html>
