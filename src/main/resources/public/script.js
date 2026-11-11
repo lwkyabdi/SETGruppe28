@@ -964,3 +964,86 @@ async function visNyhet() {
     tekst.append(p);
   });
 }
+
+function lagPersonkort(p) {
+  const kort = document.createElement("article");
+  kort.className = "person";
+
+  if (p.bilde) {
+    const bilde = document.createElement("img");
+    bilde.src = bildeAdresse(p.bilde);
+    bilde.alt = "";
+    bilde.onerror = function () { bilde.hidden = true; };
+    kort.append(bilde);
+  }
+
+  const navn = document.createElement("h3");
+  navn.textContent = p.navn;
+  kort.append(navn);
+
+  if (p.verv) {
+    const rolle = document.createElement("p");
+    rolle.className = "person-rolle";
+    rolle.textContent = p.verv;
+    kort.append(rolle);
+  }
+
+  if (p.sted) {
+    const sted = document.createElement("p");
+    sted.className = "person-sted";
+    sted.textContent = p.sted;
+    kort.append(sted);
+  }
+
+  const kontakt = document.createElement("ul");
+  kontakt.className = "person-kontakt";
+
+  if (p.telefon) {
+    const tlf = document.createElement("a");
+    tlf.href = "tel:" + p.telefon.replace(/\s/g, "");
+    tlf.textContent = p.telefon;
+    const li = document.createElement("li");
+    li.append("Tlf: ", tlf);
+    kontakt.append(li);
+  }
+
+  if (p.epost) {
+    const epost = document.createElement("a");
+    epost.href = "mailto:" + p.epost;
+    epost.textContent = p.epost;
+    const li = document.createElement("li");
+    li.append("E-post: ", epost);
+    kontakt.append(li);
+  }
+
+  kort.append(kontakt);
+  const li = document.createElement("li");
+  li.append(kort);
+  return li;
+}
+
+async function visKontaktpersoner() {
+  const liste = document.querySelector("ul.personer");
+  if (!liste) return;
+
+  let personer;
+  try {
+    personer = await hentJson("/api/kontaktpersoner");
+  } catch (feil) {
+    console.error(feil);
+    return;
+  }
+
+  if (personer.length === 0) {
+    const li = document.createElement("li");
+    const tekst = document.createElement("p");
+    tekst.textContent = "Kontaktpersonene kommer snart. Du kan kontakte oss på telefon eller e-post nederst på siden.";
+    li.append(tekst);
+    liste.replaceChildren(li);
+    return;
+  }
+
+  liste.replaceChildren(...personer.map(lagPersonkort));
+}
+
+visKontaktpersoner();
