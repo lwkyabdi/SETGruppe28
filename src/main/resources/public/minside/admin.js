@@ -1,12 +1,5 @@
 "use strict";
 
-//ADMINISTRASJON
-//Brukes av admin.html (innlogging), admin-kurs.html, admin-nyheter.html og admin-pameldinger.html.
-//Dette er en demo uten server: data lagres bare i nettleseren (sessionStorage)
-//og innloggingen sjekker passordet her i koden. Begge deler må flyttes til serveren.
-
-//DEMO-DATA
-//Samme kurs og nyheter som på den offentlige nettsiden
 const DEMO_KURS = [
   { id: 1, tittel: "Bunadssøm for nybegynnere", tema: "Bunad", lokallag: "Fredrikstad", status: "PUBLISERT",
     beskrivelse: "Lær å sy din egen bunad fra bunnen av. Kurset passer deg som aldri har sydd bunad før.",
@@ -61,23 +54,15 @@ const DEMO_PAMELDINGER = [
   { id: 15, kursId: 3, navn: "Wenche Moen", epost: "wenche@eksempel.no", telefon: "467 89 012", medlem: true, status: "pameldt" }
 ];
 
-//TESTBRUKER
-//Fjernes når innloggingen sjekkes på serveren. Passord skal aldri ligge i JavaScript.
-const TESTBRUKER = { epost: "admin@husflid.no", passord: "admin123" };
-
-//LAGRING I NETTLESEREN
-//Endringer huskes til fanen lukkes. Erstattes av backend senere.
 function hentListe(navn, demo) {
   try {
     const lagret = JSON.parse(sessionStorage.getItem("admin-" + navn));
     if (Array.isArray(lagret)) return lagret;
   } catch (feil) {
-    //Ugyldig eller blokkert lagring, bruker demo-data
   }
   return demo.map((rad) => ({ ...rad }));
 }
 
-//Gir false hvis nettleseren ikke klarte å lagre, f.eks. fordi bildene tar for mye plass
 function lagreListe(navn, liste) {
   try {
     sessionStorage.setItem("admin-" + navn, JSON.stringify(liste));
@@ -87,20 +72,13 @@ function lagreListe(navn, liste) {
   }
 }
 
-function erInnlogget() {
+async function hentInnloggetBruker() {
   try {
-    return sessionStorage.getItem("admin-innlogget") === "ja";
+    const svar = await fetch("/api/meg");
+    if (!svar.ok) return null;
+    return await svar.json();
   } catch (feil) {
-    return false;
-  }
-}
-
-function settInnlogget(verdi) {
-  try {
-    if (verdi) sessionStorage.setItem("admin-innlogget", "ja");
-    else sessionStorage.removeItem("admin-innlogget");
-  } catch (feil) {
-    //Ingenting å lagre
+    return null;
   }
 }
 
@@ -108,9 +86,6 @@ function nesteId(liste) {
   return liste.reduce((storst, rad) => Math.max(storst, rad.id), 0) + 1;
 }
 
-
-//HJELPEFUNKSJONER
-//Lager <time> med norsk dato, f.eks. 20. november 2026
 function lagDato(iso) {
   const time = document.createElement("time");
   time.dateTime = iso;
@@ -139,7 +114,6 @@ function lagKnapp(tekst, skjultTekst, klasse) {
   return knapp;
 }
 
-//Sletting krever to klikk, så man ikke sletter ved et uhell
 function lagSlettKnapp(navn, vedSletting) {
   const knapp = lagKnapp("Slett", navn, "admin-knapp-slett");
   knapp.addEventListener("click", () => {
@@ -164,8 +138,6 @@ function lagHandlinger(...knapper) {
   return celle;
 }
 
-//DIALOG MED SKJEMA
-//Åpner dialogen og fyller inn feltene når man redigerer
 function apneDialog(dialog, tittel, data) {
   const skjema = dialog.querySelector("form");
   skjema.reset();
@@ -182,14 +154,12 @@ function apneDialog(dialog, tittel, data) {
   dialog.showModal();
 }
 
-//Sjekker skjemaet og gir dataene videre hvis alt er fylt ut riktig
 function kobleDialog(dialog, vedLagring) {
   const skjema = dialog.querySelector("form");
   const feil = skjema.querySelector(".skjema-feil");
 
   dialog.querySelector(".lukk-dialog").addEventListener("click", () => dialog.close());
 
-  //Rød ramme forsvinner så snart feltet er riktig fylt ut
   skjema.addEventListener("input", (hendelse) => {
     if (hendelse.target.checkValidity()) hendelse.target.removeAttribute("aria-invalid");
   });
@@ -214,7 +184,6 @@ function kobleDialog(dialog, vedLagring) {
       return;
     }
 
-    //vedLagring kan gi tilbake en feilmelding, da blir vinduet stående åpent
     const melding = vedLagring(Object.fromEntries(new FormData(skjema)));
     if (melding) {
       feil.textContent = melding;
@@ -225,9 +194,6 @@ function kobleDialog(dialog, vedLagring) {
   });
 }
 
-//BILDE I SKJEMAET
-//Bildet gjøres mindre (maks 1200 px bredt) og lagres som tekst i det skjulte feltet "bilde".
-//På serveren skal bildet heller lastes opp til POST /api/admin/bilder.
 const MAKS_BILDE_MB = 10;
 
 function visBilde(dialog) {
@@ -237,7 +203,6 @@ function visBilde(dialog) {
   const alt = dialog.querySelector('input[name="bildeAlt"]');
   figur.hidden = !skjult.value;
   figur.querySelector("img").src = skjult.value || "";
-  //Bildetekst er påkrevd når det er et bilde
   alt.required = Boolean(skjult.value);
 }
 
@@ -285,7 +250,6 @@ function kobleBilde(dialog) {
   });
 }
 
-//Lite bilde i tabellen
 function lagMiniBilde(rad) {
   if (!rad.bilde) return "–";
   const img = document.createElement("img");
@@ -295,16 +259,25 @@ function lagMiniBilde(rad) {
   return img;
 }
 
-//INNLOGGING
-//Kjører bare på admin.html
 const innloggingSkjema = document.getElementById("innlogging-skjema");
 
 if (innloggingSkjema) {
-  if (erInnlogget()) location.replace("admin-kurs.html");
+  const demoInfo = document.querySelector(".demo-info");
+  if (demoInfo) demoInfo.remove();
+
+  hentInnloggetBruker().then((bruker) => {
+    if (bruker) location.replace("admin-kurs.html");
+  });
 
   const innloggingFeil = document.getElementById("innlogging-feil");
+  const knapp = innloggingSkjema.querySelector('button[type="submit"]');
 
-  innloggingSkjema.addEventListener("submit", (hendelse) => {
+  function visFeil(tekst) {
+    innloggingFeil.textContent = tekst;
+    innloggingFeil.hidden = false;
+  }
+
+  innloggingSkjema.addEventListener("submit", async (hendelse) => {
     hendelse.preventDefault();
 
     const felter = [...innloggingSkjema.querySelectorAll("input")];
@@ -312,8 +285,7 @@ if (innloggingSkjema) {
     const forsteFeil = felter.find((felt) => !felt.checkValidity());
 
     if (forsteFeil) {
-      innloggingFeil.textContent = "Skriv inn gyldig e-post og passord.";
-      innloggingFeil.hidden = false;
+      visFeil("Skriv inn gyldig e-post og passord.");
       forsteFeil.focus();
       return;
     }
@@ -321,36 +293,56 @@ if (innloggingSkjema) {
     const epost = innloggingSkjema.elements.epost.value.trim().toLowerCase();
     const passord = innloggingSkjema.elements.passord.value;
 
-    if (epost !== TESTBRUKER.epost || passord !== TESTBRUKER.passord) {
-      innloggingFeil.textContent = "Feil e-post eller passord. Prøv igjen.";
-      innloggingFeil.hidden = false;
+    if (knapp) knapp.disabled = true;
+    try {
+      const svar = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ epost: epost, passord: passord })
+      });
+
+      if (svar.ok) {
+        location.href = "admin-kurs.html";
+        return;
+      }
+
+      const innhold = await svar.json().catch(() => ({}));
+      visFeil(innhold.melding || "Feil e-post eller passord. Prøv igjen.");
       innloggingSkjema.elements.passord.value = "";
       innloggingSkjema.elements.passord.focus();
-      return;
+    } catch (feil) {
+      visFeil("Fikk ikke kontakt med serveren. Prøv igjen.");
+    } finally {
+      if (knapp) knapp.disabled = false;
     }
-
-    settInnlogget(true);
-    location.href = "admin-kurs.html";
   });
 }
 
-//SJEKK INNLOGGING PÅ ADMINSIDENE
 const adminSide = document.body.dataset.adminSide;
+let innloggetBruker = null;
 
 if (adminSide) {
-  if (!erInnlogget()) location.replace("admin.html");
-  else document.body.classList.add("innlogget");
+  hentInnloggetBruker().then((bruker) => {
+    if (!bruker) {
+      location.replace("admin.html");
+      return;
+    }
+    innloggetBruker = bruker;
+    document.body.classList.add("innlogget");
+  });
 }
 
-//LOGG UT
 document.querySelectorAll(".logg-ut").forEach((knapp) => {
-  knapp.addEventListener("click", () => {
-    settInnlogget(false);
+  knapp.addEventListener("click", async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } catch (feil) {
+      console.error(feil);
+    }
     location.href = "admin.html";
   });
 });
 
-//KURS
 if (adminSide === "kurs") {
   let kurs = hentListe("kurs", DEMO_KURS);
   const pameldinger = hentListe("pameldinger", DEMO_PAMELDINGER);
@@ -364,7 +356,6 @@ if (adminSide === "kurs") {
   const antallPameldt = (id) =>
     pameldinger.filter((p) => p.kursId === id && p.status === "pameldt").length;
 
-  //Sluttid må være etter starttid
   skjema.addEventListener("input", () => {
     const start = skjema.elements.starttid.value;
     const slutt = skjema.elements.sluttid;
@@ -377,7 +368,6 @@ if (adminSide === "kurs") {
       const rad = document.createElement("tr");
       const pameldt = antallPameldt(k.id);
 
-      //Tittel med tema under
       const tittel = document.createElement("th");
       tittel.scope = "row";
       const tema = document.createElement("span");
@@ -385,7 +375,6 @@ if (adminSide === "kurs") {
       tema.textContent = k.tema;
       tittel.append(k.tittel, tema);
 
-      //Dato med klokkeslett under
       const dato = document.createElement("td");
       const tid = document.createElement("span");
       tid.className = "admin-under";
@@ -416,7 +405,6 @@ if (adminSide === "kurs") {
 
     tom.hidden = kurs.length > 0;
 
-    //Tallene øverst teller bare kurs som er publisert
     const ider = kurs.filter((k) => k.status === "PUBLISERT").map((k) => k.id);
     document.getElementById("tall-kurs").textContent = ider.length;
     document.getElementById("tall-pameldte").textContent =
@@ -454,7 +442,6 @@ if (adminSide === "kurs") {
   visKurs();
 }
 
-//NYHETER
 if (adminSide === "nyheter") {
   let nyheter = hentListe("nyheter", DEMO_NYHETER);
   const rader = document.getElementById("nyhet-rader");
@@ -463,7 +450,6 @@ if (adminSide === "nyheter") {
 
   function visNyheter() {
     rader.replaceChildren();
-    //Nyeste først
     [...nyheter].sort((a, b) => b.dato.localeCompare(a.dato)).forEach((n) => {
       const rad = document.createElement("tr");
 
@@ -510,7 +496,6 @@ if (adminSide === "nyheter") {
   visNyheter();
 }
 
-//PÅMELDINGER
 if (adminSide === "pameldinger") {
   const kurs = hentListe("kurs", DEMO_KURS);
   let pameldinger = hentListe("pameldinger", DEMO_PAMELDINGER);
@@ -519,10 +504,8 @@ if (adminSide === "pameldinger") {
   const antall = document.getElementById("pamelding-antall");
   const filter = document.getElementById("filter-kurs");
 
-  //Kursene i nedtrekkslisten
   kurs.forEach((k) => filter.add(new Option(k.tittel, k.id)));
 
-  //Kan velge kurs i adressen, f.eks. admin-pameldinger.html?kurs=2
   const valgtKurs = new URLSearchParams(location.search).get("kurs");
   if (valgtKurs) filter.value = valgtKurs;
 
@@ -533,13 +516,11 @@ if (adminSide === "pameldinger") {
     const kursId = Number(filter.value);
     const synlige = pameldinger
       .filter((p) => !kursId || p.kursId === kursId)
-      //Påmeldte før venteliste
       .sort((a, b) => a.status.localeCompare(b.status) || a.navn.localeCompare(b.navn));
 
     synlige.forEach((p) => {
       const rad = document.createElement("tr");
 
-      //E-post og telefon som lenker
       const kontakt = document.createElement("td");
       const epost = document.createElement("a");
       epost.href = "mailto:" + p.epost;
@@ -582,22 +563,17 @@ if (adminSide === "pameldinger") {
   filter.addEventListener("change", visPameldinger);
   visPameldinger();
 
-  //LEGG TIL PÅMELDING MANUELT
-  //For de som melder seg på via telefon, e-post eller i lokalet.
-  //Er kurset fullt, havner personen på venteliste, slik som på nettsiden.
   const dialog = document.getElementById("pamelding-dialog");
   const skjema = document.getElementById("pamelding-skjema");
   const velgKurs = document.getElementById("pam-kurs");
   const plasserTekst = document.getElementById("pam-plasser");
   const melding = document.getElementById("pamelding-melding");
 
-  //Bare kurs som ikke er avlyst
   kurs.filter((k) => k.status !== "AVLYST").forEach((k) => velgKurs.add(new Option(k.tittel, k.id)));
 
   const antallPameldt = (id) =>
     pameldinger.filter((p) => p.kursId === id && p.status === "pameldt").length;
 
-  //Viser hvor mange plasser som er igjen på valgt kurs
   function visPlasser() {
     const k = kurs.find((rad) => rad.id === Number(velgKurs.value));
     if (!k) {
@@ -612,7 +588,6 @@ if (adminSide === "pameldinger") {
   velgKurs.addEventListener("change", visPlasser);
 
   document.getElementById("ny-pamelding").addEventListener("click", () => {
-    //Kurset som er valgt i filteret er valgt på forhånd
     apneDialog(dialog, "Legg til påmelding", { kursId: filter.value });
     visPlasser();
   });
@@ -621,7 +596,6 @@ if (adminSide === "pameldinger") {
     const kursId = Number(data.kursId);
     const epost = data.epost.trim().toLowerCase();
 
-    //Samme person kan ikke meldes på samme kurs to ganger
     if (pameldinger.some((p) => p.kursId === kursId && p.epost.toLowerCase() === epost)) {
       return "Denne e-posten er allerede påmeldt dette kurset.";
     }
@@ -637,7 +611,6 @@ if (adminSide === "pameldinger") {
     });
     lagreListe("pameldinger", pameldinger);
 
-    //Vis kurset personen ble lagt til på
     filter.value = String(kursId);
     visPameldinger();
     melding.textContent = status === "pameldt"
