@@ -120,7 +120,6 @@ public class Application {
 
         var adminNyhetService = new AdminNyhetService(new JdbcAdminArtikkelRepository(database), clock);
 
-        // Opplastede bilder lagres i mappen opplastinger/ og vises på /opplastinger/...
         var bildeService = new BildeService(Path.of("opplastinger"), "/opplastinger");
 
         return create(
@@ -161,7 +160,6 @@ public class Application {
         );
     }
 
-    // Uten admin. Brukes av testene som ikke trenger den.
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
@@ -174,7 +172,6 @@ public class Application {
             lokallagService, kontaktpersonService, null);
     }
 
-    // Med admin for påmeldinger.
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
@@ -188,7 +185,6 @@ public class Application {
             lokallagService, kontaktpersonService, adminPameldingService, null);
     }
 
-    // Med admin for påmeldinger og kurs.
     public static Javalin create(
         KursService service,
         PameldingService pameldingService,
@@ -232,7 +228,6 @@ public class Application {
                 }
             });
 
-            // Opplastede bilder vises fra en egen mappe utenfor koden
             if (bildeService != null) {
                 config.staticFiles.add(filer -> {
                     filer.hostedPath = bildeService.adresse();
@@ -315,7 +310,11 @@ public class Application {
                     innloggingController::krevInnlogging
                 );
 
-                // Admin for påmeldinger: bare når innloggingen er på, så vakten alltid beskytter dem
+                config.routes.get(
+                    "/api/admin/kontaktpersoner",
+                    kontaktpersonController::alle
+                );
+
                 if (adminPameldingService != null && pameldingService != null) {
                     var adminPameldingController = new AdminPameldingController(
                         adminPameldingService,
@@ -348,7 +347,6 @@ public class Application {
                     );
                 }
 
-                // Admin for kurs: også bare bak vakten
                 if (adminKursService != null) {
                     var adminKursController = new AdminKursController(adminKursService);
 
@@ -378,7 +376,6 @@ public class Application {
                     );
                 }
 
-                // Admin for nyheter: også bare bak vakten
                 if (adminNyhetService != null) {
                     var adminNyhetController = new AdminNyhetController(adminNyhetService);
 
@@ -408,7 +405,6 @@ public class Application {
                     );
                 }
 
-                // Bildeopplasting: også bare bak vakten
                 if (bildeService != null) {
                     var bildeController = new BildeController(bildeService);
 
