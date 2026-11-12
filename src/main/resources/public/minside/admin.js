@@ -203,13 +203,18 @@ function kobleDialog(dialog, vedLagring) {
 
 const MAKS_BILDE_MB = 10;
 
+function adminBilde(sti) {
+  if (!sti) return "";
+  return sti.includes("/") ? sti : "/bilder/" + sti;
+}
+
 function visBilde(dialog) {
   const skjult = dialog.querySelector('input[name="bilde"]');
   if (!skjult) return;
   const figur = dialog.querySelector(".bilde-forhandsvisning");
   const alt = dialog.querySelector('input[name="bildeAlt"]');
   figur.hidden = !skjult.value;
-  figur.querySelector("img").src = skjult.value || "";
+  figur.querySelector("img").src = skjult.value ? adminBilde(skjult.value) : "";
   alt.required = Boolean(skjult.value);
 }
 
@@ -242,10 +247,23 @@ function kobleBilde(dialog) {
       lerret.width = Math.round(bilde.width * skala);
       lerret.height = Math.round(bilde.height * skala);
       lerret.getContext("2d").drawImage(bilde, 0, 0, lerret.width, lerret.height);
-      skjult.value = lerret.toDataURL("image/jpeg", 0.82);
       URL.revokeObjectURL(bilde.src);
-      feil.hidden = true;
-      visBilde(dialog);
+      lerret.toBlob(async (blob) => {
+        const skjema = new FormData();
+        skjema.append("bilde", blob, "bilde.jpg");
+        try {
+          const svar = await fetch("/api/admin/bilder", { method: "POST", body: skjema });
+          const innhold = await svar.json().catch(() => ({}));
+          if (!svar.ok) throw new Error(innhold.melding || "Kunne ikke laste opp bildet.");
+          skjult.value = innhold.bildesti;
+          feil.hidden = true;
+          visBilde(dialog);
+        } catch (e) {
+          feil.textContent = e.message;
+          feil.hidden = false;
+          fil.value = "";
+        }
+      }, "image/jpeg", 0.82);
     };
     bilde.src = URL.createObjectURL(valgt);
   });
@@ -260,7 +278,7 @@ function kobleBilde(dialog) {
 function lagMiniBilde(rad) {
   if (!rad.bilde) return "–";
   const img = document.createElement("img");
-  img.src = rad.bilde;
+  img.src = adminBilde(rad.bilde);
   img.alt = "";
   img.className = "admin-mini-bilde";
   return img;
@@ -466,32 +484,76 @@ if (adminSide === "kurs") {
 }
 
 if (adminSide === "nyheter") {
-  let nyheter = hentListe("nyheter", DEMO_NYHETER);
   const rader = document.getElementById("nyhet-rader");
   const tom = document.getElementById("nyhet-tom");
   const dialog = document.getElementById("nyhet-dialog");
+  const velgLag = document.getElementById("nyhet-lokallag");
 
-  function visNyheter() {
+  async function fyllLokallag() {
+    try {
+      const lagene = await api("GET", "/api/lokallag");
+      velgLag.replaceChildren(new Option("Velg lokallag", ""), new Option("Hele Østfold", "fylket"));
+      lagene.forEach((lag) => velgLag.add(new Option(lag.navn, lag.id)));
+    } catch (feil) {
+      console.error(feil);
+    }
+  }
+
+  function tilSkjema(n) {
+    return {
+      id: n.id,
+      tittel: n.tittel,
+      dato: n.dato || "",
+      lokallag: n.lokallagId == null ? "fylket" : String(n.lokallagId),
+      ingress: n.ingress,
+      tekst: n.innhold,
+      bilde: n.bildesti || "",
+      bildeAlt: n.bildealt || ""
+    };
+  }
+
+  async function visNyheter() {
+    let nyheter;
+    try {
+      nyheter = await api("GET", "/api/admin/nyheter");
+    } catch (feil) {
+      alert(feil.message);
+      return;
+    }
+
     rader.replaceChildren();
-    [...nyheter].sort((a, b) => b.dato.localeCompare(a.dato)).forEach((n) => {
+    nyheter.forEach((n) => {
       const rad = document.createElement("tr");
 
       const rediger = lagKnapp("Rediger", n.tittel);
-      rediger.addEventListener("click", () => apneDialog(dialog, "Rediger nyhet", n));
+      rediger.addEventListener("click", () => apneDialog(dialog, "Rediger nyhet", tilSkjema(n)));
 
-      const slett = lagSlettKnapp(n.tittel, () => {
-        nyheter = nyheter.filter((rad) => rad.id !== n.id);
-        lagreListe("nyheter", nyheter);
-        visNyheter();
+      const slett = lagSlettKnapp(n.tittel, async () => {
+        try {
+          await api("DELETE", "/api/admin/nyheter/" + n.id);
+        } catch (feil) {
+          alert(feil.message);
+        }
+        await visNyheter();
       });
 
       const tittel = lagCelle(n.tittel, "th");
       tittel.scope = "row";
-      rad.append(lagCelle(lagMiniBilde(n)), tittel, lagCelle(lagDato(n.dato)), lagCelle(n.lokallag), lagHandlinger(rediger, slett));
+      rad.append(
+        lagCelle(lagMiniBilde({ bilde: n.bildesti })),
+        tittel,
+        lagCelle(n.dato ? lagDato(n.dato) : "Kladd"),
+        lagCelle(kortnavnAdmin(n.lokallag)),
+        lagHandlinger(rediger, slett)
+      );
       rader.append(rad);
     });
 
     tom.hidden = nyheter.length > 0;
+  }
+
+  function kortnavnAdmin(navn) {
+    return (navn || "").replace(" Husflidslag", "");
   }
 
   document.getElementById("ny-nyhet").addEventListener("click", () =>
@@ -500,23 +562,29 @@ if (adminSide === "nyheter") {
 
   kobleBilde(dialog);
 
-  kobleDialog(dialog, (data) => {
+  kobleDialog(dialog, async (data) => {
     const id = Number(data.id);
-    const nytt = {
-      tittel: data.tittel.trim(), dato: data.dato, lokallag: data.lokallag,
-      ingress: data.ingress.trim(), tekst: data.tekst.trim(), bilde: data.bilde, bildeAlt: data.bildeAlt.trim()
+    const nyhet = {
+      tittel: data.tittel.trim(),
+      ingress: data.ingress.trim(),
+      innhold: data.tekst.trim(),
+      bildesti: data.bilde || "",
+      bildealt: (data.bildeAlt || "").trim(),
+      lokallagId: data.lokallag === "fylket" ? null : Number(data.lokallag),
+      status: "PUBLISERT",
+      dato: data.dato
     };
 
-    const ny = id
-      ? nyheter.map((n) => (n.id === id ? { ...n, ...nytt } : n))
-      : [...nyheter, { id: nesteId(nyheter), ...nytt }];
-
-    if (!lagreListe("nyheter", ny)) return "Kunne ikke lagre. Bildet kan være for stort for nettleseren.";
-    nyheter = ny;
-    visNyheter();
+    try {
+      if (id) await api("PUT", "/api/admin/nyheter/" + id, nyhet);
+      else await api("POST", "/api/admin/nyheter", nyhet);
+    } catch (feil) {
+      return feil.message;
+    }
+    await visNyheter();
   });
 
-  visNyheter();
+  fyllLokallag().then(visNyheter);
 }
 
 if (adminSide === "pameldinger") {
