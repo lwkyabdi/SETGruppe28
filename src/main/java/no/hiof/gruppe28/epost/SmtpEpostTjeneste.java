@@ -40,16 +40,21 @@ public class SmtpEpostTjeneste implements EpostTjeneste {
 
     @Override
     public void sendBekreftelse(String mottaker, PameldingKvittering kvittering) {
+        sendMelding(mottaker, BekreftelsesTekst.emne(kvittering), BekreftelsesTekst.tekst(kvittering));
+    }
+
+    @Override
+    public void sendMelding(String mottaker, String emne, String tekst) {
         try {
             MimeMessage melding = new MimeMessage(session);
             melding.setFrom(new InternetAddress(avsender, "Østfold Husflidslag", "UTF-8"));
             melding.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mottaker));
-            melding.setSubject(BekreftelsesTekst.emne(kvittering), "UTF-8");
-            melding.setText(BekreftelsesTekst.tekst(kvittering), "UTF-8");
+            melding.setSubject(emne, "UTF-8");
+            melding.setText(tekst, "UTF-8");
 
             Transport.send(melding);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new IllegalStateException("Kunne ikke sende bekreftelse på e-post.", e);
+            throw new IllegalStateException("Kunne ikke sende e-post.", e);
         }
     }
 }

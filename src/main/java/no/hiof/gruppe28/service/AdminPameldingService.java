@@ -2,6 +2,7 @@ package no.hiof.gruppe28.service;
 
 import no.hiof.gruppe28.dto.AdminOversikt;
 import no.hiof.gruppe28.dto.InnloggetBruker;
+import no.hiof.gruppe28.epost.EpostTjeneste;
 import no.hiof.gruppe28.model.AdminPamelding;
 import no.hiof.gruppe28.repository.AdminPameldingRepository;
 
@@ -12,9 +13,15 @@ import java.util.Objects;
 public class AdminPameldingService {
 
     private final AdminPameldingRepository repository;
+    private final EpostTjeneste epost;
 
     public AdminPameldingService(AdminPameldingRepository repository) {
+        this(repository, null);
+    }
+
+    public AdminPameldingService(AdminPameldingRepository repository, EpostTjeneste epost) {
         this.repository = repository;
+        this.epost = epost;
     }
 
     public AdminOversikt oversikt(InnloggetBruker bruker) {
@@ -46,6 +53,8 @@ public class AdminPameldingService {
         if (!repository.giPlass(referanse)) {
             throw new ApiException(409, "Kurset er fullt. Det er ingen ledig plass å gi.");
         }
+
+        sendPlassEpost(pamelding);
     }
 
     public void slett(InnloggetBruker bruker, String referanse) {
@@ -53,7 +62,7 @@ public class AdminPameldingService {
         repository.slett(referanse);
     }
 
-    // Brukes før manuell påmelding: kurset må finnes og høre til brukerens lag
+
     public void kontrollerKurs(InnloggetBruker bruker, long kursId) {
         Long kursetsLag = repository.finnLokallagForKurs(kursId)
             .orElseThrow(() -> new ApiException(404, "Kurset finnes ikke."));
@@ -63,7 +72,27 @@ public class AdminPameldingService {
         }
     }
 
-    // Finner påmeldingen, men bare hvis den hører til brukerens lag
+
+    private void sendPlassEpost(AdminPamelding p) {
+        if (epost == null) {
+            return;
+        }
+        String emne = "Du har fått plass på " + p.kursTittel();
+        String tekst = "Hei " + p.fornavn() + "!\n\n"
+            + "Det har blitt ledig plass, og du er nå påmeldt «" + p.kursTittel() + "».\n\n"
+            + "Referansen din er " + p.referanse() + ".\n\n"
+            + "Har du spørsmål, ta kontakt med lokallaget.\n\n"
+            + "Vennlig hilsen\n"
+            + "Østfold Husflidslag";
+        try {
+            epost.sendMelding(p.epost(), emne, tekst);
+        } catch (RuntimeException e) {
+            System.getLogger(AdminPameldingService.class.getName())
+                .log(System.Logger.Level.WARNING, "Kunne ikke sende e-post om ledig plass.", e);
+        }
+    }
+
+
     private AdminPamelding finnEgen(InnloggetBruker bruker, String referanse) {
         AdminPamelding pamelding = repository.finn(referanse)
             .orElseThrow(() -> new ApiException(404, "Påmeldingen finnes ikke."));
@@ -74,7 +103,7 @@ public class AdminPameldingService {
         return pamelding;
     }
 
-    // ADMIN ser alle lag (null). LOKALLAG ser bare sitt eget.
+
     private Long lagFilter(InnloggetBruker bruker) {
         if ("ADMIN".equals(bruker.rolle())) {
             return null;

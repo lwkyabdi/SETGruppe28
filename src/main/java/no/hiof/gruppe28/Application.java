@@ -100,10 +100,12 @@ public class Application {
             clock
         );
 
+        var epostTjeneste = lagEpostTjeneste();
+
         var pameldingService = new PameldingService(
             new JdbcPameldingRepository(database),
             clock,
-            lagEpostTjeneste()
+            epostTjeneste
         );
 
         var nyhetService = new NyhetService(new JdbcArtikkelRepository(database));
@@ -114,7 +116,7 @@ public class Application {
 
         var kontaktpersonService = new KontaktpersonService(new JdbcKontaktpersonRepository(database));
 
-        var adminPameldingService = new AdminPameldingService(new JdbcAdminPameldingRepository(database));
+        var adminPameldingService = new AdminPameldingService(new JdbcAdminPameldingRepository(database), epostTjeneste);
 
         var adminKursService = new AdminKursService(new JdbcAdminKursRepository(database));
 
