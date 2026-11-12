@@ -1,77 +1,5 @@
 "use strict";
 
-const DEMO_KURS = [
-  { id: 1, tittel: "Bunadssøm for nybegynnere", tema: "Bunad", lokallag: "Fredrikstad", status: "PUBLISERT",
-    beskrivelse: "Lær å sy din egen bunad fra bunnen av. Kurset passer deg som aldri har sydd bunad før.",
-    dato: "2026-11-20", starttid: "18:00", sluttid: "21:00", varighet: "8 kvelder",
-    sted: "Fredrikstad Husflidssenter, Nygårdsgt. 14", kursleder: "Marit Andersen", malgruppe: "Voksne", niva: "Nybegynner",
-    utstyr: "Symaskin hvis du har, stoff og tråd", medlemspris: 1500, ordinaerpris: 2000, plasser: 8,
-    kontaktperson: "Kari Hansen", bilde: "../bilder/kurs-1.jpg", bildeAlt: "Broderi med trådsnelle" },
-  { id: 2, tittel: "Strikk din egen genser", tema: "Strikking", lokallag: "Sarpsborg", status: "PUBLISERT",
-    beskrivelse: "Strikk en klassisk genser i ditt eget tempo, med hjelp fra erfarne strikkere.",
-    dato: "2026-11-27", starttid: "10:00", sluttid: "14:00", varighet: "6 lørdager",
-    sted: "Sarpsborg Husflidslag", kursleder: "Anne Berg", malgruppe: "Voksne", niva: "Litt erfaren",
-    utstyr: "Strikkepinner nr. 4", medlemspris: 1200, ordinaerpris: 1600, plasser: 4,
-    kontaktperson: "Kari Hansen", bilde: "../bilder/kurs-2.jpg", bildeAlt: "Gammel vevstol med tråder" },
-  { id: 3, tittel: "Vevkurs – grunnleggende båndbinding", tema: "Veving", lokallag: "Moss", status: "PUBLISERT",
-    beskrivelse: "Grunnkurs i båndveving for nybegynnere. Alt utstyr finnes i vevstudioet.",
-    dato: "2026-12-05", starttid: "10:00", sluttid: "15:00", varighet: "2 dager",
-    sted: "Moss Husflidslag, vevstudioet", kursleder: "Liv Johansen", malgruppe: "Alle", niva: "Nybegynner",
-    utstyr: "Alt utstyr finnes på stedet", medlemspris: 900, ordinaerpris: 1200, plasser: 10,
-    kontaktperson: "Silje Ole", bilde: "../bilder/kurs-3.jpg", bildeAlt: "Fargerik vevstol" }
-];
-
-const DEMO_NYHETER = [
-  { id: 1, tittel: "Nytt bunadskurs i Fredrikstad – meld deg på nå!", dato: "2026-11-02", lokallag: "Fredrikstad",
-    ingress: "Vi åpner nå påmelding til bunadskurset i Fredrikstad. Det er kun 8 plasser, og de fylles raskt.",
-    tekst: "Fredrikstad Husflidslag setter opp nytt bunadskurs i november. Kurset starter 20. november og går over 8 kvelder.",
-    bilde: "../bilder/nyhet-1.jpg", bildeAlt: "Kvinne i bunad som hjelper med broderi" },
-  { id: 2, tittel: "Ledige plasser på vevkurs i Moss", dato: "2026-11-05", lokallag: "Moss",
-    ingress: "Det er fortsatt ledige plasser på vevkurset i Moss.",
-    tekst: "Moss Husflidslag arrangerer grunnkurs i båndveving 5. og 6. desember. Kurset passer for nybegynnere.",
-    bilde: "../bilder/nyhet-2.jpg", bildeAlt: "Plakat for Husflidsdagen" },
-  { id: 3, tittel: "Høstprogrammet er klart – se alle kurs og aktiviteter", dato: "2026-10-28", lokallag: "Østfold",
-    ingress: "Vi har satt opp et rikt program med kurs innen strikking, veving, søm, broderi, bunad og trearbeid.",
-    tekst: "Se alle kursene under Kurs og aktiviteter. Medlemmer får rabatt på alle kurs.",
-    bilde: "../bilder/nyhet-3.jpg", bildeAlt: "Gruppe som jobber sammen i et verksted" }
-];
-
-const DEMO_PAMELDINGER = [
-  { id: 1, kursId: 1, navn: "Kari Nordmann", epost: "kari@eksempel.no", telefon: "900 11 222", medlem: true, status: "pameldt" },
-  { id: 2, kursId: 1, navn: "Ingrid Olsen", epost: "ingrid@eksempel.no", telefon: "911 22 333", medlem: true, status: "pameldt" },
-  { id: 3, kursId: 1, navn: "Astrid Berg", epost: "astrid@eksempel.no", telefon: "922 33 444", medlem: false, status: "pameldt" },
-  { id: 4, kursId: 1, navn: "Liv Johansen", epost: "liv@eksempel.no", telefon: "933 44 555", medlem: true, status: "pameldt" },
-  { id: 5, kursId: 1, navn: "Solveig Hansen", epost: "solveig@eksempel.no", telefon: "944 55 666", medlem: false, status: "pameldt" },
-  { id: 6, kursId: 2, navn: "Marit Larsen", epost: "marit@eksempel.no", telefon: "955 66 777", medlem: true, status: "pameldt" },
-  { id: 7, kursId: 2, navn: "Berit Pedersen", epost: "berit@eksempel.no", telefon: "966 77 888", medlem: true, status: "pameldt" },
-  { id: 8, kursId: 2, navn: "Turid Andersen", epost: "turid@eksempel.no", telefon: "977 88 999", medlem: false, status: "pameldt" },
-  { id: 9, kursId: 2, navn: "Randi Nilsen", epost: "randi@eksempel.no", telefon: "988 99 000", medlem: true, status: "pameldt" },
-  { id: 10, kursId: 2, navn: "Gunn Kristiansen", epost: "gunn@eksempel.no", telefon: "412 34 567", medlem: false, status: "venteliste" },
-  { id: 11, kursId: 2, navn: "Hilde Jensen", epost: "hilde@eksempel.no", telefon: "423 45 678", medlem: true, status: "venteliste" },
-  { id: 12, kursId: 3, navn: "Anne Karlsen", epost: "anne@eksempel.no", telefon: "434 56 789", medlem: true, status: "pameldt" },
-  { id: 13, kursId: 3, navn: "Eva Halvorsen", epost: "eva@eksempel.no", telefon: "445 67 890", medlem: false, status: "pameldt" },
-  { id: 14, kursId: 3, navn: "Tone Eriksen", epost: "tone@eksempel.no", telefon: "456 78 901", medlem: true, status: "pameldt" },
-  { id: 15, kursId: 3, navn: "Wenche Moen", epost: "wenche@eksempel.no", telefon: "467 89 012", medlem: true, status: "pameldt" }
-];
-
-function hentListe(navn, demo) {
-  try {
-    const lagret = JSON.parse(sessionStorage.getItem("admin-" + navn));
-    if (Array.isArray(lagret)) return lagret;
-  } catch (feil) {
-  }
-  return demo.map((rad) => ({ ...rad }));
-}
-
-function lagreListe(navn, liste) {
-  try {
-    sessionStorage.setItem("admin-" + navn, JSON.stringify(liste));
-    return true;
-  } catch (feil) {
-    return false;
-  }
-}
-
 async function hentInnloggetBruker() {
   try {
     const svar = await fetch("/api/meg");
@@ -80,10 +8,6 @@ async function hentInnloggetBruker() {
   } catch (feil) {
     return null;
   }
-}
-
-function nesteId(liste) {
-  return liste.reduce((storst, rad) => Math.max(storst, rad.id), 0) + 1;
 }
 
 function lagDato(iso) {
@@ -141,6 +65,7 @@ function lagHandlinger(...knapper) {
 function apneDialog(dialog, tittel, data) {
   const skjema = dialog.querySelector("form");
   skjema.reset();
+  skjema.querySelectorAll('input[type="hidden"]').forEach((felt) => { felt.value = ""; });
   skjema.querySelectorAll("[aria-invalid]").forEach((felt) => felt.removeAttribute("aria-invalid"));
   skjema.querySelector(".skjema-feil").hidden = true;
   dialog.querySelector("h2").textContent = tittel;
@@ -385,17 +310,14 @@ document.querySelectorAll(".logg-ut").forEach((knapp) => {
 });
 
 if (adminSide === "kurs") {
-  let kurs = hentListe("kurs", DEMO_KURS);
-  const pameldinger = hentListe("pameldinger", DEMO_PAMELDINGER);
   const rader = document.getElementById("kurs-rader");
   const tom = document.getElementById("kurs-tom");
   const dialog = document.getElementById("kurs-dialog");
   const skjema = document.getElementById("kurs-skjema");
+  const velgLag = document.getElementById("kurs-lokallag");
+  const velgKontakt = document.getElementById("kurs-kontaktperson");
 
-  const STATUS = { PUBLISERT: "Publisert", KLADD: "Kladd", AVLYST: "Avlyst" };
-
-  const antallPameldt = (id) =>
-    pameldinger.filter((p) => p.kursId === id && p.status === "pameldt").length;
+  const STATUS = { PUBLISERT: "Publisert", KLADD: "Kladd" };
 
   skjema.addEventListener("input", () => {
     const start = skjema.elements.starttid.value;
@@ -403,11 +325,78 @@ if (adminSide === "kurs") {
     slutt.setCustomValidity(start && slutt.value && slutt.value <= start ? "Sluttid må være etter starttid" : "");
   });
 
-  function visKurs() {
+  function sikreValg(select, verdi) {
+    if (!verdi) return;
+    const finnes = [...select.options].some((valg) => valg.value === String(verdi));
+    if (!finnes) select.add(new Option(verdi, verdi));
+  }
+
+  async function fyllValg() {
+    try {
+      const [lagene, kontakter] = await Promise.all([
+        api("GET", "/api/lokallag"),
+        api("GET", "/api/admin/kontaktpersoner")
+      ]);
+      velgLag.replaceChildren(new Option("Velg lokallag", ""));
+      lagene.forEach((lag) => velgLag.add(new Option(lag.navn, lag.id)));
+      velgKontakt.replaceChildren(new Option("Velg kontaktperson", ""));
+      kontakter.forEach((k) => velgKontakt.add(new Option(k.navn, k.id)));
+    } catch (feil) {
+      console.error(feil);
+    }
+  }
+
+  function tilSkjema(k) {
+    const [start, slutt] = (k.tidspunkt || "").split(/\s*[–-]\s*/);
+    ["tema", "malgruppe", "niva"].forEach((navn) => sikreValg(skjema.elements[navn], k[navn]));
+    return {
+      id: k.id,
+      tittel: k.tittel,
+      tema: k.tema,
+      lokallag: k.lokallagId == null ? "" : String(k.lokallagId),
+      beskrivelse: k.beskrivelse,
+      malgruppe: k.malgruppe,
+      niva: k.niva,
+      utstyr: k.utstyr,
+      dato: k.dato || "",
+      starttid: start || "",
+      sluttid: slutt || "",
+      varighet: k.varighet,
+      sted: k.sted,
+      medlemspris: k.medlemspris,
+      ordinaerpris: k.ordinaerpris,
+      plasser: k.kapasitet,
+      kontaktperson: String(k.kontaktId),
+      bilde: k.bildesti || "",
+      bildeAlt: k.bildealt || "",
+      status: k.status
+    };
+  }
+
+  async function visTall() {
+    try {
+      const tall = await api("GET", "/api/admin/oversikt");
+      document.getElementById("tall-kurs").textContent = tall.antallKurs;
+      document.getElementById("tall-pameldte").textContent = tall.antallPameldte;
+      document.getElementById("tall-venteliste").textContent = tall.antallVenteliste;
+    } catch (feil) {
+      console.error(feil);
+    }
+  }
+
+  async function visKurs() {
+    let kurs;
+    try {
+      kurs = await api("GET", "/api/admin/kurs");
+    } catch (feil) {
+      alert(feil.message);
+      return;
+    }
+
     rader.replaceChildren();
-    [...kurs].sort((a, b) => a.dato.localeCompare(b.dato)).forEach((k) => {
+    kurs.forEach((k) => {
       const rad = document.createElement("tr");
-      const pameldt = antallPameldt(k.id);
+      const pameldt = k.kapasitet - k.ledigePlasser;
 
       const tittel = document.createElement("th");
       tittel.scope = "row";
@@ -419,39 +408,46 @@ if (adminSide === "kurs") {
       const dato = document.createElement("td");
       const tid = document.createElement("span");
       tid.className = "admin-under";
-      tid.textContent = k.starttid + "–" + k.sluttid;
-      dato.append(lagDato(k.dato), tid);
+      tid.textContent = k.tidspunkt;
+      dato.append(k.dato ? lagDato(k.dato) : "Ingen dato", tid);
 
       const plasser = document.createElement("span");
-      plasser.textContent = pameldt + " av " + k.plasser;
-      if (pameldt >= k.plasser) plasser.className = "admin-fullt";
+      plasser.textContent = pameldt + " av " + k.kapasitet;
+      if (k.ledigePlasser === 0) plasser.className = "admin-fullt";
 
       const status = document.createElement("span");
       status.className = "admin-status admin-status-" + k.status.toLowerCase();
       status.textContent = STATUS[k.status] || k.status;
 
       const rediger = lagKnapp("Rediger", k.tittel);
-      rediger.addEventListener("click", () => apneDialog(dialog, "Rediger kurs", k));
+      rediger.addEventListener("click", () => apneDialog(dialog, "Rediger kurs", tilSkjema(k)));
 
-      const slett = lagSlettKnapp(k.tittel, () => {
-        kurs = kurs.filter((rad) => rad.id !== k.id);
-        lagreListe("kurs", kurs);
-        lagreListe("pameldinger", pameldinger.filter((p) => p.kursId !== k.id));
-        visKurs();
+      const slett = lagSlettKnapp(k.tittel, async () => {
+        try {
+          await api("DELETE", "/api/admin/kurs/" + k.id);
+        } catch (feil) {
+          alert(feil.message);
+        }
+        await oppdater();
       });
 
-      rad.append(lagCelle(lagMiniBilde(k)), tittel, dato, lagCelle(k.lokallag), lagCelle(plasser), lagCelle(status), lagHandlinger(rediger, slett));
+      rad.append(
+        lagCelle(lagMiniBilde({ bilde: k.bildesti })),
+        tittel,
+        dato,
+        lagCelle((k.lokallag || "").replace(" Husflidslag", "")),
+        lagCelle(plasser),
+        lagCelle(status),
+        lagHandlinger(rediger, slett)
+      );
       rader.append(rad);
     });
 
     tom.hidden = kurs.length > 0;
+  }
 
-    const ider = kurs.filter((k) => k.status === "PUBLISERT").map((k) => k.id);
-    document.getElementById("tall-kurs").textContent = ider.length;
-    document.getElementById("tall-pameldte").textContent =
-      pameldinger.filter((p) => ider.includes(p.kursId) && p.status === "pameldt").length;
-    document.getElementById("tall-venteliste").textContent =
-      pameldinger.filter((p) => ider.includes(p.kursId) && p.status === "venteliste").length;
+  async function oppdater() {
+    await Promise.all([visKurs(), visTall()]);
   }
 
   document.getElementById("nytt-kurs").addEventListener("click", () =>
@@ -460,27 +456,39 @@ if (adminSide === "kurs") {
 
   kobleBilde(dialog);
 
-  kobleDialog(dialog, (data) => {
+  kobleDialog(dialog, async (data) => {
     const id = Number(data.id);
-    const nytt = {
-      tittel: data.tittel.trim(), tema: data.tema, lokallag: data.lokallag, status: data.status,
-      beskrivelse: data.beskrivelse.trim(), dato: data.dato, starttid: data.starttid, sluttid: data.sluttid,
-      varighet: data.varighet.trim(), sted: data.sted.trim(), kursleder: data.kursleder.trim(),
-      malgruppe: data.malgruppe, niva: data.niva, utstyr: data.utstyr.trim(),
-      medlemspris: Number(data.medlemspris), ordinaerpris: Number(data.ordinaerpris), plasser: Number(data.plasser),
-      kontaktperson: data.kontaktperson, bilde: data.bilde, bildeAlt: data.bildeAlt.trim()
+    const kurs = {
+      tittel: data.tittel.trim(),
+      beskrivelse: data.beskrivelse.trim(),
+      dato: data.dato,
+      tidspunkt: data.starttid + "–" + data.sluttid,
+      varighet: data.varighet.trim(),
+      sted: data.sted.trim(),
+      lokallagId: data.lokallag ? Number(data.lokallag) : null,
+      tema: data.tema,
+      malgruppe: data.malgruppe,
+      niva: data.niva,
+      utstyr: (data.utstyr || "").trim() || "Ingen spesielt utstyr",
+      medlemspris: Number(data.medlemspris),
+      ordinaerpris: Number(data.ordinaerpris),
+      kapasitet: Number(data.plasser),
+      status: data.status,
+      kontaktId: Number(data.kontaktperson),
+      bildesti: data.bilde || "",
+      bildealt: (data.bildeAlt || "").trim()
     };
 
-    const ny = id
-      ? kurs.map((k) => (k.id === id ? { ...k, ...nytt } : k))
-      : [...kurs, { id: nesteId(kurs), ...nytt }];
-
-    if (!lagreListe("kurs", ny)) return "Kunne ikke lagre. Bildet kan være for stort for nettleseren.";
-    kurs = ny;
-    visKurs();
+    try {
+      if (id) await api("PUT", "/api/admin/kurs/" + id, kurs);
+      else await api("POST", "/api/admin/kurs", kurs);
+    } catch (feil) {
+      return feil.message;
+    }
+    await oppdater();
   });
 
-  visKurs();
+  fyllValg().then(oppdater);
 }
 
 if (adminSide === "nyheter") {
@@ -739,5 +747,3 @@ if (adminSide === "pameldinger") {
 
   oppdater();
 }
-
-
