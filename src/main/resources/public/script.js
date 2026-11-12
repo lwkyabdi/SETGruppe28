@@ -1,4 +1,3 @@
-//MENY PÅ MOBIL
 const menyknapp = document.querySelector(".menyknapp");
 const mobilmeny = document.getElementById("mobilmeny");
 
@@ -10,32 +9,27 @@ menyknapp.addEventListener("click", function () {
   mobilmeny.hidden = erApen;
 });
 
-//SØK OG FILTER PÅ KURSOVERSIKTEN
-//Kjører bare på kurs.html
 const kursfilter = document.querySelector(".kursfilter");
 
 if (kursfilter) {
   const sokefelt = document.getElementById("kurs-sok");
   const temaValg = document.getElementById("tema-filter");
   const lokallagValg = document.getElementById("lokallag-filter");
-  const kurs = document.querySelectorAll("#kursliste > li");
   const antall = document.getElementById("antall-kurs");
   const ingenTreff = document.getElementById("ingen-treff");
 
-  //Hent valg fra adressen (f.eks. ?lokallag=moss)
   const adresse = new URLSearchParams(window.location.search);
   sokefelt.value = adresse.get("sok") || "";
   temaValg.value = adresse.get("tema") || "";
   lokallagValg.value = adresse.get("lokallag") || "";
 
-  //Vis bare kursene som passer
   function filtrerKurs() {
     const sok = sokefelt.value.trim().toLowerCase();
     const tema = temaValg.value;
     const lokallag = lokallagValg.value;
     let synlige = 0;
 
-    kurs.forEach(function (li) {
+    document.querySelectorAll("#kursliste > li").forEach(function (li) {
       const passerSok = li.textContent.toLowerCase().includes(sok);
       const passerTema = tema === "" || li.dataset.tema === tema;
       const passerLokallag = lokallag === "" || li.dataset.lokallag === lokallag;
@@ -49,61 +43,15 @@ if (kursfilter) {
     ingenTreff.hidden = synlige > 0;
   }
 
-  //Filtrer mens man skriver eller velger
   kursfilter.addEventListener("input", filtrerKurs);
   kursfilter.addEventListener("submit", function (hendelse) {
     hendelse.preventDefault();
     filtrerKurs();
   });
 
-  //Filtrer når siden lastes
   filtrerKurs();
 }
 
-//KURSENE
-//Demo-data for de seks kursene på kursoversikten. Erstattes av GET /api/kurs/{id} senere.
-//ledige = antall ledige plasser. Strikkekurset (id 2) er fullt, så det viser ventelisten.
-const KURS = {
-  1: { tittel: "Bunadssøm for nybegynnere", tema: "Bunad", lokallag: "Fredrikstad",
-    dato: "2024-09-20", tid: "18:00–21:00", varighet: "8 kvelder", sted: "Fredrikstad Husflidssenter, Nygårdsgt. 14",
-    kursleder: "Marit Andersen", malgruppe: "Voksne", niva: "Nybegynner", plasser: 8, ledige: 3, medlemspris: 1500, ordinaerpris: 2000,
-    beskrivelse: "Lær å sy din egen bunad fra bunnen av. Kurset passer deg som aldri har sydd bunad før. Vi går gjennom alt fra valg av stoff til ferdig plagg. Du vil lære tradisjonelle syteknikker og bli kjent med bunadens kulturhistorie i Østfold.",
-    utstyr: "Symaskin hvis du har, stoff og tråd." },
-  2: { tittel: "Strikk din egen genser", tema: "Strikking", lokallag: "Sarpsborg",
-    dato: "2024-09-27", tid: "10:00–14:00", varighet: "6 lørdager", sted: "Sarpsborg Husflidslag, Glengsgata 15",
-    kursleder: "Anne Berg", malgruppe: "Voksne", niva: "Litt erfaren", plasser: 8, ledige: 0, medlemspris: 1200, ordinaerpris: 1600,
-    beskrivelse: "Strikk en klassisk genser i ditt eget tempo. Du lærer å lese oppskrift, måle og strikke sammen, med god hjelp fra erfarne strikkere.",
-    utstyr: "Rundpinner nr. 3,5 og 4. Garn kan kjøpes på kurset." },
-  3: { tittel: "Vevkurs – grunnleggende båndbinding", tema: "Veving", lokallag: "Moss",
-    dato: "2024-10-05", tid: "10:00–15:00", varighet: "2 dager", sted: "Moss Husflidslag, vevstudioet",
-    kursleder: "Liv Johansen", malgruppe: "Alle", niva: "Nybegynner", plasser: 10, ledige: 6, medlemspris: 900, ordinaerpris: 1200,
-    beskrivelse: "Lær grunnleggende båndveving på bandgrind. Kurset passer for nybegynnere, og du går hjem med ditt eget bånd.",
-    utstyr: "Alt utstyr finnes i vevstudioet." },
-  4: { tittel: "Broderi og korssting – nybegynnerkurs", tema: "Brodering", lokallag: "Halden",
-    dato: "2024-10-12", tid: "13:00–16:00", varighet: "4 lørdager", sted: "Halden Husflidslag",
-    kursleder: "Eva Karlsen", malgruppe: "Alle", niva: "Nybegynner", plasser: 10, ledige: 8, medlemspris: 800, ordinaerpris: 1100,
-    beskrivelse: "Lær korssting og enkle broderisting. Du lager en liten løper med tradisjonelle mønstre fra Østfold.",
-    utstyr: "Broderisaks. Stoff og garn får du på kurset." },
-  5: { tittel: "Trearbeid – tradisjonell skjæring", tema: "Trearbeid", lokallag: "Fredrikstad",
-    dato: "2024-10-19", tid: "09:00–15:00", varighet: "1 hel lørdag", sted: "Fredrikstad Husflidssenter, Nygårdsgt. 14",
-    kursleder: "Per Olsen", malgruppe: "Voksne", niva: "Nybegynner", plasser: 6, ledige: 2, medlemspris: 1100, ordinaerpris: 1500,
-    beskrivelse: "Lær å skjære i tre med kniv og huljern. Du lager en smørkniv eller en liten skål i bjørk.",
-    utstyr: "Arbeidsklær. Verktøy kan lånes." },
-  6: { tittel: "Søm og enkel konfeksjon", tema: "Søm", lokallag: "Sarpsborg",
-    dato: "2024-11-02", tid: "10:00–14:00", varighet: "5 lørdager", sted: "Sarpsborg Husflidslag, Glengsgata 15",
-    kursleder: "Anne Berg", malgruppe: "Voksne", niva: "Nybegynner", plasser: 8, ledige: 5, medlemspris: 1100, ordinaerpris: 1500,
-    beskrivelse: "Lær å bruke symaskin og sy enkle plagg etter mønster, som et skjørt eller en pute.",
-    utstyr: "Symaskin hvis du har. Stoff kjøper du selv." }
-};
-
-//Finner kurset ut fra adressen (?id= eller ?kurs=). Uten nummer brukes kurs 1.
-function hentKursId(reserve) {
-  const adresse = new URLSearchParams(window.location.search);
-  const id = Number(adresse.get("id") || adresse.get("kurs") || reserve || 1);
-  return KURS[id] ? id : 1;
-}
-
-//Fyller alle elementer med data-kurs="..." med opplysninger om kurset
 function fyllKurs(kurs) {
   const kr = function (tall) { return tall.toLocaleString("nb-NO") + " kr"; };
   const verdier = {
@@ -121,19 +69,47 @@ function fyllKurs(kurs) {
   });
 }
 
-//KURSSIDEN
-//Kjører bare på kurs-detalj.html. Viser kurset fra ?id= i adressen.
-//Er kurset fullt, blir «Meld deg på» til «Sett meg på venteliste».
 const meldPaKnapp = document.getElementById("meld-pa-knapp");
 
 if (meldPaKnapp) {
-  const kursId = hentKursId();
-  const kurs = KURS[kursId];
+  visKursside();
+}
+
+async function visKursside() {
+  const kursId = Number(new URLSearchParams(window.location.search).get("id"));
+  const kurs = await hentKursFraApi(kursId);
+
+  if (!kurs) {
+    const main = document.querySelector("main");
+    const tittel = document.createElement("h1");
+    tittel.textContent = "Vi fant ikke kurset";
+    const tekst = document.createElement("p");
+    tekst.textContent = "Kurset finnes ikke, eller det er ikke lenger åpent for påmelding.";
+    const lenke = document.createElement("a");
+    lenke.href = "kurs.html";
+    lenke.className = "knapp knapp-primar";
+    lenke.textContent = "Se alle kurs";
+    main.replaceChildren(tittel, tekst, lenke);
+    document.title = "Fant ikke kurset – Østfold Husflidslag";
+    return;
+  }
+
   fyllKurs(kurs);
   document.title = kurs.tittel + " – Østfold Husflidslag";
   document.querySelector(".brodsmuler [aria-current]").href = "kurs-detalj.html?id=" + kursId;
 
-  //Plass-måleren øverst i påmeldingsboksen
+  const hovedbilde = document.querySelector(".kursdetalj-bilde img");
+  if (hovedbilde) {
+    hovedbilde.src = bildeAdresse(kurs.bildesti) || "bilder/hero.jpg";
+    hovedbilde.alt = kurs.bildealt || "";
+  }
+
+  document.querySelectorAll(".kursleder, [data-kurs='kursleder']").forEach(function (felt) {
+    felt.hidden = true;
+  });
+
+  visKontaktperson(kurs);
+
   const maler = document.getElementById("ledige-plasser");
   maler.max = kurs.plasser;
   maler.value = kurs.ledige;
@@ -141,48 +117,123 @@ if (meldPaKnapp) {
 
   meldPaKnapp.href = "pamelding.html?kurs=" + kursId;
 
+  let andre = [];
+  try {
+    andre = (await hentJson("/api/kurs/kommende"))
+      .filter(function (k) { return k.id !== kursId && k.ledigePlasser > 0; })
+      .sort(function (a, b) { return (b.tema === kurs.tema) - (a.tema === kurs.tema); });
+  } catch (feil) {
+    console.error(feil);
+  }
+  visAndreKurs(andre.slice(0, 2));
+
   if (kurs.ledige === 0) {
-    //Klassen kurs-fullt endrer farger og utseende i style.css
     document.querySelector("main").classList.add("kurs-fullt");
     document.querySelectorAll(".fullt-merke, .fullt-etikett, .fullt-banner").forEach(function (felt) {
       felt.hidden = false;
     });
 
-    //Stolpen viser at alle plassene er tatt
     document.querySelector(".ledige label").textContent = "Påmeldte";
     document.querySelector(".ledige span").textContent = kurs.plasser + " av " + kurs.plasser + " – fullt";
     maler.value = kurs.plasser;
     maler.textContent = "Fullt";
 
     meldPaKnapp.textContent = "Sett meg på venteliste";
-    meldPaKnapp.href += "&venteliste=ja";
     document.getElementById("venteliste-info").hidden = false;
 
-    //Forslag til kurs med ledige plasser, samme tema først (B7)
     const liste = document.getElementById("alternativ-liste");
-    Object.keys(KURS)
-      .map(Number)
-      .filter(function (id) { return KURS[id].ledige > 0; })
-      .sort(function (a, b) { return (KURS[b].tema === kurs.tema) - (KURS[a].tema === kurs.tema); })
-      .slice(0, 3)
-      .forEach(function (id) {
-        const lenke = document.createElement("a");
-        lenke.href = "kurs-detalj.html?id=" + id;
-        const tittel = document.createElement("strong");
-        tittel.textContent = KURS[id].tittel;
-        const info = document.createElement("span");
-        info.textContent = KURS[id].lokallag + " · " + KURS[id].ledige + " ledige plasser";
-        lenke.append(tittel, info);
-        const li = document.createElement("li");
-        li.append(lenke);
-        liste.append(li);
-      });
-    document.getElementById("ledige-alternativ").hidden = false;
+    liste.replaceChildren();
+    andre.slice(0, 3).forEach(function (k) {
+      const lenke = document.createElement("a");
+      lenke.href = "kurs-detalj.html?id=" + k.id;
+      const tittel = document.createElement("strong");
+      tittel.textContent = k.tittel;
+      const info = document.createElement("span");
+      info.textContent = kortnavn(k.lokallag) + " · " + k.ledigePlasser + " ledige plasser";
+      lenke.append(tittel, info);
+      const li = document.createElement("li");
+      li.append(lenke);
+      liste.append(li);
+    });
+    document.getElementById("ledige-alternativ").hidden = andre.length === 0;
   }
 }
 
-//PÅMELDING
-//Kjører bare på pamelding.html. Kurset hentes fra Java.
+function visKontaktperson(kurs) {
+  const boks = document.querySelector(".kurs-kontakt");
+  if (!boks) return;
+  const kontakt = kurs.kontakt;
+  if (!kontakt) {
+    boks.hidden = true;
+    return;
+  }
+
+  const bilde = boks.querySelector("img");
+  if (bilde) {
+    if (kontakt.bilde) {
+      bilde.src = bildeAdresse(kontakt.bilde);
+      bilde.onerror = function () { bilde.hidden = true; };
+    } else {
+      bilde.hidden = true;
+    }
+  }
+
+  boks.querySelector(".kurs-kontakt-navn").textContent = kontakt.navn;
+  boks.querySelector(".kurs-kontakt-rolle").textContent =
+    [kontakt.verv, fulltLagnavn(kurs.lokallag)].filter(Boolean).join(", ");
+
+  const liste = boks.querySelector("ul");
+  liste.replaceChildren();
+
+  if (kontakt.telefon) {
+    const tlf = document.createElement("a");
+    tlf.href = "tel:" + kontakt.telefon.replace(/\s/g, "");
+    const skjult = document.createElement("span");
+    skjult.className = "skjult";
+    skjult.textContent = " (ring " + kontakt.navn + ")";
+    tlf.append(kontakt.telefon, skjult);
+    const li = document.createElement("li");
+    li.append(tlf);
+    liste.append(li);
+  }
+
+  if (kontakt.epost) {
+    const epost = document.createElement("a");
+    epost.href = "mailto:" + kontakt.epost;
+    epost.textContent = kontakt.epost;
+    const li = document.createElement("li");
+    li.append(epost);
+    liste.append(li);
+  }
+}
+
+function visAndreKurs(andre) {
+  const seksjon = document.querySelector(".andre-kurs");
+  if (!seksjon) return;
+  if (andre.length === 0) {
+    seksjon.hidden = true;
+    return;
+  }
+
+  const liste = seksjon.querySelector("ul");
+  liste.replaceChildren();
+  andre.forEach(function (k) {
+    const lenke = document.createElement("a");
+    lenke.href = "kurs-detalj.html?id=" + k.id;
+    const lag = document.createElement("span");
+    lag.textContent = kortnavn(k.lokallag);
+    const tittel = document.createElement("strong");
+    tittel.textContent = k.tittel;
+    const tid = document.createElement("time");
+    if (k.dato) tid.dateTime = k.dato;
+    tid.textContent = datoTekst(k.dato);
+    lenke.append(lag, tittel, tid);
+    const li = document.createElement("li");
+    li.append(lenke);
+    liste.append(li);
+  });
+}
+
 const skjema = document.getElementById("pamelding-skjema");
 
 if (skjema) {
@@ -195,7 +246,6 @@ async function visPameldingsskjema() {
   const dinPris = document.getElementById("din-pris");
   const medlemsnummer = document.querySelectorAll(".medlemsnummer");
 
-  //Vis riktig pris og medlemsnummer når man velger medlemskap
   function oppdaterMedlemskap() {
     const valgt = skjema.querySelector('input[name="medlem"]:checked');
     if (!valgt) return;
@@ -207,15 +257,12 @@ async function visPameldingsskjema() {
     });
   }
 
-  //Fyll inn skjemaet igjen hvis man trykker "Tilbake" fra bekreftelsen.
-  //En påmelding som allerede er bekreftet slettes, så skjemaet blir tomt.
   let lagret = hentPamelding();
   if (lagret && lagret.bekreftet) {
     slettPamelding();
     lagret = null;
   }
 
-  //Kurset fra ?kurs= i adressen, eller fra påmeldingen hvis man kom tilbake
   const adresse = new URLSearchParams(window.location.search);
   const kursId = Number(adresse.get("kurs") || (lagret && lagret.kursId));
   const kurs = await hentKursFraApi(kursId);
@@ -226,7 +273,6 @@ async function visPameldingsskjema() {
     feilmelding.hidden = false;
     skjema.after(feilmelding);
 
-    //Skjul eksempelkurset i oppsummeringen, så det ikke ser ut som et ekte kurs
     const oppsummering = document.getElementById("oppsummering-tittel");
     if (oppsummering) oppsummering.closest("section, aside").hidden = true;
 
@@ -242,7 +288,6 @@ async function visPameldingsskjema() {
   prisboks.dataset.medlem = kurs.medlemspris.toLocaleString("nb-NO") + " kr";
   prisboks.dataset.ordinaer = kurs.ordinaerpris.toLocaleString("nb-NO") + " kr";
 
-  //Venteliste når kurset er fullt
   const erVenteliste = kurs.ledige === 0;
 
   if (erVenteliste) {
@@ -267,18 +312,15 @@ async function visPameldingsskjema() {
     if (hendelse.target.name === "medlem") oppdaterMedlemskap();
   });
 
-  //Fjern rød ramme når feltet blir riktig
   skjema.addEventListener("input", function (hendelse) {
     if (hendelse.target.checkValidity()) {
       hendelse.target.removeAttribute("aria-invalid");
     }
   });
 
-  //Sjekk skjemaet og gå videre til bekreftelsen
   skjema.addEventListener("submit", function (hendelse) {
     hendelse.preventDefault();
 
-    //Finn feltene som mangler eller er feil
     const ugyldige = Array.from(skjema.elements).filter(function (felt) {
       return felt.willValidate && !felt.checkValidity();
     });
@@ -297,7 +339,6 @@ async function visPameldingsskjema() {
       return;
     }
 
-    //Lagre opplysningene til neste side, med en ny, unik nøkkel
     const data = Object.fromEntries(new FormData(skjema));
     data.samtykke = skjema.elements.samtykke.checked;
     data.pris = dinPris.textContent;
@@ -310,8 +351,6 @@ async function visPameldingsskjema() {
   });
 }
 
-//BEKREFT PÅMELDING
-//Kjører bare på bekreft.html. Sender påmeldingen til Java.
 const bekreftSkjema = document.getElementById("bekreft-skjema");
 
 if (bekreftSkjema) {
@@ -323,20 +362,17 @@ async function visBekreftelse() {
   const knapp = document.getElementById("bekreft-knapp");
 
   if (!pamelding || !pamelding.nokkel) {
-    //Ingen påmelding: vis melding i stedet for tomt kort
     bekreftSkjema.hidden = true;
     document.getElementById("ingen-pamelding").hidden = false;
     return;
   }
 
-  //Feilmelding over knappen. Den finnes ikke i HTML-en, så vi lager den her.
   const feilmelding = document.createElement("p");
   feilmelding.className = "skjema-feil";
   feilmelding.setAttribute("role", "alert");
   feilmelding.hidden = true;
   knapp.before(feilmelding);
 
-  //Verdiene som skal inn i feltene med data-felt
   const felter = {
     navn: pamelding.fornavn + " " + pamelding.etternavn,
     epost: pamelding.epost,
@@ -350,19 +386,16 @@ async function visBekreftelse() {
     felt.textContent = felter[felt.dataset.felt] || "–";
   });
 
-  //Kurset personen melder seg på, hentet fra Java
   const kurs = await hentKursFraApi(pamelding.kursId);
   if (kurs) fyllKurs(kurs);
   document.querySelector("#tilbake a").href = "pamelding.html?kurs=" + pamelding.kursId;
 
-  //Venteliste: si nøyaktig hva knappen gjør
   if (pamelding.venteliste) {
     document.getElementById("bekreft-tittel").textContent = "Bekreft plass på ventelisten";
     knapp.textContent = "Sett meg på venteliste";
     document.title = "Bekreft venteliste – Østfold Husflidslag";
   }
 
-  //Send påmeldingen til Java. Knappen kan ikke trykkes to ganger mens vi venter.
   let sender = false;
 
   bekreftSkjema.addEventListener("submit", async function (hendelse) {
@@ -386,13 +419,11 @@ async function visBekreftelse() {
         return;
       }
 
-      //Lagret i Java: husk kvitteringen og gå videre
       pamelding.bekreftet = true;
       pamelding.kvittering = innhold;
       lagrePamelding(pamelding);
       window.location.href = bekreftSkjema.getAttribute("action");
     } catch (feil) {
-      //Ingen kontakt. Samme nøkkel brukes neste gang, så påmeldingen lagres ikke to ganger.
       console.error(feil);
       feilmelding.textContent = "Fikk ikke kontakt med serveren. Sjekk nettet og trykk på knappen igjen.";
       feilmelding.hidden = false;
@@ -403,7 +434,6 @@ async function visBekreftelse() {
   });
 }
 
-//Bare feltene Java tar imot, med riktige typer
 function tilPameldingJson(p) {
   return {
     nokkel: p.nokkel,
@@ -419,8 +449,6 @@ function tilPameldingJson(p) {
   };
 }
 
-//DU ER PÅMELDT
-//Kjører bare på pameldt.html. Viser svaret fra Java.
 const pameldt = document.getElementById("pameldt");
 
 if (pameldt) {
@@ -428,14 +456,12 @@ if (pameldt) {
   const kvittering = pamelding && pamelding.bekreftet ? pamelding.kvittering : null;
 
   if (kvittering) {
-    //Vis e-posten personen meldte seg på med (textContent, ikke innerHTML, fordi brukeren har skrevet den)
     document.getElementById("pameldt-epost").textContent = pamelding.epost;
     fyllKvittering(kvittering);
 
     document.getElementById("pameldt-melding").textContent =
       "Påmeldingen til " + kvittering.kursTittel + " er registrert (referanse " + kvittering.referanse + ")";
 
-    //Venteliste: personen har ikke plass ennå, og det må stå tydelig
     if (kvittering.status === "venteliste") {
       document.getElementById("pameldt-tittel").textContent = "Du står på venteliste";
       document.getElementById("pameldt-melding").textContent =
@@ -444,16 +470,13 @@ if (pameldt) {
       document.title = "Du står på venteliste – Østfold Husflidslag";
     }
 
-    //Personopplysningene trengs ikke lenger i nettleseren
     lagrePamelding({ bekreftet: true, epost: pamelding.epost, kvittering: kvittering });
   } else {
-    //Ingen bekreftet påmelding: vis melding i stedet
     pameldt.hidden = true;
     document.getElementById("ingen-pamelding").hidden = false;
   }
 }
 
-//Fyller kursfeltene på pameldt.html med opplysningene fra kvitteringen
 function fyllKvittering(kvittering) {
   const verdier = {
     tittel: kvittering.kursTittel,
@@ -469,101 +492,14 @@ function fyllKvittering(kvittering) {
   });
 }
 
-//NYHETSARTIKKEL
-//Kjører bare på nyhet.html
-//Nyhetene ligger her til backend er på plass. Nyhet 1 står også i HTML-en.
 const artikkel = document.getElementById("artikkel");
 
 if (artikkel) {
-  const nyheter = [
-    {
-      id: 1,
-      dato: "2024-09-02",
-      datoTekst: "2. september 2024",
-      lokallag: "Fredrikstad Husflidslag",
-      tittel: "Nytt bunadskurs i Fredrikstad – meld deg på nå!",
-      ingress: "Vi åpner nå påmelding til høstens bunadskurs i Fredrikstad. Det er kun 8 plasser, og de fylles raskt.",
-      tekst: [
-        "Vi er glade for å melde at Fredrikstad Husflidslag setter opp nytt bunadskurs til høsten. Kurset starter 20. september og går over 8 tirsdagskvelder.",
-        "Kursleder er den erfarne Marit Andersen, som har over 20 år med bunadssøm bak seg. Hun tar imot alle nivåer og har stor tålmodighet med nybegynnere.",
-        "Dette er en ypperlig mulighet til å lære en gammel håndverkstradisjon i et hyggelig miljø. Mange av deltakerne fra tidligere kurs fremhever de sosiale sidene som noe av det beste med å delta.",
-        "Meld deg på så snart som mulig – det er allerede 5 av 8 plasser tatt."
-      ]
-    },
-    {
-      id: 2,
-      dato: "2024-09-05",
-      datoTekst: "5. september 2024",
-      lokallag: "Moss Husflidslag",
-      tittel: "Ledige plasser på vevkurs i Moss",
-      ingress: "Det er fortsatt ledige plasser på høstens vevkurs i Moss. Et flott kurs for deg som vil lære tradisjonell båndbinding.",
-      tekst: [
-        "Moss Husflidslag arrangerer grunnkurs i båndveving 5. og 6. oktober. Kurset passer for nybegynnere, og alt utstyr finnes i vevstudioet vårt.",
-        "Du lærer å sette opp en båndvev, velge garn og veve enkle mønstre. Etter to dager har du et ferdig bånd med deg hjem.",
-        "Det er 6 ledige plasser igjen. Meld deg på via kurssiden."
-      ]
-    },
-    {
-      id: 3,
-      dato: "2024-08-28",
-      datoTekst: "28. august 2024",
-      lokallag: "Østfold Husflidslag",
-      tittel: "Høstprogrammet er klart – se alle kurs og aktiviteter",
-      ingress: "Vi har satt opp et rikt høstprogram med kurs innen strikking, veving, søm, broderi, bunad og trearbeid.",
-      tekst: [
-        "Høstens program er nå publisert, og lokallagene i hele Østfold har satt opp kurs for både nybegynnere og erfarne håndverkere.",
-        "Nytt i år er flere helgekurs og et eget kurs i tradisjonell treskjæring i Fredrikstad.",
-        "Du kan delta på kurs i alle lokallag, uansett hvor du bor. Se hele oversikten under Kurs og aktiviteter."
-      ]
-    },
-    {
-      id: 4,
-      dato: "2024-08-20",
-      datoTekst: "20. august 2024",
-      lokallag: "Fredrikstad Husflidslag",
-      tittel: "Velkommen til medlemskveld i september",
-      ingress: "Alle medlemmer inviteres til en hyggelig sammenkomst hos Fredrikstad Husflidslag 14. september.",
-      tekst: [
-        "Vi samles i lokalene våre i Nygårdsgata 14 lørdag 14. september klokken 18.",
-        "Det blir kaffe og kake, en kort gjennomgang av høstens kurs og god tid til å vise frem det du har laget.",
-        "Ta gjerne med en venn som er nysgjerrig på husflid. Alle er velkomne."
-      ]
-    }
-  ];
+  visNyhet();
 
-  //Finn nyheten fra adressen (f.eks. nyhet.html?id=2)
-  const id = Number(new URLSearchParams(window.location.search).get("id")) || 1;
-  const nyhet = nyheter.find(function (n) { return n.id === id; });
-
-  if (nyhet) {
-    document.title = nyhet.tittel + " – Østfold Husflidslag";
-    document.getElementById("artikkel-tittel").textContent = nyhet.tittel;
-    document.getElementById("artikkel-ingress").textContent = nyhet.ingress;
-    document.getElementById("artikkel-lokallag").textContent = nyhet.lokallag;
-
-    const dato = document.getElementById("artikkel-dato");
-    dato.textContent = nyhet.datoTekst;
-    dato.setAttribute("datetime", nyhet.dato);
-
-    const brodsmule = document.getElementById("brodsmule-tittel");
-    brodsmule.textContent = nyhet.tittel;
-    brodsmule.href = "nyhet.html?id=" + nyhet.id;
-
-    //Bytt ut avsnittene
-    const tekst = document.getElementById("artikkel-tekst");
-    tekst.replaceChildren();
-    nyhet.tekst.forEach(function (avsnitt) {
-      const p = document.createElement("p");
-      p.textContent = avsnitt;
-      tekst.append(p);
-    });
-  }
-
-  //Del på Facebook: lenken får adressen til denne siden
   const delFacebook = document.getElementById("del-facebook");
   delFacebook.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href);
 
-  //Del på Instagram: Instagram har ingen del-lenke, så vi kopierer adressen
   const delInstagram = document.getElementById("del-instagram");
   const delMelding = document.getElementById("del-melding");
 
@@ -577,22 +513,18 @@ if (artikkel) {
   });
 }
 
-//BLI MEDLEM-SKJEMA
-//Kjører bare på bli-medlem.html
 const medlemSkjema = document.getElementById("medlem-skjema");
 
 if (medlemSkjema) {
   const medlemFeil = document.getElementById("medlem-feil");
   const medlemTakk = document.getElementById("medlem-takk");
 
-  //Fjern rød ramme når feltet blir riktig
   medlemSkjema.addEventListener("input", function (hendelse) {
     if (hendelse.target.checkValidity()) {
       hendelse.target.removeAttribute("aria-invalid");
     }
   });
 
-  //Sjekk skjemaet og vis takk
   medlemSkjema.addEventListener("submit", function (hendelse) {
     hendelse.preventDefault();
 
@@ -614,7 +546,6 @@ if (medlemSkjema) {
       return;
     }
 
-    //Sendes ikke noe sted ennå. Det kommer med backend.
     const navn = document.getElementById("medlem-navn").value.trim();
     const lokallag = document.getElementById("medlem-lokallag");
     const lagNavn = lokallag.options[lokallag.selectedIndex].text;
@@ -626,13 +557,10 @@ if (medlemSkjema) {
   });
 }
 
-//LAGRE PÅMELDINGEN MELLOM SIDENE
-//sessionStorage husker data til fanen lukkes. Erstattes av backend senere.
 function lagrePamelding(data) {
   try {
     sessionStorage.setItem("pamelding", JSON.stringify(data));
   } catch (feil) {
-    //Nettleseren tillater ikke lagring, f.eks. i privat modus
   }
 }
 
@@ -648,12 +576,9 @@ function slettPamelding() {
   try {
     sessionStorage.removeItem("pamelding");
   } catch (feil) {
-    //Ingenting å slette
   }
 }
 
-//HENTE DATA FRA JAVA
-//Felles hjelpefunksjon: henter JSON fra en adresse i API-et
 async function hentJson(adresse) {
   const svar = await fetch(adresse);
   if (!svar.ok) {
@@ -662,12 +587,10 @@ async function hentJson(adresse) {
   return svar.json();
 }
 
-//"Fredrikstad Husflidslag" → "Fredrikstad"
 function kortnavn(navn) {
   return (navn || "").replace(" Husflidslag", "");
 }
 
-//Gjør et kurs fra Java om til formatet fyllKurs() forventer
 function tilKursVisning(k) {
   return {
     id: k.id,
@@ -693,7 +616,6 @@ function tilKursVisning(k) {
   };
 }
 
-//Henter ett kurs fra Java. Gir null hvis kurset ikke finnes.
 async function hentKursFraApi(id) {
   if (!Number.isInteger(id) || id <= 0) return null;
   try {
@@ -704,3 +626,424 @@ async function hentKursFraApi(id) {
   }
 }
 
+function bildeAdresse(sti) {
+  if (!sti) return "";
+  return sti.includes("/") ? sti : "bilder/" + sti;
+}
+
+function fulltLagnavn(navn) {
+  return kortnavn(navn) + " Husflidslag";
+}
+
+async function visLokallag() {
+  let lagene;
+  try {
+    lagene = await hentJson("/api/lokallag");
+  } catch (feil) {
+    console.error(feil);
+    return;
+  }
+
+  document.querySelectorAll("#lokallag, #lokallag-mobil").forEach(function (velger) {
+    velger.replaceChildren();
+    lagene.forEach(function (lag) {
+      velger.add(new Option(kortnavn(lag.navn), lag.slug));
+    });
+  });
+
+  const filter = document.getElementById("lokallag-filter");
+  if (filter) {
+    const valgt = new URLSearchParams(window.location.search).get("lokallag") || "";
+    filter.replaceChildren(new Option("Alle lokallag", ""));
+    lagene.forEach(function (lag) {
+      filter.add(new Option(kortnavn(lag.navn), lag.slug));
+    });
+    filter.value = valgt;
+    filter.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  const liste = document.querySelector("ul.lokallag");
+  if (liste) {
+    liste.replaceChildren();
+    lagene.forEach(function (lag) {
+      const lenke = document.createElement("a");
+      lenke.href = "kurs.html?lokallag=" + encodeURIComponent(lag.slug);
+      const sterk = document.createElement("strong");
+      sterk.textContent = kortnavn(lag.navn);
+      lenke.append(sterk, " Husflidslag");
+
+      const li = document.createElement("li");
+      li.append(lenke);
+      liste.append(li);
+    });
+  }
+
+  const kortliste = document.querySelector("ul.lag-liste");
+  if (kortliste) {
+    kortliste.replaceChildren();
+    lagene.forEach(function (lag) {
+      const kort = document.createElement("article");
+      kort.className = "kort lag-kort";
+
+      if (lag.bildesti) {
+        const figur = document.createElement("figure");
+        const bilde = document.createElement("img");
+        bilde.src = bildeAdresse(lag.bildesti);
+        bilde.alt = "";
+        figur.append(bilde);
+        kort.append(figur);
+      }
+
+      const tittel = document.createElement("h3");
+      tittel.textContent = fulltLagnavn(lag.navn);
+
+      const tekst = document.createElement("p");
+      tekst.textContent = lag.beskrivelse || "";
+
+      const lenke = document.createElement("a");
+      lenke.href = "kurs.html?lokallag=" + encodeURIComponent(lag.slug);
+      lenke.className = "les-mer";
+      const skjult = document.createElement("span");
+      skjult.className = "skjult";
+      skjult.textContent = " hos " + fulltLagnavn(lag.navn);
+      lenke.append("Se kurs", skjult);
+
+      kort.append(tittel, tekst, lenke);
+      const li = document.createElement("li");
+      li.append(kort);
+      kortliste.append(li);
+    });
+  }
+}
+
+visLokallag();
+
+function temaVerdi(tema) {
+  const verdi = (tema || "").toLowerCase().replace(/ø/g, "o").replace(/æ/g, "ae").replace(/å/g, "a");
+  const kjente = ["bunad", "strikking", "veving", "brodering", "trearbeid", "som"];
+  return kjente.includes(verdi) ? verdi : "andre";
+}
+
+function kroner(tall) {
+  return Number(tall).toLocaleString("nb-NO") + " kr";
+}
+
+function datoTekst(dato) {
+  if (!dato) return "Dato kommer";
+  return new Date(dato + "T12:00").toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric" });
+}
+
+function plasser(k) {
+  if (k.ledigePlasser === 0) return { tekst: "Fullt", klasse: "plasser-fullt" };
+  const tekst = k.ledigePlasser + " av " + k.kapasitet + " ledige";
+  return { tekst: tekst, klasse: k.ledigePlasser <= 3 ? "plasser-faa" : "plasser-ledig" };
+}
+
+function lagKurskort(k, slugFor) {
+  const li = document.createElement("li");
+  li.dataset.tema = temaVerdi(k.tema);
+  li.dataset.lokallag = slugFor[kortnavn(k.lokallag).toLowerCase()] || "";
+
+  const kort = document.createElement("article");
+  kort.className = "kort kurs";
+
+  const figur = document.createElement("figure");
+  const bilde = document.createElement("img");
+  bilde.src = bildeAdresse(k.bildesti) || "bilder/hero.jpg";
+  bilde.alt = k.bildealt || "";
+  figur.append(bilde);
+
+  const tema = document.createElement("p");
+  tema.className = "kurs-tema";
+  tema.textContent = k.tema;
+
+  const lag = document.createElement("p");
+  lag.className = "kurs-lokallag";
+  lag.textContent = fulltLagnavn(k.lokallag);
+
+  const tittel = document.createElement("h3");
+  tittel.textContent = k.tittel;
+
+  const info = document.createElement("ul");
+  info.className = "kurs-info";
+  const datoLi = document.createElement("li");
+  datoLi.className = "dato";
+  const tid = document.createElement("time");
+  if (k.dato) tid.dateTime = k.dato;
+  tid.textContent = datoTekst(k.dato);
+  datoLi.append(tid);
+  const tidLi = document.createElement("li");
+  tidLi.className = "tid";
+  tidLi.textContent = [k.tidspunkt, k.varighet].filter(Boolean).join(" · ");
+  info.append(datoLi, tidLi);
+
+  const bunn = document.createElement("footer");
+  const p = plasser(k);
+  const plasserTekst = document.createElement("p");
+  plasserTekst.className = "plasser " + p.klasse;
+  plasserTekst.textContent = p.tekst;
+  const pris = document.createElement("p");
+  pris.className = "pris";
+  const sterk = document.createElement("strong");
+  sterk.textContent = kroner(k.medlemspris);
+  pris.append(sterk, " for medlem");
+  bunn.append(plasserTekst, pris);
+
+  const lenke = document.createElement("a");
+  lenke.href = "kurs-detalj.html?id=" + k.id;
+  const fullt = k.ledigePlasser === 0;
+  lenke.className = "knapp " + (fullt ? "knapp-gra" : "knapp-primar");
+  const skjult = document.createElement("span");
+  skjult.className = "skjult";
+  skjult.textContent = ": " + k.tittel;
+  lenke.append(fullt ? "Se kurset og ventelisten" : "Se kurset", skjult);
+
+  kort.append(figur, tema, lag, tittel, info, bunn, lenke);
+  li.append(kort);
+  return li;
+}
+
+async function visKurs() {
+  const kursliste = document.getElementById("kursliste");
+  const erForside = /\/(index\.html)?$/.test(window.location.pathname);
+  const forsideTittel = erForside ? document.getElementById("kurs-tittel") : null;
+  const forsideliste = forsideTittel ? forsideTittel.closest("section").querySelector(".kortliste") : null;
+  if (!kursliste && !forsideliste) return;
+
+  let kurs, lagene;
+  try {
+    [kurs, lagene] = await Promise.all([hentJson("/api/kurs/kommende"), hentJson("/api/lokallag")]);
+  } catch (feil) {
+    console.error(feil);
+    return;
+  }
+
+  const slugFor = {};
+  lagene.forEach(function (lag) {
+    slugFor[kortnavn(lag.navn).toLowerCase()] = lag.slug;
+  });
+
+  if (kursliste) {
+    kursliste.replaceChildren(...kurs.map(function (k) { return lagKurskort(k, slugFor); }));
+    document.querySelector(".kursfilter").dispatchEvent(new Event("input"));
+  }
+
+  if (forsideliste) {
+    forsideliste.replaceChildren(...kurs.slice(0, 3).map(function (k) { return lagKurskort(k, slugFor); }));
+  }
+}
+
+visKurs();
+
+function lagNyhetskort(n) {
+  const kort = document.createElement("article");
+  kort.className = "kort nyhet";
+
+  const figur = document.createElement("figure");
+  const bilde = document.createElement("img");
+  bilde.src = bildeAdresse(n.bildesti) || "bilder/hero.jpg";
+  bilde.alt = n.bildealt || "";
+  figur.append(bilde);
+
+  const meta = document.createElement("p");
+  meta.className = "nyhet-meta";
+  const tid = document.createElement("time");
+  tid.dateTime = n.dato;
+  tid.textContent = n.datoTekst;
+  const lag = document.createElement("span");
+  lag.textContent = kortnavn(n.lokallag);
+  meta.append(tid, " ", lag);
+
+  const tittel = document.createElement("h3");
+  tittel.textContent = n.tittel;
+
+  const ingress = document.createElement("p");
+  ingress.textContent = n.ingress;
+
+  const lenke = document.createElement("a");
+  lenke.href = "nyhet.html?id=" + n.id;
+  lenke.className = "les-mer";
+  const skjult = document.createElement("span");
+  skjult.className = "skjult";
+  skjult.textContent = ": " + n.tittel;
+  lenke.append("Les mer", skjult);
+
+  kort.append(figur, meta, tittel, ingress, lenke);
+  const li = document.createElement("li");
+  li.append(kort);
+  return li;
+}
+
+function fyllNyhetsliste(liste, nyheter) {
+  if (nyheter.length === 0) {
+    const li = document.createElement("li");
+    const tekst = document.createElement("p");
+    tekst.textContent = "Det er ingen nyheter ennå.";
+    li.append(tekst);
+    liste.replaceChildren(li);
+    return;
+  }
+  liste.replaceChildren(...nyheter.map(lagNyhetskort));
+}
+
+async function visNyheter() {
+  const aktuelt = document.querySelector("ul.nyhetsliste");
+  const forsideTittel = document.getElementById("nytt-tittel");
+  const forsideliste = forsideTittel ? forsideTittel.closest("section").querySelector(".kortliste") : null;
+  if (!aktuelt && !forsideliste) return;
+
+  let nyheter;
+  try {
+    nyheter = await hentJson("/api/nyheter");
+  } catch (feil) {
+    console.error(feil);
+    return;
+  }
+
+  if (aktuelt) fyllNyhetsliste(aktuelt, nyheter);
+  if (forsideliste) fyllNyhetsliste(forsideliste, nyheter.slice(0, 3));
+}
+
+visNyheter();
+
+async function visNyhet() {
+  const id = Number(new URLSearchParams(window.location.search).get("id"));
+  let nyhet = null;
+  if (Number.isInteger(id) && id > 0) {
+    try {
+      nyhet = await hentJson("/api/nyheter/" + id);
+    } catch (feil) {
+      console.error(feil);
+    }
+  }
+
+  if (!nyhet) {
+    const main = document.querySelector("main");
+    const tittel = document.createElement("h1");
+    tittel.textContent = "Vi fant ikke nyheten";
+    const tekst = document.createElement("p");
+    tekst.textContent = "Nyheten finnes ikke, eller den er ikke publisert.";
+    const lenke = document.createElement("a");
+    lenke.href = "aktuelt.html";
+    lenke.className = "knapp knapp-primar";
+    lenke.textContent = "Se alle nyheter";
+    main.replaceChildren(tittel, tekst, lenke);
+    document.title = "Fant ikke nyheten – Østfold Husflidslag";
+    return;
+  }
+
+  document.title = nyhet.tittel + " – Østfold Husflidslag";
+  document.getElementById("artikkel-tittel").textContent = nyhet.tittel;
+  document.getElementById("artikkel-ingress").textContent = nyhet.ingress;
+  document.getElementById("artikkel-lokallag").textContent = nyhet.lokallag;
+
+  const dato = document.getElementById("artikkel-dato");
+  dato.textContent = nyhet.datoTekst;
+  dato.setAttribute("datetime", nyhet.dato);
+
+  const brodsmule = document.getElementById("brodsmule-tittel");
+  brodsmule.textContent = nyhet.tittel;
+  brodsmule.href = "nyhet.html?id=" + nyhet.id;
+
+  const bilde = document.querySelector(".artikkel-bilde img");
+  if (bilde) {
+    if (nyhet.bildesti) {
+      bilde.src = bildeAdresse(nyhet.bildesti);
+      bilde.alt = nyhet.bildealt || "";
+    } else {
+      bilde.closest("figure").hidden = true;
+    }
+  }
+
+  const tekst = document.getElementById("artikkel-tekst");
+  tekst.replaceChildren();
+  (nyhet.innhold || "").split(/\n\s*\n/).forEach(function (avsnitt) {
+    if (!avsnitt.trim()) return;
+    const p = document.createElement("p");
+    p.textContent = avsnitt.trim();
+    tekst.append(p);
+  });
+}
+
+function lagPersonkort(p) {
+  const kort = document.createElement("article");
+  kort.className = "person";
+
+  if (p.bilde) {
+    const bilde = document.createElement("img");
+    bilde.src = bildeAdresse(p.bilde);
+    bilde.alt = "";
+    bilde.onerror = function () { bilde.hidden = true; };
+    kort.append(bilde);
+  }
+
+  const navn = document.createElement("h3");
+  navn.textContent = p.navn;
+  kort.append(navn);
+
+  if (p.verv) {
+    const rolle = document.createElement("p");
+    rolle.className = "person-rolle";
+    rolle.textContent = p.verv;
+    kort.append(rolle);
+  }
+
+  if (p.sted) {
+    const sted = document.createElement("p");
+    sted.className = "person-sted";
+    sted.textContent = p.sted;
+    kort.append(sted);
+  }
+
+  const kontakt = document.createElement("ul");
+  kontakt.className = "person-kontakt";
+
+  if (p.telefon) {
+    const tlf = document.createElement("a");
+    tlf.href = "tel:" + p.telefon.replace(/\s/g, "");
+    tlf.textContent = p.telefon;
+    const li = document.createElement("li");
+    li.append("Tlf: ", tlf);
+    kontakt.append(li);
+  }
+
+  if (p.epost) {
+    const epost = document.createElement("a");
+    epost.href = "mailto:" + p.epost;
+    epost.textContent = p.epost;
+    const li = document.createElement("li");
+    li.append("E-post: ", epost);
+    kontakt.append(li);
+  }
+
+  kort.append(kontakt);
+  const li = document.createElement("li");
+  li.append(kort);
+  return li;
+}
+
+async function visKontaktpersoner() {
+  const liste = document.querySelector("ul.personer");
+  if (!liste) return;
+
+  let personer;
+  try {
+    personer = await hentJson("/api/kontaktpersoner");
+  } catch (feil) {
+    console.error(feil);
+    return;
+  }
+
+  if (personer.length === 0) {
+    const li = document.createElement("li");
+    const tekst = document.createElement("p");
+    tekst.textContent = "Kontaktpersonene kommer snart. Du kan kontakte oss på telefon eller e-post nederst på siden.";
+    li.append(tekst);
+    liste.replaceChildren(li);
+    return;
+  }
+
+  liste.replaceChildren(...personer.map(lagPersonkort));
+}
+
+visKontaktpersoner();
