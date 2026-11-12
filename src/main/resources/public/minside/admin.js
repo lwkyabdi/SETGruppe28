@@ -317,7 +317,7 @@ if (adminSide === "kurs") {
   const velgLag = document.getElementById("kurs-lokallag");
   const velgKontakt = document.getElementById("kurs-kontaktperson");
 
-  const STATUS = { PUBLISERT: "Publisert", KLADD: "Kladd" };
+  const STATUS = { PUBLISERT: "Publisert", KLADD: "Kladd", AVLYST: "Avlyst" };
 
   skjema.addEventListener("input", () => {
     const start = skjema.elements.starttid.value;

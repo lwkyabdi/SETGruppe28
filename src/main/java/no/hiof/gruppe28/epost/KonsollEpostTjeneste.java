@@ -6,11 +6,16 @@ public class KonsollEpostTjeneste implements EpostTjeneste {
 
     @Override
     public void sendBekreftelse(String mottaker, PameldingKvittering kvittering) {
+        sendMelding(mottaker, BekreftelsesTekst.emne(kvittering), BekreftelsesTekst.tekst(kvittering));
+    }
+
+    @Override
+    public void sendMelding(String mottaker, String emne, String tekst) {
         System.out.println("----- E-POST (ikke sendt, bare vist) -----");
         System.out.println("Til: " + mottaker);
-        System.out.println("Emne: " + BekreftelsesTekst.emne(kvittering));
+        System.out.println("Emne: " + emne);
         System.out.println();
-        System.out.println(BekreftelsesTekst.tekst(kvittering));
+        System.out.println(tekst);
         System.out.println("------------------------------------------");
     }
 }

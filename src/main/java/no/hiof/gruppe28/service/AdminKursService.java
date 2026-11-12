@@ -5,6 +5,7 @@ import no.hiof.gruppe28.dto.KursSkjema;
 import no.hiof.gruppe28.model.AdminKurs;
 import no.hiof.gruppe28.model.KursData;
 import no.hiof.gruppe28.repository.AdminKursRepository;
+import no.hiof.gruppe28.repository.DatabaseException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,7 +22,7 @@ public class AdminKursService {
         this.repository = repository;
     }
 
-    // Egne kurs, også kladder, sortert etter dato (kurs uten dato sist)
+
     public List<AdminKurs> alle(InnloggetBruker bruker) {
         return repository.finnAlle(lagFilter(bruker)).stream()
             .sorted(Comparator.comparing(AdminKurs::dato, Comparator.nullsLast(Comparator.naturalOrder()))
@@ -34,12 +35,26 @@ public class AdminKursService {
     }
 
     public long opprett(InnloggetBruker bruker, KursSkjema skjema) {
-        return repository.opprett(valider(bruker, skjema));
+        KursData data = valider(bruker, skjema);
+        if ("AVLYST".equals(data.status())) {
+            throw new ApiException(400, "Et nytt kurs kan ikke være avlyst.");
+        }
+        return repository.opprett(data);
     }
 
     public void oppdater(InnloggetBruker bruker, long id, KursSkjema skjema) {
         finnEget(bruker, id);
-        if (!repository.oppdater(id, valider(bruker, skjema))) {
+        KursData data = valider(bruker, skjema);
+        boolean lagret;
+        try {
+            lagret = repository.oppdater(id, data);
+        } catch (DatabaseException e) {
+            if ("AVLYST".equals(data.status())) {
+                throw new ApiException(503, "Avlysning virker ikke ennå: databasen må først godta statusen AVLYST.");
+            }
+            throw e;
+        }
+        if (!lagret) {
             throw new ApiException(409, "Kapasiteten kan ikke være lavere enn antall påmeldte.");
         }
     }
@@ -51,7 +66,7 @@ public class AdminKursService {
         }
     }
 
-    // Sjekker alle feltene og gjør skjemaet om til det som lagres
+
     private KursData valider(InnloggetBruker bruker, KursSkjema s) {
         if (s == null) {
             throw new ApiException(400, "Kurset mangler opplysninger.");
@@ -69,8 +84,8 @@ public class AdminKursService {
         }
 
         String status = tekst(s.status(), "Status", 20);
-        if (!status.equals("KLADD") && !status.equals("PUBLISERT")) {
-            throw new ApiException(400, "Status må være KLADD eller PUBLISERT.");
+        if (!status.equals("KLADD") && !status.equals("PUBLISERT") && !status.equals("AVLYST")) {
+            throw new ApiException(400, "Status må være KLADD, PUBLISERT eller AVLYST.");
         }
 
         if (s.kontaktId() == null || !repository.kontaktpersonFinnes(s.kontaktId())) {
@@ -99,7 +114,7 @@ public class AdminKursService {
         );
     }
 
-    // LOKALLAG lager alltid kurs for sitt eget lag. ADMIN må velge et lag som finnes.
+
     private Long riktigLag(InnloggetBruker bruker, Long valgt) {
         if (!"ADMIN".equals(bruker.rolle())) {
             Long eget = lagFilter(bruker);
@@ -147,13 +162,13 @@ public class AdminKursService {
             throw new ApiException(400, navn + " må fylles ut og kan ikke være negativ.");
         }
         if (verdi.compareTo(new BigDecimal("99999999.99")) > 0
-                || verdi.stripTrailingZeros().scale() > 2) {
+            || verdi.stripTrailingZeros().scale() > 2) {
             throw new ApiException(400, navn + " kan ha maks to desimaler og være høyst 99999999,99.");
         }
         return verdi.setScale(2);
     }
 
-    // ADMIN ser alle lag (null). LOKALLAG ser bare sitt eget.
+
     private static Long lagFilter(InnloggetBruker bruker) {
         if ("ADMIN".equals(bruker.rolle())) {
             return null;
@@ -169,4 +184,3 @@ public class AdminKursService {
             || (bruker.lokallagId() != null && Objects.equals(bruker.lokallagId(), kursetsLag));
     }
 }
-
