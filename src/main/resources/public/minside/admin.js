@@ -167,7 +167,7 @@ function kobleDialog(dialog, vedLagring) {
     if (hendelse.target.checkValidity()) hendelse.target.removeAttribute("aria-invalid");
   });
 
-  skjema.addEventListener("submit", (hendelse) => {
+  skjema.addEventListener("submit", async (hendelse) => {
     hendelse.preventDefault();
 
     let forsteFeil = null;
@@ -184,7 +184,14 @@ function kobleDialog(dialog, vedLagring) {
       return;
     }
 
-    const melding = vedLagring(Object.fromEntries(new FormData(skjema)));
+    const knapp = skjema.querySelector('button[type="submit"]');
+    if (knapp) knapp.disabled = true;
+    let melding;
+    try {
+      melding = await vedLagring(Object.fromEntries(new FormData(skjema)));
+    } finally {
+      if (knapp) knapp.disabled = false;
+    }
     if (melding) {
       feil.textContent = melding;
       feil.hidden = false;
@@ -257,6 +264,22 @@ function lagMiniBilde(rad) {
   img.alt = "";
   img.className = "admin-mini-bilde";
   return img;
+}
+
+async function api(metode, sti, data) {
+  const valg = { method: metode, headers: {} };
+  if (data !== undefined) {
+    valg.headers["Content-Type"] = "application/json";
+    valg.body = JSON.stringify(data);
+  }
+  const svar = await fetch(sti, valg);
+  if (svar.status === 401) {
+    location.replace("admin.html");
+    throw new Error("Du er ikke logget inn.");
+  }
+  const innhold = await svar.json().catch(() => ({}));
+  if (!svar.ok) throw new Error(innhold.melding || "Noe gikk galt. Prøv igjen.");
+  return innhold;
 }
 
 const innloggingSkjema = document.getElementById("innlogging-skjema");
@@ -497,39 +520,61 @@ if (adminSide === "nyheter") {
 }
 
 if (adminSide === "pameldinger") {
-  const kurs = hentListe("kurs", DEMO_KURS);
-  let pameldinger = hentListe("pameldinger", DEMO_PAMELDINGER);
   const rader = document.getElementById("pamelding-rader");
   const tom = document.getElementById("pamelding-tom");
   const antall = document.getElementById("pamelding-antall");
   const filter = document.getElementById("filter-kurs");
+  const melding = document.getElementById("pamelding-melding");
+  let kurs = [];
 
-  kurs.forEach((k) => filter.add(new Option(k.tittel, k.id)));
+  function visMelding(tekst) {
+    melding.textContent = tekst;
+    melding.hidden = false;
+  }
 
-  const valgtKurs = new URLSearchParams(location.search).get("kurs");
-  if (valgtKurs) filter.value = valgtKurs;
+  async function hentKurs() {
+    try {
+      kurs = await api("GET", "/api/admin/kurs");
+    } catch (feil) {
+      visMelding(feil.message);
+      return;
+    }
+    const valgtKurs = filter.value || new URLSearchParams(location.search).get("kurs");
+    filter.replaceChildren(new Option("Alle kurs", ""));
+    velgKurs.replaceChildren(new Option("Velg kurs", ""));
+    kurs.forEach((k) => {
+      filter.add(new Option(k.tittel, k.id));
+      if (k.status === "PUBLISERT") velgKurs.add(new Option(k.tittel, k.id));
+    });
+    if (valgtKurs) filter.value = valgtKurs;
+  }
 
-  const kursNavn = (id) => (kurs.find((k) => k.id === id) || {}).tittel || "Slettet kurs";
+  async function visPameldinger() {
+    const kursId = filter.value;
+    let pameldinger;
+    try {
+      pameldinger = await api("GET", "/api/admin/pameldinger" + (kursId ? "?kurs=" + kursId : ""));
+    } catch (feil) {
+      visMelding(feil.message);
+      return;
+    }
 
-  function visPameldinger() {
     rader.replaceChildren();
-    const kursId = Number(filter.value);
-    const synlige = pameldinger
-      .filter((p) => !kursId || p.kursId === kursId)
-      .sort((a, b) => a.status.localeCompare(b.status) || a.navn.localeCompare(b.navn));
-
-    synlige.forEach((p) => {
+    pameldinger.forEach((p) => {
       const rad = document.createElement("tr");
 
       const kontakt = document.createElement("td");
+      kontakt.className = "admin-kontakt";
       const epost = document.createElement("a");
       epost.href = "mailto:" + p.epost;
       epost.textContent = p.epost;
-      const telefon = document.createElement("a");
-      telefon.href = "tel:+47" + p.telefon.replace(/\s/g, "");
-      telefon.textContent = p.telefon;
-      kontakt.className = "admin-kontakt";
-      kontakt.append(epost, telefon);
+      kontakt.append(epost);
+      if (p.telefon) {
+        const telefon = document.createElement("a");
+        telefon.href = "tel:" + p.telefon.replace(/\s/g, "");
+        telefon.textContent = p.telefon;
+        kontakt.append(telefon);
+      }
 
       const status = document.createElement("span");
       status.className = "plasser " + (p.status === "venteliste" ? "plasser-faa" : "plasser-ledig");
@@ -538,41 +583,46 @@ if (adminSide === "pameldinger") {
       const knapper = [];
       if (p.status === "venteliste") {
         const giPlass = lagKnapp("Gi plass", p.navn);
-        giPlass.addEventListener("click", () => {
-          pameldinger = pameldinger.map((rad) => (rad.id === p.id ? { ...rad, status: "pameldt" } : rad));
-          lagreListe("pameldinger", pameldinger);
-          visPameldinger();
+        giPlass.addEventListener("click", async () => {
+          try {
+            await api("POST", "/api/admin/pameldinger/" + encodeURIComponent(p.referanse) + "/gi-plass");
+            visMelding(p.navn + " har fått plass på " + p.kursTittel + ".");
+          } catch (feil) {
+            visMelding(feil.message);
+          }
+          await oppdater();
         });
         knapper.push(giPlass);
       }
-      knapper.push(lagSlettKnapp(p.navn, () => {
-        pameldinger = pameldinger.filter((rad) => rad.id !== p.id);
-        lagreListe("pameldinger", pameldinger);
-        visPameldinger();
+      knapper.push(lagSlettKnapp(p.navn, async () => {
+        try {
+          await api("DELETE", "/api/admin/pameldinger/" + encodeURIComponent(p.referanse));
+          visMelding(p.navn + " er slettet fra " + p.kursTittel + ".");
+        } catch (feil) {
+          visMelding(feil.message);
+        }
+        await oppdater();
       }));
 
-      rad.append(lagCelle(p.navn, "th"), kontakt, lagCelle(kursNavn(p.kursId)), lagCelle(p.medlem ? "Ja" : "Nei"), lagCelle(status), lagHandlinger(...knapper));
+      rad.append(lagCelle(p.navn, "th"), kontakt, lagCelle(p.kursTittel), lagCelle(p.medlem ? "Ja" : "Nei"), lagCelle(status), lagHandlinger(...knapper));
       rad.firstChild.scope = "row";
       rader.append(rad);
     });
 
-    antall.textContent = "(" + synlige.length + ")";
-    tom.hidden = synlige.length > 0;
+    antall.textContent = "(" + pameldinger.length + ")";
+    tom.hidden = pameldinger.length > 0;
+  }
+
+  async function oppdater() {
+    await hentKurs();
+    await visPameldinger();
   }
 
   filter.addEventListener("change", visPameldinger);
-  visPameldinger();
 
   const dialog = document.getElementById("pamelding-dialog");
-  const skjema = document.getElementById("pamelding-skjema");
   const velgKurs = document.getElementById("pam-kurs");
   const plasserTekst = document.getElementById("pam-plasser");
-  const melding = document.getElementById("pamelding-melding");
-
-  kurs.filter((k) => k.status !== "AVLYST").forEach((k) => velgKurs.add(new Option(k.tittel, k.id)));
-
-  const antallPameldt = (id) =>
-    pameldinger.filter((p) => p.kursId === id && p.status === "pameldt").length;
 
   function visPlasser() {
     const k = kurs.find((rad) => rad.id === Number(velgKurs.value));
@@ -580,9 +630,8 @@ if (adminSide === "pameldinger") {
       plasserTekst.textContent = "";
       return;
     }
-    const ledige = k.plasser - antallPameldt(k.id);
-    plasserTekst.textContent = ledige > 0
-      ? ledige + " av " + k.plasser + " plasser ledige."
+    plasserTekst.textContent = k.ledigePlasser > 0
+      ? k.ledigePlasser + " av " + k.kapasitet + " plasser ledige."
       : "Kurset er fullt. Personen blir satt på venteliste.";
   }
   velgKurs.addEventListener("change", visPlasser);
@@ -592,30 +641,35 @@ if (adminSide === "pameldinger") {
     visPlasser();
   });
 
-  kobleDialog(dialog, (data) => {
+  kobleDialog(dialog, async (data) => {
     const kursId = Number(data.kursId);
-    const epost = data.epost.trim().toLowerCase();
-
-    if (pameldinger.some((p) => p.kursId === kursId && p.epost.toLowerCase() === epost)) {
-      return "Denne e-posten er allerede påmeldt dette kurset.";
+    const navn = data.fornavn.trim() + " " + data.etternavn.trim();
+    let kvittering;
+    try {
+      kvittering = await api("POST", "/api/admin/kurs/" + kursId + "/pameldinger", {
+        nokkel: crypto.randomUUID(),
+        fornavn: data.fornavn.trim(),
+        etternavn: data.etternavn.trim(),
+        epost: data.epost.trim().toLowerCase(),
+        telefon: data.telefon.trim(),
+        fodselsar: Number.parseInt(data.fodselsar, 10),
+        medlem: data.medlem,
+        medlemsnummer: "",
+        kommentar: (data.kommentar || "").trim(),
+        samtykke: data.samtykke === "on"
+      });
+    } catch (feil) {
+      return feil.message;
     }
 
-    const k = kurs.find((rad) => rad.id === kursId);
-    const status = antallPameldt(kursId) < k.plasser ? "pameldt" : "venteliste";
-    const navn = data.fornavn.trim() + " " + data.etternavn.trim();
-
-    pameldinger.push({
-      id: nesteId(pameldinger), kursId: kursId, navn: navn, epost: epost,
-      telefon: data.telefon.trim(), fodselsar: data.fodselsar.trim(), medlem: data.medlem === "ja",
-      kommentar: data.kommentar.trim(), status: status, manuell: true
-    });
-    lagreListe("pameldinger", pameldinger);
-
     filter.value = String(kursId);
-    visPameldinger();
-    melding.textContent = status === "pameldt"
-      ? navn + " er påmeldt " + k.tittel + "."
-      : k.tittel + " er fullt. " + navn + " er satt på venteliste.";
-    melding.hidden = false;
+    await oppdater();
+    visMelding(kvittering.status === "venteliste"
+      ? kvittering.kursTittel + " er fullt. " + navn + " er satt på venteliste."
+      : navn + " er påmeldt " + kvittering.kursTittel + ".");
   });
+
+  oppdater();
 }
+
+
