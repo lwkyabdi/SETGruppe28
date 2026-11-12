@@ -1,93 +1,67 @@
 # Østfold Husflidslag – Gruppe 28
 
-Nettside for kurs, aktiviteter og informasjon fra Østfold Husflidslag.
-Prosjektet utvikles i emnet Software Engineering og Testing ved Høgskolen i Østfold.
+Dette er nettsiden vi har laget for Østfold Husflidslag i emnet Software Engineering og Testing ved HiØ.
 
-Målet er å gjøre det enklere å finne relevante kurs, lese om aktivitetene
-i lokallagene og finne kontaktinformasjon.
+På nettsiden kan man finne kurs, melde seg på, lese nyheter og finne kontaktinfo. Lokallagene kan logge inn og legge inn egne kurs og nyheter, og se hvem som har meldt seg på.
 
-## Teknologi
+## Hva vi har brukt
 
-- Frontend: HTML, CSS, JavaScript og Vue.
-- Backend: Java og Javalin.
-- Database: MySQL på HiØs server.
-- Bygg og avhengigheter: Maven Wrapper.
-- Automatiserte tester: JUnit.
-- Versjonskontroll og samarbeid: Git og GitHub.
+- HTML, CSS og JavaScript til nettsiden
+- Java og Javalin til backend
+- MySQL-databasen på HiØ sin server
+- Maven til å bygge prosjektet
+- JUnit til testene
+- Git og GitHub til samarbeidet
 
-Frontend og backend kjøres av samme server på port 8080.
+## Hva nettsiden kan
 
-## Funksjoner og status
+**Besøkende kan:**
 
-Løsningen har foreløpig:
+- se kommende kurs, og søke og filtrere på tema og lokallag
+- se detaljer om et kurs, med ledige plasser og kontaktperson
+- melde seg på et kurs, eller på venteliste hvis det er fullt
+- få bekreftelse på e-post
+- lese nyheter og se kontaktpersoner
 
-- Forside med kommende kurs og nyheter.
-- Kursoversikt med søk og filtrering på tema og lokallag.
-- Kursdetaljer med dato, sted, pris, utstyr og kontaktperson.
-- Kontaktoversikt.
-- Navigasjon og visninger tilpasset mobil.
+**Administratorer kan:**
 
-Kurs hentes fra MySQL ved vanlig oppstart. Nyhetene ligger foreløpig
-som statiske eksempeldata i JavaScript.
+- logge inn og ut
+- se påmeldte, legge til nye, gi plass fra ventelisten og slette påmeldinger
+- lage, endre og slette kurs og nyheter, og laste opp bilder
+- bare se og endre sitt eget lokallag sine ting
 
-Innlogging, administrasjon og digital påmelding er ikke implementert.
+## Mappene i prosjektet
 
-## Prosjektstruktur
-
-| Mappe eller fil | Innhold |
+| Mappe / fil | Hva som ligger der |
 | --- | --- |
-| `src/main/java/` | Backend, API og databasetilgang |
+| `src/main/java/` | Backend |
 | `src/main/resources/public/` | HTML, CSS, JavaScript og bilder |
-| `src/test/java/` | Automatiserte tester |
-| `database/` | SQL-skjema og eksempeldata |
-| `docs/` | Teknisk dokumentasjon og manuell testing |
-| `pom.xml` | Avhengigheter og byggekonfigurasjon |
+| `src/main/resources/public/minside/` | Admin-sidene |
+| `src/test/java/` | Testene |
+| `database/` | SQL-filene til databasen |
+| `docs/` | Manuell testing |
+| `pom.xml` | Bibliotekene vi bruker |
 
-## Oppstart
+## Slik starter du prosjektet
 
-Kommandoene nedenfor kjøres i PowerShell fra prosjektmappen.
+Du trenger Git, JDK 17 eller nyere, og HiØ-VPN for å komme til databasen.
 
-### Forutsetninger
-
-- Git.
-- JDK 21.
-- Tilgang til prosjektets MySQL-database ved vanlig oppstart.
-
-Maven Wrapper laster ned Maven automatisk ved første kjøring.
-
-### 1. Klon prosjektet
+**1. Hent prosjektet**
 
 ```powershell
 git clone https://github.com/lwkyabdi/SETGruppe28.git
 cd SETGruppe28
 ```
 
-### 2. Klargjør databasen
+**2. Koble til databasen**
 
-Prosjektets utviklingsdatabase heter `se26_G28` og ligger på
-`itstud.hiof.no`, port `3306`.
-
-Hvis prosjektets tabeller allerede er opprettet, går du videre til
-databasekonfigurasjonen.
-
-Ved førstegangsoppsett velger du utviklingsdatabasen i MySQL Workbench
-og kjører filene i denne rekkefølgen:
-
-1. `database/01-schema.sql`
-2. `database/02-seed.sql`
-
-Den første filen oppretter tabellene. Den andre legger inn eksempeldata.
-Eksempeldataene importeres én gang i en tom database, ikke for hvert gruppemedlem.
-
-### 3. Konfigurer databasetilkoblingen
-
-Kopier konfigurasjonsmalen:
+Databasen heter `se26_G28` og ligger på `itstud.hiof.no`. Lag en kopi av oppsettfilen:
 
 ```powershell
 Copy-Item dbConfig.example.properties dbConfig.properties
 ```
 
-Åpne `dbConfig.properties` og fyll inn:
+Åpne `dbConfig.properties` og skriv inn passordet:
 
 ```properties
 db.url=jdbc:mysql://itstud.hiof.no:3306/se26_G28?connectionTimeZone=Europe/Oslo
@@ -95,93 +69,91 @@ db.username=gruppe28
 db.password=FYLL_INN_DATABASEPASSORD
 ```
 
-Erstatt passordfeltet med databasepassordet dere har fått fra HiØ.
+Denne filen skal aldri pushes til GitHub, siden passordet står i den.
 
-`dbConfig.properties` er utelatt fra Git.
-`dbConfig.example.properties` inneholder konfigurasjonsmalen som deles i repoet.
+Hvis databasen må lages på nytt, kjører du SQL-filene i `database/` fra `01` til `06`.
 
-### 4. Start applikasjonen
+**3. Start serveren**
 
 ```powershell
 .\mvnw.cmd compile exec:java
 ```
 
-Åpne [localhost:8080](http://localhost:8080/).
+Gå til [localhost:8080](http://localhost:8080/). Stopp serveren med Ctrl + C.
 
-Stopp serveren med **Ctrl + C**.
-
-### Valgfri oppstart uten database
-
-Grensesnittet kan også prøves med kursdata i minnet:
+Vil du teste uten database, kan du starte med eksempeldata i stedet:
 
 ```powershell
 .\mvnw.cmd compile exec:java "-Dexec.args=--demo"
 ```
 
-Denne modusen krever ingen databasekonfigurasjon. Kursdatoene beregnes
-ved oppstart, og dataene opprettes på nytt hver gang applikasjonen starter.
+Da virker ikke innlogging og admin.
 
-Vanlig oppstart bruker MySQL. Data i minnet brukes bare med `--demo`.
+## Admin
 
-På macOS og Linux brukes `sh mvnw` i stedet for `.\mvnw.cmd`
-i kommandoene ovenfor.
+Admin-siden ligger på [localhost:8080/minside/admin.html](http://localhost:8080/minside/admin.html).
+
+Administratorene ligger i tabellen `administrator`. Vi lagrer aldri passordet direkte, bare en hash av det. For å lage en ny administrator:
+
+1. Kjør `LagPassordHash` (ligger i `src/test/java/`), skriv inn passordet og kopier hashen du får.
+2. Legg inn en ny rad i `administrator` med hashen i `passord_hash`. Rollen er `ADMIN` for hele fylket, eller `LOKALLAG` med id-en til laget.
 
 ## Tester
-
-Kjør de automatiserte testene:
 
 ```powershell
 .\mvnw.cmd test
 ```
 
-Service-, API- og demo-testene kan kjøres uten MySQL.
-
-MySQL-testene aktiveres med miljøvariablene:
-
-- `MYSQL_TEST_URL`
-- `MYSQL_TEST_USER`
-- `MYSQL_TEST_PASSWORD`
-
-Disse testene krever en separat database med navnet `husflid_test`.
-Tabellene i testdatabasen slettes og opprettes på nytt ved teststart.
-Testene skal derfor kjøres mot en egen testdatabase.
-
-Se [Manuell testing](docs/manuell-kontroll.md) for sjekklisten
-for testing i nettleseren.
+Databasetestene hoppes over hvis testdatabasen `husflid_test` ikke er satt opp. Manuell testing i nettleseren står i [docs/manuell-kontroll.md](docs/manuell-kontroll.md).
 
 ## API
 
-| Metode | Endepunkt | Resultat |
+Backend svarer med JSON. Hvis noe går galt, får man `{"melding": "..."}`.
+
+**Alle kan bruke disse:**
+
+| Metode | Adresse | Hva den gjør |
 | --- | --- | --- |
-| GET | `/api/health` | Serverstatus |
+| GET | `/api/health` | Sjekker at serveren kjører |
 | GET | `/api/kurs` | Alle publiserte kurs |
-| GET | `/api/kurs/kommende` | Publiserte kurs fra og med dagens dato, sortert etter dato |
-| GET | `/api/kurs/{id}` | Detaljer om ett publisert kurs |
+| GET | `/api/kurs/kommende` | Kurs fra i dag og framover |
+| GET | `/api/kurs/{id}` | Ett kurs |
+| POST | `/api/kurs/{id}/pameldinger` | Melder seg på et kurs |
+| GET | `/api/lokallag` | Lokallagene |
+| GET | `/api/kontaktpersoner` | Kontaktpersonene |
+| GET | `/api/nyheter` | Nyhetene |
+| GET | `/api/nyheter/{id}` | Én nyhet |
+| POST | `/api/login` | Logger inn |
+| POST | `/api/logout` | Logger ut |
+| GET | `/api/meg` | Hvem som er logget inn |
 
-API-et bruker følgende feilkoder:
+**Bare for administratorer:**
 
-- `400` ved ugyldig kurs-ID.
-- `404` ved ukjent eller upublisert kurs.
-- `503` ved feil under databaseoppslag.
+| Metode | Adresse | Hva den gjør |
+| --- | --- | --- |
+| GET | `/api/admin/oversikt` | Antall kurs, påmeldte og på venteliste |
+| GET | `/api/admin/pameldinger` | Påmeldte og venteliste |
+| POST | `/api/admin/pameldinger/{referanse}/gi-plass` | Gir plass til en på ventelisten |
+| DELETE | `/api/admin/pameldinger/{referanse}` | Sletter en påmelding |
+| POST | `/api/admin/kurs/{id}/pameldinger` | Legger til en påmelding |
+| GET, POST | `/api/admin/kurs` | Henter kurs og lager nye |
+| GET, PUT, DELETE | `/api/admin/kurs/{id}` | Henter, endrer og sletter et kurs |
+| GET, POST | `/api/admin/nyheter` | Henter nyheter og lager nye |
+| GET, PUT, DELETE | `/api/admin/nyheter/{id}` | Henter, endrer og sletter en nyhet |
+| GET | `/api/admin/kontaktpersoner` | Alle kontaktpersonene |
+| POST | `/api/admin/bilder` | Laster opp et bilde |
 
-`/api/health` kontrollerer at serveren svarer.
-Endepunktet kontrollerer ikke databasetilkoblingen.
+**Feilkodene vi bruker:**
 
-## Samarbeid
+| Kode | Betyr |
+| --- | --- |
+| 400 | Noe er feil i det som ble sendt |
+| 401 | Du er ikke logget inn |
+| 404 | Finnes ikke |
+| 409 | Går ikke, for eksempel fordi kurset er fullt |
+| 500 | Noe gikk galt på serveren |
+| 503 | Databasen svarer ikke |
 
-`main` er prosjektets felles hovedbranch.
+## Hvordan vi jobbet med Git
 
-Oppgaver utvikles i korte arbeidsbrancher, for eksempel
-`feature/kursoversikt`. Endringer gjennomgås med pull request før
-de merges til `main`.
-
-Commiter skal ha korte meldinger som beskriver endringene de inneholder.
-Velg filene som hører til oppgaven når du lager en commit.
-
-## Dokumentasjon
-
-- [Arkitektur og avhengigheter](docs/arkitektur-og-avhengigheter.md)
-- [Manuell testing](docs/manuell-kontroll.md)
-
-Sprintplaner, arbeidsfordeling, møtereferater og evalueringer føres
-i gruppas levende prosjektdokumentasjon.
+Hver oppgave fikk sin egen branch. Når den var ferdig, lagde vi en pull request og merget den inn i `main`. Vi kjørte alle testene før vi merget.
