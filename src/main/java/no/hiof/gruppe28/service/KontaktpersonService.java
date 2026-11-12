@@ -16,5 +16,8 @@ public class KontaktpersonService {
     public List<Kontaktperson> forKontaktside() {
         return repository.finnForKontaktside();
     }
-}
 
+    public List<Kontaktperson> alle() {
+        return repository.finnAlle();
+    }
+}

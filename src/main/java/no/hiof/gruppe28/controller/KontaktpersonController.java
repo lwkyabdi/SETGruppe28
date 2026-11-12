@@ -10,8 +10,12 @@ public class KontaktpersonController {
     public KontaktpersonController(KontaktpersonService service) {
         this.service = service;
     }
-
     public void forKontaktside(Context ctx) {
         ctx.json(service.forKontaktside());
+    }
+
+    public void alle(Context ctx) {
+        ctx.header("Cache-Control", "no-store");
+        ctx.json(service.alle());
     }
 }
