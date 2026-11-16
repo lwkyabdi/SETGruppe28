@@ -587,6 +587,17 @@ async function hentJson(adresse) {
   return svar.json();
 }
 
+function visFeil(lister, tekst) {
+  lister.forEach(function (liste) {
+    if (!liste) return;
+    const li = document.createElement("li");
+    const p = document.createElement("p");
+    p.textContent = tekst;
+    li.append(p);
+    liste.replaceChildren(li);
+  });
+}
+
 function kortnavn(navn) {
   return (navn || "").replace(" Husflidslag", "");
 }
@@ -641,6 +652,7 @@ async function visLokallag() {
     lagene = await hentJson("/api/lokallag");
   } catch (feil) {
     console.error(feil);
+    visFeil(document.querySelectorAll("ul.lokallag, ul.lag-liste"), "Kunne ikke hente lokallagene akkurat nå.");
     return;
   }
 
@@ -815,6 +827,7 @@ async function visKurs() {
     [kurs, lagene] = await Promise.all([hentJson("/api/kurs/kommende"), hentJson("/api/lokallag")]);
   } catch (feil) {
     console.error(feil);
+    visFeil([kursliste, forsideliste], "Kunne ikke hente kursene akkurat nå. Prøv igjen om litt.");
     return;
   }
 
@@ -897,6 +910,7 @@ async function visNyheter() {
     nyheter = await hentJson("/api/nyheter");
   } catch (feil) {
     console.error(feil);
+    visFeil([aktuelt, forsideliste], "Kunne ikke hente nyhetene akkurat nå. Prøv igjen om litt.");
     return;
   }
 
@@ -1031,6 +1045,7 @@ async function visKontaktpersoner() {
     personer = await hentJson("/api/kontaktpersoner");
   } catch (feil) {
     console.error(feil);
+    visFeil([liste], "Kunne ikke hente kontaktpersonene akkurat nå. Du kan kontakte oss på telefon eller e-post nederst på siden.");
     return;
   }
 
@@ -1047,3 +1062,5 @@ async function visKontaktpersoner() {
 }
 
 visKontaktpersoner();
+
+
