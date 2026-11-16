@@ -47,10 +47,9 @@ public class AdminPameldingController {
     // DELETE /api/admin/pameldinger/{referanse}
     public void slett(Context ctx) {
         service.slett(bruker(ctx), ctx.pathParam("referanse"));
-        ctx.json(Map.of("melding", "Påmeldingen er slettet."));
+        ctx.json(Map.of("melding", "Personen er meldt av."));
     }
 
-    // POST /api/admin/kurs/{id}/pameldinger
     public void meldPa(Context ctx) {
         long kursId = positivtTall(ctx.pathParam("id"), "Kurs-ID må være et positivt heltall.");
         service.kontrollerKurs(bruker(ctx), kursId);

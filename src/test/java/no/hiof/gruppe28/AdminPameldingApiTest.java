@@ -160,11 +160,21 @@ class AdminPameldingApiTest {
     }
 
     @Test
-    void lagKanSletteEgenPamelding() throws Exception {
+    void lagKanMeldeAvEgenPamelding() throws Exception {
         var svar = send(loggInn("lag1@test.no"), "DELETE", "/api/admin/pameldinger/lag1-pameldt", null);
 
         assertEquals(200, svar.statusCode());
-        assertTrue(repo.finn("lag1-pameldt").isEmpty());
+        assertEquals("AVMELDT", repo.finn("lag1-pameldt").orElseThrow().status());
+    }
+
+    @Test
+    void avmeldtKanIkkeMeldesAvIgjen() throws Exception {
+        var klient = loggInn("lag1@test.no");
+        send(klient, "DELETE", "/api/admin/pameldinger/lag1-pameldt", null);
+
+        var svar = send(klient, "DELETE", "/api/admin/pameldinger/lag1-pameldt", null);
+
+        assertEquals(409, svar.statusCode());
     }
 
     @Test
@@ -237,7 +247,10 @@ class AdminPameldingApiTest {
         }
 
         public void slett(String referanse) {
-            rader.removeIf(p -> p.referanse().equals(referanse));
+            AdminPamelding p = finn(referanse).orElseThrow();
+            rader.set(rader.indexOf(p), new AdminPamelding(p.referanse(), p.kursId(), p.kursTittel(),
+                p.kursLokallagId(), p.fornavn(), p.etternavn(), p.epost(), p.telefon(),
+                p.medlem(), "AVMELDT", p.opprettet()));
         }
     }
 }

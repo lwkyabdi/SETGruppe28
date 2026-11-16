@@ -38,19 +38,19 @@ function lagKnapp(tekst, skjultTekst, klasse) {
   return knapp;
 }
 
-function lagSlettKnapp(navn, vedSletting) {
-  const knapp = lagKnapp("Slett", navn, "admin-knapp-slett");
+function lagSlettKnapp(navn, vedSletting, tekst = "Slett", bekreftTekst = "Bekreft sletting") {
+  const knapp = lagKnapp(tekst, navn, "admin-knapp-slett");
   knapp.addEventListener("click", () => {
     if (knapp.dataset.bekreft === "ja") {
       vedSletting();
       return;
     }
     knapp.dataset.bekreft = "ja";
-    knapp.firstChild.textContent = "Bekreft sletting";
+    knapp.firstChild.textContent = bekreftTekst;
   });
   knapp.addEventListener("blur", () => {
     delete knapp.dataset.bekreft;
-    knapp.firstChild.textContent = "Slett";
+    knapp.firstChild.textContent = tekst;
   });
   return knapp;
 }
@@ -652,9 +652,15 @@ if (adminSide === "pameldinger") {
         kontakt.append(telefon);
       }
 
+      const STATUS_TEKST = { pameldt: "Påmeldt", venteliste: "Venteliste", avmeldt: "Avmeldt" };
+      const STATUS_KLASSE = {
+        pameldt: "plasser plasser-ledig",
+        venteliste: "plasser plasser-faa",
+        avmeldt: "admin-status admin-status-kladd"
+      };
       const status = document.createElement("span");
-      status.className = "plasser " + (p.status === "venteliste" ? "plasser-faa" : "plasser-ledig");
-      status.textContent = p.status === "venteliste" ? "Venteliste" : "Påmeldt";
+      status.className = STATUS_KLASSE[p.status] || "plasser plasser-ledig";
+      status.textContent = STATUS_TEKST[p.status] || p.status;
 
       const knapper = [];
       if (p.status === "venteliste") {
@@ -670,15 +676,17 @@ if (adminSide === "pameldinger") {
         });
         knapper.push(giPlass);
       }
-      knapper.push(lagSlettKnapp(p.navn, async () => {
-        try {
-          await api("DELETE", "/api/admin/pameldinger/" + encodeURIComponent(p.referanse));
-          visMelding(p.navn + " er slettet fra " + p.kursTittel + ".");
-        } catch (feil) {
-          visMelding(feil.message);
-        }
-        await oppdater();
-      }));
+      if (p.status !== "avmeldt") {
+        knapper.push(lagSlettKnapp(p.navn, async () => {
+          try {
+            await api("DELETE", "/api/admin/pameldinger/" + encodeURIComponent(p.referanse));
+            visMelding(p.navn + " er meldt av " + p.kursTittel + ".");
+          } catch (feil) {
+            visMelding(feil.message);
+          }
+          await oppdater();
+        }, "Meld av", "Bekreft avmelding"));
+      }
 
       rad.append(lagCelle(p.navn, "th"), kontakt, lagCelle(p.kursTittel), lagCelle(p.medlem ? "Ja" : "Nei"), lagCelle(status), lagHandlinger(...knapper));
       rad.firstChild.scope = "row";
@@ -747,3 +755,5 @@ if (adminSide === "pameldinger") {
 
   oppdater();
 }
+
+

@@ -34,11 +34,11 @@ public class AdminPameldingService {
         return new AdminOversikt(repository.antallKurs(lag), pameldte, venteliste);
     }
 
-    // Påmeldte først, så ventelisten i den rekkefølgen de meldte seg på
+    // Påmeldte først, så ventelisten, så avmeldte, hver i den rekkefølgen de meldte seg på
     public List<AdminPamelding> pameldinger(InnloggetBruker bruker, Long kursId) {
         return repository.finnPameldinger(lagFilter(bruker), kursId).stream()
             .sorted(Comparator
-                .comparing((AdminPamelding p) -> "PAMELDT".equals(p.status()) ? 0 : 1)
+                .comparing((AdminPamelding p) -> rekkefolge(p.status()))
                 .thenComparing(AdminPamelding::opprettet,
                     Comparator.nullsLast(Comparator.naturalOrder())))
             .toList();
@@ -47,6 +47,9 @@ public class AdminPameldingService {
     public void giPlass(InnloggetBruker bruker, String referanse) {
         AdminPamelding pamelding = finnEgen(bruker, referanse);
 
+        if ("AVMELDT".equals(pamelding.status())) {
+            throw new ApiException(409, "Personen har meldt seg av og kan ikke få plass.");
+        }
         if ("PAMELDT".equals(pamelding.status())) {
             throw new ApiException(409, "Personen er allerede påmeldt.");
         }
@@ -57,9 +60,21 @@ public class AdminPameldingService {
         sendPlassEpost(pamelding);
     }
 
+    // Melder personen av. Påmeldingen blir liggende med status AVMELDT, og plassen blir ledig.
     public void slett(InnloggetBruker bruker, String referanse) {
-        finnEgen(bruker, referanse);
+        AdminPamelding pamelding = finnEgen(bruker, referanse);
+
+        if ("AVMELDT".equals(pamelding.status())) {
+            throw new ApiException(409, "Personen er allerede meldt av.");
+        }
         repository.slett(referanse);
+    }
+
+    // Påmeldte først, så venteliste, og avmeldte nederst
+    private static int rekkefolge(String status) {
+        if ("PAMELDT".equals(status)) return 0;
+        if ("VENTELISTE".equals(status)) return 1;
+        return 2;
     }
 
 
@@ -119,3 +134,4 @@ public class AdminPameldingService {
             || (bruker.lokallagId() != null && Objects.equals(bruker.lokallagId(), kursetsLag));
     }
 }
+
