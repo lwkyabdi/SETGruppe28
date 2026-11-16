@@ -26,8 +26,8 @@ På nettsiden kan man finne kurs, melde seg på, lese nyheter og finne kontaktin
 **Administratorer kan:**
 
 - logge inn og ut
-- se påmeldte, legge til nye, gi plass fra ventelisten og slette påmeldinger
-- lage, endre og slette kurs og nyheter, og laste opp bilder
+- se påmeldte, legge til nye, gi plass fra ventelisten og melde folk av (de blir stående som avmeldt)
+- lage, endre, avlyse og slette kurs, lage og endre nyheter, og laste opp bilder
 - bare se og endre sitt eget lokallag sine ting
 
 ## Mappene i prosjektet
@@ -55,7 +55,7 @@ cd SETGruppe28
 
 **2. Koble til databasen**
 
-Databasen heter `se26_G28` og ligger på `itstud.hiof.no`. Lag en kopi av oppsettfilen:
+Databasen heter `se26_G28` og ligger på `itstud.hiof.no` (vi bruker IP-adressen `158.39.162.26`, fordi det går mye raskere enn navnet). Lag en kopi av oppsettfilen:
 
 ```powershell
 Copy-Item dbConfig.example.properties dbConfig.properties
@@ -64,7 +64,7 @@ Copy-Item dbConfig.example.properties dbConfig.properties
 Åpne `dbConfig.properties` og skriv inn passordet:
 
 ```properties
-db.url=jdbc:mysql://itstud.hiof.no:3306/se26_G28?connectionTimeZone=Europe/Oslo
+db.url=jdbc:mysql://158.39.162.26:3306/se26_G28?connectionTimeZone=Europe/Oslo
 db.username=gruppe28
 db.password=FYLL_INN_DATABASEPASSORD
 ```
@@ -134,7 +134,7 @@ Backend svarer med JSON. Hvis noe går galt, får man `{"melding": "..."}`.
 | GET | `/api/admin/oversikt` | Antall kurs, påmeldte og på venteliste |
 | GET | `/api/admin/pameldinger` | Påmeldte og venteliste |
 | POST | `/api/admin/pameldinger/{referanse}/gi-plass` | Gir plass til en på ventelisten |
-| DELETE | `/api/admin/pameldinger/{referanse}` | Sletter en påmelding |
+| DELETE | `/api/admin/pameldinger/{referanse}` | Melder av en påmelding (status blir avmeldt) |
 | POST | `/api/admin/kurs/{id}/pameldinger` | Legger til en påmelding |
 | GET, POST | `/api/admin/kurs` | Henter kurs og lager nye |
 | GET, PUT, DELETE | `/api/admin/kurs/{id}` | Henter, endrer og sletter et kurs |
@@ -157,3 +157,5 @@ Backend svarer med JSON. Hvis noe går galt, får man `{"melding": "..."}`.
 ## Hvordan vi jobbet med Git
 
 Hver oppgave fikk sin egen branch. Når den var ferdig, lagde vi en pull request og merget den inn i `main`. Vi kjørte alle testene før vi merget.
+
+
