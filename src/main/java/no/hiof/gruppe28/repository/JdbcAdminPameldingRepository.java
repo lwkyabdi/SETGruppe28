@@ -30,10 +30,10 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
     @Override
     public List<AdminPamelding> finnPameldinger(Long lokallagId, Long kursId) {
         String sql = SELECT + " WHERE 1 = 1"
-                + (lokallagId == null ? "" : " AND k.lokallag_id = ?")
-                + (kursId == null ? "" : " AND k.id = ?")
-                + " ORDER BY CASE WHEN p.status = 'PAMELDT' THEN 0 ELSE 1 END,"
-                + " p.opprettet, p.referanse";
+            + (lokallagId == null ? "" : " AND k.lokallag_id = ?")
+            + (kursId == null ? "" : " AND k.id = ?")
+            + " ORDER BY CASE WHEN p.status = 'PAMELDT' THEN 0 ELSE 1 END,"
+            + " p.opprettet, p.referanse";
 
         try (var c = database.connect(); var s = c.prepareStatement(sql)) {
             int indeks = 1;
@@ -65,7 +65,7 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
     @Override
     public int antallKurs(Long lokallagId) {
         String sql = "SELECT COUNT(*) FROM kurs"
-                + (lokallagId == null ? "" : " WHERE lokallag_id = ?");
+            + (lokallagId == null ? "" : " WHERE lokallag_id = ?");
         try (var c = database.connect(); var s = c.prepareStatement(sql)) {
             if (lokallagId != null) s.setLong(1, lokallagId);
             try (var r = s.executeQuery()) {
@@ -124,8 +124,11 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
     @Override
     public void slett(String referanse) {
         endre(referanse, (c, rad) -> {
-            try (var s = c.prepareStatement(
-                    "DELETE FROM pamelding WHERE referanse = ? AND kurs_id = ?")) {
+            try (var s = c.prepareStatement("""
+                    UPDATE pamelding
+                    SET status = 'AVMELDT', avmeldt_tid = CURRENT_TIMESTAMP
+                    WHERE referanse = ? AND kurs_id = ? AND status IN ('PAMELDT', 'VENTELISTE')
+                    """)) {
                 s.setString(1, referanse);
                 s.setLong(2, rad.kursId());
                 if (s.executeUpdate() != 1) throw endret();
@@ -138,7 +141,7 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
                     s.setLong(1, rad.kursId());
                     if (s.executeUpdate() != 1) {
                         throw new ApiException(409,
-                                "Plasstallene stemmer ikke. Påmeldingen er ikke slettet.");
+                            "Plasstallene stemmer ikke. Påmeldingen er ikke meldt av.");
                     }
                 }
             }
@@ -180,7 +183,7 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
         // Samme låserekkefølge som vanlig påmelding: kurset før påmeldingen.
         int ledige;
         try (var s = c.prepareStatement(
-                "SELECT ledige_plasser FROM kurs WHERE id = ? FOR UPDATE")) {
+            "SELECT ledige_plasser FROM kurs WHERE id = ? FOR UPDATE")) {
             s.setLong(1, kursId);
             try (var r = s.executeQuery()) {
                 if (!r.next()) throw mangler();
@@ -188,7 +191,7 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
             }
         }
         try (var s = c.prepareStatement(
-                "SELECT kurs_id, status FROM pamelding WHERE referanse = ? FOR UPDATE")) {
+            "SELECT kurs_id, status FROM pamelding WHERE referanse = ? FOR UPDATE")) {
             s.setString(1, referanse);
             try (var r = s.executeQuery()) {
                 if (!r.next()) throw mangler();
@@ -203,10 +206,10 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
         Long lokallagId = r.wasNull() ? null : lag;
         var opprettet = r.getTimestamp("opprettet");
         return new AdminPamelding(
-                r.getString("referanse"), r.getLong("kurs_id"), r.getString("kurs_tittel"),
-                lokallagId, r.getString("fornavn"), r.getString("etternavn"),
-                r.getString("epost"), r.getString("telefon"), r.getBoolean("medlem"),
-                r.getString("status"), opprettet == null ? null : opprettet.toLocalDateTime()
+            r.getString("referanse"), r.getLong("kurs_id"), r.getString("kurs_tittel"),
+            lokallagId, r.getString("fornavn"), r.getString("etternavn"),
+            r.getString("epost"), r.getString("telefon"), r.getBoolean("medlem"),
+            r.getString("status"), opprettet == null ? null : opprettet.toLocalDateTime()
         );
     }
 
@@ -225,3 +228,4 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
         T utfor(Connection c, LasteRader rad) throws SQLException;
     }
 }
+
