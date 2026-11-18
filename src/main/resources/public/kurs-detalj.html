@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="bilder/favicon.png">
-  <title>Bunadssøm for nybegynnere – Østfold Husflidslag</title>
+  <!--script.js setter kursnavnet i tittelen når kurset er hentet-->
+  <title>Kurs – Østfold Husflidslag</title>
   <meta name="description" content="Lær å sy din egen bunad fra bunnen av. Kurs hos Fredrikstad Husflidslag.">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
@@ -89,100 +90,80 @@
       <ol>
         <li><a href="index.html">Hjem</a></li>
         <li><a href="kurs.html">Kurs og aktiviteter</a></li>
-        <li><a href="kurs-detalj.html?id=1" aria-current="page" data-kurs="tittel">Bunadssøm for nybegynnere</a></li>
+        <li><a href="kurs-detalj.html" aria-current="page" data-kurs="tittel">Kurset</a></li>
       </ol>
     </nav>
 
+    <!--Vises mens kurset hentes fra /api/kurs/{id}. script.js fjerner den og viser kurset.-->
+    <p class="liste-melding" id="kurs-laster" role="status">Henter kurset …</p>
+
     <!--KURSINFORMASJON-->
-    <article class="kursdetalj" aria-labelledby="kurs-tittel">
+    <!--Alt innhold fylles inn av script.js. Skjult til kurset er hentet.-->
+    <article class="kursdetalj" aria-labelledby="kurs-tittel" hidden>
       <figure class="kursdetalj-bilde">
-        <img src="https://picsum.photos/id/237/200/300" alt="Plassholderbilde">
+        <img alt="">
         <!--Merke over bildet når kurset er fullt-->
         <figcaption class="fullt-merke" hidden>Fullt – venteliste</figcaption>
       </figure>
 
       <p class="kursdetalj-merker">
-        <span class="kurs-tema" data-kurs="tema">Bunad</span>
-        <span data-kurs="lagnavn">Fredrikstad Husflidslag</span>
+        <span class="kurs-tema" data-kurs="tema"></span>
+        <span data-kurs="lagnavn"></span>
         <span class="fullt-etikett" hidden>Fullt</span>
       </p>
 
-      <h1 id="kurs-tittel" data-kurs="tittel">Bunadssøm for nybegynnere</h1>
+      <h1 id="kurs-tittel" data-kurs="tittel"></h1>
 
       <!--Fakta om kurset-->
       <dl class="fakta">
         <dt class="startdato">Startdato</dt>
-        <dd><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time></dd>
+        <dd><time data-kurs="dato"></time></dd>
 
         <dt class="tidspunkt">Tidspunkt</dt>
-        <dd data-kurs="tid">18:00–21:00</dd>
+        <dd data-kurs="tid"></dd>
 
         <dt class="varighet">Varighet</dt>
-        <dd data-kurs="varighet">8 kvelder</dd>
+        <dd data-kurs="varighet"></dd>
 
         <dt class="sted">Sted</dt>
-        <dd data-kurs="sted">Fredrikstad Husflidssenter, Nygårdsgt. 14</dd>
-
-        <dt class="kursleder">Kursleder</dt>
-        <dd data-kurs="kursleder">Marit Andersen</dd>
+        <dd data-kurs="sted"></dd>
 
         <dt class="plasser-fakta">Plasser</dt>
-        <dd data-kurs="plasserLedige">3 av 8 ledige</dd>
+        <dd data-kurs="plasserLedige"></dd>
       </dl>
 
       <!--Kontaktperson: den som har hovedansvaret for kurset-->
       <section class="kurs-kontakt" aria-labelledby="kontakt-tittel">
         <h2 id="kontakt-tittel">Kontaktperson</h2>
-        <img src="https://picsum.photos/id/237/200/300" alt="" width="64" height="64">
-        <p class="kurs-kontakt-navn">Kari Hansen</p>
-        <p class="kurs-kontakt-rolle">Kursansvarlig, Fredrikstad Husflidslag</p>
-        <ul>
-          <li><a href="tel:+4791123456">911 23 456<span class="skjult"> (ring Kari Hansen)</span></a></li>
-          <li><a href="mailto:kari@fredrikstad-husflid.no">kari@fredrikstad-husflid.no</a></li>
-        </ul>
+        <img alt="" width="64" height="64">
+        <p class="kurs-kontakt-navn"></p>
+        <p class="kurs-kontakt-rolle"></p>
+        <ul></ul>
       </section>
 
       <!--Om kurset-->
       <section class="om-kurset" aria-labelledby="om-tittel">
         <h2 id="om-tittel">Om kurset</h2>
-        <p data-kurs="beskrivelse">
-          Lær å sy din egen bunad fra bunnen av. Kurset passer deg som aldri har sydd bunad før.
-          Vi går gjennom alt fra valg av stoff til ferdig plagg. Du vil lære tradisjonelle syteknikker
-          og bli kjent med bunadens kulturhistorie i Østfold.
-        </p>
+        <p data-kurs="beskrivelse"></p>
       </section>
 
       <!--Hva du bør ta med-->
       <section class="ta-med" aria-labelledby="ta-med-tittel">
         <h2 id="ta-med-tittel">Hva du bør ta med</h2>
-        <p data-kurs="utstyr">Symaskin hvis du har, stoff og tråd.</p>
+        <p data-kurs="utstyr"></p>
       </section>
 
       <!--Andre kurs-->
       <section class="andre-kurs" aria-labelledby="andre-tittel">
         <h2 id="andre-tittel">Andre kurs du kanskje liker</h2>
-        <ul>
-          <li>
-            <a href="kurs-detalj.html?id=2">
-              <span>Sarpsborg</span>
-              <strong>Strikk din egen genser</strong>
-              <time datetime="2024-09-27">27. september 2024</time>
-            </a>
-          </li>
-          <li>
-            <a href="kurs-detalj.html?id=3">
-              <span>Moss</span>
-              <strong>Vevkurs – grunnleggende båndbinding</strong>
-              <time datetime="2024-10-05">5. oktober 2024</time>
-            </a>
-          </li>
-        </ul>
+        <!--Fylles med kurs som har ledige plasser fra /api/kurs/kommende-->
+        <ul></ul>
       </section>
     </article>
 
     <!--PÅMELDING-->
-    <!--Fylles inn av script.js ut fra ?id= i adressen. Kommer fra backend senere.-->
-    <aside class="pamelding" aria-label="Påmelding">
+    <!--Fylles inn av script.js ut fra ?id= i adressen. Skjult til kurset er hentet.-->
+    <aside class="pamelding" aria-label="Påmelding" hidden>
       <!--Vises bare når kurset er fullt-->
       <p class="fullt-banner" hidden>
         <strong>Kurset er fullt</strong>
@@ -191,30 +172,30 @@
 
       <p class="ledige">
         <label for="ledige-plasser">Ledige plasser</label>
-        <span data-kurs="plasser">3 av 8</span>
+        <span data-kurs="plasser"></span>
       </p>
-      <meter id="ledige-plasser" min="0" max="8" low="3" high="5" optimum="8" value="3">3 av 8</meter>
+      <meter id="ledige-plasser" min="0" max="1" value="0"></meter>
 
       <!--Kort info om kurset-->
       <dl class="info-list">
         <dt>Dato</dt>
-        <dd><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time></dd>
+        <dd><time data-kurs="dato"></time></dd>
         <dt>Tid</dt>
-        <dd data-kurs="tid">18:00–21:00</dd>
-        <dt>Sted</dt>
-        <dd data-kurs="lagnavn">Fredrikstad Husflidslag</dd>
+        <dd data-kurs="tid"></dd>
+        <dt>Lokallag</dt>
+        <dd data-kurs="lagnavn"></dd>
         <dt>Målgruppe</dt>
-        <dd data-kurs="malgruppe">Voksne</dd>
+        <dd data-kurs="malgruppe"></dd>
         <dt>Nivå</dt>
-        <dd data-kurs="niva">Nybegynner</dd>
+        <dd data-kurs="niva"></dd>
       </dl>
 
       <!--Pris-->
       <dl class="priser">
         <dt>Medlemspris</dt>
-        <dd data-kurs="medlemspris">1&nbsp;500 kr</dd>
+        <dd data-kurs="medlemspris"></dd>
         <dt>Ikke-medlem</dt>
-        <dd data-kurs="ordinaerpris">2&nbsp;000 kr</dd>
+        <dd data-kurs="ordinaerpris"></dd>
       </dl>
 
       <!--Vises bare når kurset er fullt: slik fungerer ventelisten-->
@@ -228,7 +209,7 @@
       </section>
 
       <!--Blir til «Sett meg på venteliste» når kurset er fullt (script.js)-->
-      <a href="pamelding.html?kurs=1" class="knapp knapp-primar knapp-stor" id="meld-pa-knapp">Meld deg på</a>
+      <a href="pamelding.html" class="knapp knapp-primar knapp-stor" id="meld-pa-knapp">Meld deg på</a>
 
       <!--Vises bare når kurset er fullt: kurs med ledige plasser (fylles inn av script.js)-->
       <section class="ledige-alternativ" id="ledige-alternativ" aria-labelledby="alternativ-tittel" hidden>

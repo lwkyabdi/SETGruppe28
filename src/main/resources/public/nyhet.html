@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="bilder/favicon.png">
-  <title>Nytt bunadskurs i Fredrikstad – Østfold Husflidslag</title>
+  <!--script.js setter tittelen på nyheten når den er hentet-->
+  <title>Nyhet – Østfold Husflidslag</title>
   <meta name="description" content="Nyheter fra Østfold Husflidslag.">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
@@ -90,33 +91,32 @@
       <ol>
         <li><a href="index.html">Hjem</a></li>
         <li><a href="aktuelt.html">Aktuelt</a></li>
-        <li><a href="nyhet.html?id=1" aria-current="page" id="brodsmule-tittel">Nytt bunadskurs i Fredrikstad – meld deg på nå!</a></li>
+        <li><a href="nyhet.html" aria-current="page" id="brodsmule-tittel">Nyheten</a></li>
       </ol>
     </nav>
 
+    <!--Vises mens nyheten hentes fra /api/nyheter/{id}. script.js fjerner den og viser nyheten.-->
+    <p class="liste-melding" id="nyhet-laster" role="status">Henter nyheten …</p>
+
     <!--ARTIKKEL-->
-    <article class="artikkel" id="artikkel" aria-labelledby="artikkel-tittel">
+    <!--Alt innhold fylles inn av script.js. Skjult til nyheten er hentet.-->
+    <article class="artikkel" id="artikkel" aria-labelledby="artikkel-tittel" hidden>
       <header>
         <p class="artikkel-meta">
-          <time datetime="2024-09-02" id="artikkel-dato">2. september 2024</time>
-          <span id="artikkel-lokallag">Fredrikstad Husflidslag</span>
+          <time id="artikkel-dato"></time>
+          <span id="artikkel-lokallag"></span>
         </p>
-        <h1 id="artikkel-tittel">Nytt bunadskurs i Fredrikstad – meld deg på nå!</h1>
+        <h1 id="artikkel-tittel"></h1>
       </header>
 
       <figure class="artikkel-bilde">
-        <img src="https://picsum.photos/id/237/200/300" alt="Plassholderbilde">
+        <img alt="">
       </figure>
 
-      <p class="artikkel-ingress" id="artikkel-ingress">Vi åpner nå påmelding til høstens bunadskurs i Fredrikstad. Det er kun 8 plasser, og de fylles raskt.</p>
+      <p class="artikkel-ingress" id="artikkel-ingress"></p>
 
-      <!--Selve teksten-->
-      <section class="artikkel-tekst" id="artikkel-tekst" aria-label="Artikkeltekst">
-        <p>Vi er glade for å melde at Fredrikstad Husflidslag setter opp nytt bunadskurs til høsten. Kurset starter 20. september og går over 8 tirsdagskvelder.</p>
-        <p>Kursleder er den erfarne Marit Andersen, som har over 20 år med bunadssøm bak seg. Hun tar imot alle nivåer og har stor tålmodighet med nybegynnere.</p>
-        <p>Dette er en ypperlig mulighet til å lære en gammel håndverkstradisjon i et hyggelig miljø. Mange av deltakerne fra tidligere kurs fremhever de sosiale sidene som noe av det beste med å delta.</p>
-        <p>Meld deg på så snart som mulig – det er allerede 5 av 8 plasser tatt.</p>
-      </section>
+      <!--Selve teksten. Hvert avsnitt blir et eget <p>.-->
+      <section class="artikkel-tekst" id="artikkel-tekst" aria-label="Artikkeltekst"></section>
 
       <!--Del nyheten-->
       <footer class="del">

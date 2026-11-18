@@ -93,70 +93,20 @@
     <!--KONTAKTPERSONER-->
     <section class="kontaktpersoner" aria-labelledby="personer-tittel">
       <h2 id="personer-tittel">Kontaktpersoner</h2>
+      <!--Fylles med kontaktpersonene fra /api/kontaktpersoner i script.js-->
       <ul class="personer">
-        <li>
-          <article class="person">
-            <img src="bilder/ayuub_kontaktoss.png" alt="">
-            <h3>Silje Ole</h3>
-            <p class="person-rolle">Sekretær og nettansvarlig</p>
-            <p class="person-sted">Fredrikstad</p>
-            <ul class="person-kontakt">
-              <li>Tlf: <a href="tel:+4790012345">900 12 345</a></li>
-              <li>E-post: <a href="mailto:silje@fredrikstad-husflid.no">silje@fredrikstad-husflid.no</a></li>
-            </ul>
-          </article>
-        </li>
-        <li>
-          <article class="person">
-            <img src="bilder/mohammed_kontaktoss.png" alt="">
-            <h3>Kari Hansen</h3>
-            <p class="person-rolle">Kursansvarlig</p>
-            <p class="person-sted">Fredrikstad</p>
-            <ul class="person-kontakt">
-              <li>Tlf: <a href="tel:+4791123456">911 23 456</a></li>
-              <li>E-post: <a href="mailto:kari@fredrikstad-husflid.no">kari@fredrikstad-husflid.no</a></li>
-            </ul>
-          </article>
-        </li>
-        <li>
-          <article class="person">
-            <img src="bilder/taulant_kontaktoss.png" alt="">
-            <h3>Bjørg Nilsen</h3>
-            <p class="person-rolle">Leder</p>
-            <p class="person-sted">Østfold</p>
-            <ul class="person-kontakt">
-              <li>Tlf: <a href="tel:+4792234567">922 34 567</a></li>
-              <li>E-post: <a href="mailto:bjorg@ostfold-husflid.no">bjorg@ostfold-husflid.no</a></li>
-            </ul>
-          </article>
-        </li>
-        <li>
-          <article class="person">
-            <img src="https://picsum.photos/id/237/200/300" alt="">
-            <h3>Per Kristiansen</h3>
-            <p class="person-rolle">Kasserer</p>
-            <p class="person-sted">Østfold</p>
-            <ul class="person-kontakt">
-              <li>Tlf: <a href="tel:+4793345678">933 45 678</a></li>
-              <li>E-post: <a href="mailto:per@ostfold-husflid.no">per@ostfold-husflid.no</a></li>
-            </ul>
-          </article>
-        </li>
+        <li class="liste-melding"><p>Henter kontaktpersoner …</p></li>
       </ul>
     </section>
 
     <!--FINN OSS-->
     <section class="finn-oss" aria-labelledby="finn-oss-tittel">
       <h2 id="finn-oss-tittel">Finn oss</h2>
-      <ul>
-        <li>
-          <address>
-            <strong>Fredrikstad Husflidslag</strong>
-            <span>Nygårdsgt. 14, 1606 Fredrikstad</span>
-            <span><a href="tel:+4790012345">900 12 345</a> · <a href="mailto:post@fredrikstad-husflid.no">post@fredrikstad-husflid.no</a></span>
-          </address>
-        </li>
-        <li>
+      <!--Lokallagene med adresse hentes fra /api/lokallag i script.js og legges inn før Østfold Husflidslag.
+          Østfold Husflidslag (fylkeslaget) står fast, fordi det er sidens egen kontaktinformasjon.-->
+      <ul id="finn-oss-liste">
+        <li class="liste-melding"><p>Henter lokallag …</p></li>
+        <li id="finn-oss-fylke">
           <address>
             <strong>Østfold Husflidslag</strong>
             <span>Storgata 5, 1601 Fredrikstad</span>

@@ -558,6 +558,16 @@ main:focus { outline: none; }
   font-weight: 600;
 }
 
+/*Melding i en liste mens data hentes, eller hvis noe går galt. Går over hele bredden.*/
+.liste-melding {
+  grid-column: 1 / -1;
+  padding: 1.25rem;
+  border: 1px dashed var(--border);
+  border-radius: 0.5rem;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
 /*Se alle kurs-knappen*/
 .alle-kurs { margin-top: 2rem; text-align: center; }
 .alle-kurs .knapp { width: 100%; padding-block: 1rem; }
@@ -1298,6 +1308,9 @@ main:focus { outline: none; }
   border-radius: 50%;
   object-fit: cover;
 }
+/*Uten bilde: navn og rolle under hverandre, over hele bredden*/
+.kurs-kontakt:has(img[hidden]) { grid-template-columns: 1fr; }
+
 .kurs-kontakt-navn {
   align-self: end;
   font-family: var(--font-serif);
@@ -1709,6 +1722,8 @@ main:focus { outline: none; }
   background-color: var(--card);
   overflow: hidden;
 }
+/*Uten bilde (eller hvis bildet ikke finnes): luft over navnet*/
+.person:not(:has(img:not([hidden]))) { padding-top: 1.25rem; }
 /*Firkantet bilde som dekker hele toppen av kortet*/
 .person img {
   width: 100%;
@@ -1771,6 +1786,8 @@ main:focus { outline: none; }
 }
 .finn-oss strong { font-size: 1rem; }
 .finn-oss address span:nth-of-type(1) { color: var(--muted-foreground); }
+/*Like høye adressekort når de står ved siden av hverandre*/
+.finn-oss address { height: 100%; }
 .finn-oss a { overflow-wrap: anywhere; }
 .finn-oss a:hover { text-decoration: underline; }
 
@@ -1883,6 +1900,8 @@ main:focus { outline: none; }
 .lag-kort { gap: 0.25rem; padding-bottom: 1rem; }
 .lag-kort > :not(figure) { margin-inline: 1rem; }
 .lag-kort figure { height: 140px; margin-bottom: 0.75rem; }
+/*Uten bilde: luft over navnet*/
+.lag-kort:not(:has(figure)) { padding-top: 1rem; }
 .lag-kort h3 { font-size: 1rem; font-weight: 700; }
 .lag-kort p {
   flex: 1;

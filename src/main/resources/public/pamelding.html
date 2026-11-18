@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="bilder/favicon.png">
-  <title>Påmelding: Bunadssøm for nybegynnere – Østfold Husflidslag</title>
+  <!--script.js setter kursnavnet i tittelen når kurset er hentet-->
+  <title>Påmelding – Østfold Husflidslag</title>
   <meta name="description" content="Meld deg på kurs hos Østfold Husflidslag.">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
@@ -89,13 +90,17 @@
       <ol>
         <li><a href="index.html">Hjem</a></li>
         <li><a href="kurs.html">Kurs og aktiviteter</a></li>
-        <li><a href="kurs-detalj.html?id=1" id="brodsmule-kurs" data-kurs="tittel">Bunadssøm for nybegynnere</a></li>
+        <li><a href="kurs-detalj.html" id="brodsmule-kurs" data-kurs="tittel">Kurset</a></li>
         <li><a href="pamelding.html" aria-current="page">Påmelding</a></li>
       </ol>
     </nav>
 
+    <!--Vises mens kurset hentes fra /api/kurs/{id}. script.js fjerner den og viser skjemaet.-->
+    <p class="liste-melding" id="kurs-laster" role="status">Henter kurset …</p>
+
     <!--PÅMELDINGSSKJEMA-->
-    <section class="pameldingsskjema" aria-labelledby="pamelding-tittel">
+    <!--Skjult til kurset er hentet, så man ikke fyller ut skjemaet for et kurs som ikke finnes-->
+    <section class="pameldingsskjema" aria-labelledby="pamelding-tittel" hidden>
       <header class="sidetopp">
         <h1 id="pamelding-tittel">Meld deg på kurs</h1>
         <p id="pamelding-ingress">Fyll ut skjemaet. På neste side ser du over opplysningene før du bekrefter.</p>
@@ -120,7 +125,7 @@
           <input id="telefon" name="telefon" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9 +]{8,15}" required>
 
           <label for="fodselsar">Fødselsår</label>
-          <input id="fodselsar" name="fodselsar" type="number" inputmode="numeric" min="1900" max="2026" placeholder="F.eks. 1985" required>
+          <input id="fodselsar" name="fodselsar" type="number" inputmode="numeric" min="1900" placeholder="F.eks. 1985" required>
         </fieldset>
 
         <!--Medlemskap-->
@@ -161,26 +166,27 @@
     </section>
 
     <!--KURSET DU MELDER DEG PÅ-->
-    <aside class="kurs-oppsummering" aria-labelledby="oppsummering-tittel">
+    <!--Fylles inn av script.js. Skjult til kurset er hentet.-->
+    <aside class="kurs-oppsummering" aria-labelledby="oppsummering-tittel" hidden>
       <h2 id="oppsummering-tittel">Du melder deg på</h2>
-      <p class="kurs-tema" data-kurs="tema">Bunad</p>
-      <h3 data-kurs="tittel">Bunadssøm for nybegynnere</h3>
+      <p class="kurs-tema" data-kurs="tema"></p>
+      <h3 data-kurs="tittel"></h3>
 
       <dl class="info-list">
         <dt>Dato</dt>
-        <dd><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time>, kl. <span data-kurs="tid">18:00–21:00</span></dd>
+        <dd><time data-kurs="dato"></time>, kl. <span data-kurs="tid"></span></dd>
         <dt>Varighet</dt>
-        <dd data-kurs="varighet">8 kvelder</dd>
+        <dd data-kurs="varighet"></dd>
         <dt>Sted</dt>
-        <dd data-kurs="sted">Fredrikstad Husflidssenter, Nygårdsgt. 14</dd>
+        <dd data-kurs="sted"></dd>
         <dt>Lokallag</dt>
-        <dd data-kurs="lagnavn">Fredrikstad Husflidslag</dd>
+        <dd data-kurs="lagnavn"></dd>
         <dt>Ledige plasser</dt>
-        <dd data-kurs="plasser">3 av 8</dd>
+        <dd data-kurs="plasser"></dd>
       </dl>
 
-      <!--Prisen endres når man velger medlem eller ikke (data-medlem og data-ordinaer brukes av script.js)-->
-      <p class="din-pris" data-medlem="1&nbsp;500 kr" data-ordinaer="2&nbsp;000 kr">
+      <!--Prisen endres når man velger medlem eller ikke. script.js legger prisene fra kurset i data-medlem og data-ordinaer.-->
+      <p class="din-pris">
         <span>Din pris</span>
         <strong id="din-pris">Velg medlemskap</strong>
       </p>

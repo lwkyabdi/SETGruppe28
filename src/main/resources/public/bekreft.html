@@ -92,8 +92,9 @@
     <form id="bekreft-skjema" action="pameldt.html">
       <article class="bekreft-kort" aria-labelledby="bekreft-kurs">
         <header>
-          <h2 id="bekreft-kurs" data-kurs="tittel">Bunadssøm for nybegynnere</h2>
-          <p><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time> · <span data-kurs="tid">18:00–21:00</span> · <span data-kurs="lokallag">Fredrikstad</span></p>
+          <!--Kursnavn, dato, tid og lokallag hentes fra /api/kurs/{id} i script.js-->
+          <h2 id="bekreft-kurs" data-kurs="tittel">Henter kurset …</h2>
+          <p id="bekreft-kursinfo" hidden><time data-kurs="dato"></time> · <span data-kurs="tid"></span> · <span data-kurs="lokallag"></span></p>
         </header>
 
         <dl class="bekreft-info">

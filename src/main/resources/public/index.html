@@ -121,40 +121,9 @@
         <a href="aktuelt.html" class="pil-lenke">Se alle nyheter</a>
       </header>
 
+      <!--Fylles med de nyeste nyhetene fra /api/nyheter i script.js-->
       <ul class="kortliste">
-        <li>
-          <article class="kort nyhet">
-            <figure>
-              <img src="bilder/nyhet-1.jpg" alt="">
-            </figure>
-            <p class="nyhet-meta"><time datetime="2024-09-02">2. september 2024</time> <span>Fredrikstad</span></p>
-            <h3>Nytt bunadskurs i Fredrikstad – meld deg på nå!</h3>
-            <p>Vi åpner nå påmelding til høstens bunadskurs i Fredrikstad. Det er kun 8 plasser, og de fylles raskt.</p>
-            <a href="nyhet.html?id=1" class="les-mer">Les mer<span class="skjult">: Nytt bunadskurs i Fredrikstad</span></a>
-          </article>
-        </li>
-        <li>
-          <article class="kort nyhet">
-            <figure>
-              <img src="bilder/nyhet-2.jpg" alt="">
-            </figure>
-            <p class="nyhet-meta"><time datetime="2024-09-05">5. september 2024</time> <span>Moss</span></p>
-            <h3>Ledige plasser på vevkurs i Moss</h3>
-            <p>Det er fortsatt ledige plasser på høstens vevkurs i Moss. Et flott kurs for deg som vil lære tradisjonell båndbinding.</p>
-            <a href="nyhet.html?id=2" class="les-mer">Les mer<span class="skjult">: Ledige plasser på vevkurs i Moss</span></a>
-          </article>
-        </li>
-        <li>
-          <article class="kort nyhet">
-            <figure>
-              <img src="bilder/nyhet-3.jpg" alt="">
-            </figure>
-            <p class="nyhet-meta"><time datetime="2024-08-28">28. august 2024</time> <span>Østfold</span></p>
-            <h3>Høstprogrammet er klart – se alle kurs og aktiviteter</h3>
-            <p>Vi har satt opp et rikt høstprogram med kurs innen strikking, veving, søm, broderi, bunad og trearbeid.</p>
-            <a href="nyhet.html?id=3" class="les-mer">Les mer<span class="skjult">: Høstprogrammet er klart</span></a>
-          </article>
-        </li>
+        <li class="liste-melding"><p>Henter nyheter …</p></li>
       </ul>
 
       <p class="kun-mobil"><a href="aktuelt.html" class="knapp knapp-primar-kant">Se alle nyheter</a></p>
@@ -168,64 +137,9 @@
         <a href="kurs.html" class="pil-lenke">Se alle kurs</a>
       </header>
 
+      <!--Fylles med de tre neste kursene fra /api/kurs/kommende i script.js-->
       <ul class="kortliste">
-        <li>
-          <article class="kort kurs">
-            <figure>
-              <img src="bilder/kurs-1.jpg" alt="">
-            </figure>
-            <p class="kurs-tema">Bunad</p>
-            <p class="kurs-lokallag">Fredrikstad Husflidslag</p>
-            <h3>Bunadssøm for nybegynnere</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-09-20">20. september 2024</time></li>
-              <li class="tid">18:00–21:00 · 8 kvelder</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-faa">3 plasser igjen</p>
-              <p class="pris"><strong>1&nbsp;500 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=1" class="knapp knapp-primar">Se kurset<span class="skjult">: Bunadssøm for nybegynnere</span></a>
-          </article>
-        </li>
-        <li>
-          <article class="kort kurs">
-            <figure>
-              <img src="bilder/kurs-2.jpg" alt="">
-            </figure>
-            <p class="kurs-tema">Strikking</p>
-            <p class="kurs-lokallag">Sarpsborg Husflidslag</p>
-            <h3>Strikk din egen genser</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-09-27">27. september 2024</time></li>
-              <li class="tid">10:00–14:00 · 6 lørdager</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-fullt">Fullt</p>
-              <p class="pris"><strong>1&nbsp;200 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=2" class="knapp knapp-gra">Se kurset og ventelisten<span class="skjult">: Strikk din egen genser</span></a>
-          </article>
-        </li>
-        <li>
-          <article class="kort kurs">
-            <figure>
-              <img src="bilder/kurs-3.jpg" alt="">
-            </figure>
-            <p class="kurs-tema">Veving</p>
-            <p class="kurs-lokallag">Moss Husflidslag</p>
-            <h3>Vevkurs – grunnleggende båndbinding</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-10-05">5. oktober 2024</time></li>
-              <li class="tid">10:00–15:00 · 2 dager</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-ledig">6 ledige plasser</p>
-              <p class="pris"><strong>900 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=3" class="knapp knapp-primar">Se kurset<span class="skjult">: Vevkurs – grunnleggende båndbinding</span></a>
-          </article>
-        </li>
+        <li class="liste-melding"><p>Henter kurs …</p></li>
       </ul>
 
       <p class="alle-kurs"><a href="kurs.html" class="knapp knapp-primar">Se alle kurs og aktiviteter</a></p>
@@ -258,11 +172,9 @@
         <p>Vi har aktive lag i hele Østfold. Du kan delta på kurs hos alle lokallagene – uansett hvor du er bosatt.</p>
       </header>
 
+      <!--Fylles med lokallagene fra /api/lokallag i script.js-->
       <ul class="lokallag">
-        <li><a href="kurs.html?lokallag=fredrikstad"><strong>Fredrikstad</strong> Husflidslag</a></li>
-        <li><a href="kurs.html?lokallag=sarpsborg"><strong>Sarpsborg</strong> Husflidslag</a></li>
-        <li><a href="kurs.html?lokallag=moss"><strong>Moss</strong> Husflidslag</a></li>
-        <li><a href="kurs.html?lokallag=halden"><strong>Halden</strong> Husflidslag</a></li>
+        <li class="liste-melding"><p>Henter lokallag …</p></li>
       </ul>
     </section>
 

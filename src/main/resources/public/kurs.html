@@ -94,148 +94,26 @@
       <input id="kurs-sok" name="sok" type="search" placeholder="Søk etter strikking, bunad, veving...">
 
       <label for="tema-filter">Tema</label>
+      <!--Temaene bygges i script.js ut fra temaene til kursene som hentes-->
       <select id="tema-filter" name="tema">
         <option value="">Alle temaer</option>
-        <option value="bunad">Bunad</option>
-        <option value="strikking">Strikking</option>
-        <option value="veving">Veving</option>
-        <option value="brodering">Brodering</option>
-        <option value="trearbeid">Trearbeid</option>
-        <option value="som">Søm</option>
-        <option value="andre">Andre håndverk</option>
       </select>
 
       <label for="lokallag-filter">Lokallag</label>
+      <!--Lokallagene hentes fra /api/lokallag i script.js-->
       <select id="lokallag-filter" name="lokallag">
         <option value="">Alle lokallag</option>
-        <option value="fredrikstad">Fredrikstad</option>
-        <option value="sarpsborg">Sarpsborg</option>
-        <option value="moss">Moss</option>
-        <option value="halden">Halden</option>
-        <option value="indre-ostfold">Indre Østfold</option>
       </select>
     </form>
 
     <!--KURSLISTE-->
     <section aria-labelledby="kursliste-tittel">
       <h2 id="kursliste-tittel" class="skjult">Kurs</h2>
-      <p class="antall" aria-live="polite">Viser <span id="antall-kurs">6</span> kurs</p>
+      <p class="antall" aria-live="polite" hidden>Viser <span id="antall-kurs">0</span> kurs</p>
 
+      <!--Fylles med kursene fra /api/kurs/kommende i script.js-->
       <ul class="kortliste kursliste" id="kursliste">
-        <li data-tema="bunad" data-lokallag="fredrikstad">
-          <article class="kort kurs">
-            <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
-            </figure>
-            <p class="kurs-tema">Bunad</p>
-            <p class="kurs-lokallag">Fredrikstad Husflidslag</p>
-            <h3>Bunadssøm for nybegynnere</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-09-20">20. september 2024</time></li>
-              <li class="tid">18:00–21:00 · 8 kvelder</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-faa">3 plasser igjen</p>
-              <p class="pris"><strong>1&nbsp;500 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=1" class="knapp knapp-primar">Se kurset<span class="skjult">: Bunadssøm for nybegynnere</span></a>
-          </article>
-        </li>
-        <li data-tema="strikking" data-lokallag="sarpsborg">
-          <article class="kort kurs">
-            <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
-            </figure>
-            <p class="kurs-tema">Strikking</p>
-            <p class="kurs-lokallag">Sarpsborg Husflidslag</p>
-            <h3>Strikk din egen genser</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-09-27">27. september 2024</time></li>
-              <li class="tid">10:00–14:00 · 6 lørdager</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-fullt">Fullt</p>
-              <p class="pris"><strong>1&nbsp;200 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=2" class="knapp knapp-gra">Se kurset og ventelisten<span class="skjult">: Strikk din egen genser</span></a>
-          </article>
-        </li>
-        <li data-tema="veving" data-lokallag="moss">
-          <article class="kort kurs">
-            <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
-            </figure>
-            <p class="kurs-tema">Veving</p>
-            <p class="kurs-lokallag">Moss Husflidslag</p>
-            <h3>Vevkurs – grunnleggende båndbinding</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-10-05">5. oktober 2024</time></li>
-              <li class="tid">10:00–15:00 · 2 dager</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-ledig">6 ledige plasser</p>
-              <p class="pris"><strong>900 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=3" class="knapp knapp-primar">Se kurset<span class="skjult">: Vevkurs – grunnleggende båndbinding</span></a>
-          </article>
-        </li>
-        <li data-tema="brodering" data-lokallag="halden">
-          <article class="kort kurs">
-            <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
-            </figure>
-            <p class="kurs-tema">Brodering</p>
-            <p class="kurs-lokallag">Halden Husflidslag</p>
-            <h3>Broderi og korssting – nybegynnerkurs</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-10-12">12. oktober 2024</time></li>
-              <li class="tid">13:00–16:00 · 4 lørdager</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-ledig">8 ledige plasser</p>
-              <p class="pris"><strong>800 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=4" class="knapp knapp-primar">Se kurset<span class="skjult">: Broderi og korssting – nybegynnerkurs</span></a>
-          </article>
-        </li>
-        <li data-tema="trearbeid" data-lokallag="fredrikstad">
-          <article class="kort kurs">
-            <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
-            </figure>
-            <p class="kurs-tema">Trearbeid</p>
-            <p class="kurs-lokallag">Fredrikstad Husflidslag</p>
-            <h3>Trearbeid – tradisjonell skjæring</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-10-19">19. oktober 2024</time></li>
-              <li class="tid">09:00–15:00 · 1 hel lørdag</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-faa">2 plasser igjen</p>
-              <p class="pris"><strong>1&nbsp;100 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=5" class="knapp knapp-primar">Se kurset<span class="skjult">: Trearbeid – tradisjonell skjæring</span></a>
-          </article>
-        </li>
-        <li data-tema="som" data-lokallag="sarpsborg">
-          <article class="kort kurs">
-            <figure>
-              <img src="https://picsum.photos/id/237/200/300" alt="">
-            </figure>
-            <p class="kurs-tema">Søm</p>
-            <p class="kurs-lokallag">Sarpsborg Husflidslag</p>
-            <h3>Søm og enkel konfeksjon</h3>
-            <ul class="kurs-info">
-              <li class="dato"><time datetime="2024-11-02">2. november 2024</time></li>
-              <li class="tid">10:00–14:00 · 5 lørdager</li>
-            </ul>
-            <footer>
-              <p class="plasser plasser-ledig">5 ledige plasser</p>
-              <p class="pris"><strong>1&nbsp;100 kr</strong> for medlem</p>
-            </footer>
-            <a href="kurs-detalj.html?id=6" class="knapp knapp-primar">Se kurset<span class="skjult">: Søm og enkel konfeksjon</span></a>
-          </article>
-        </li>
+        <li class="liste-melding"><p>Henter kurs …</p></li>
       </ul>
 
       <p class="ingen-treff" id="ingen-treff" hidden>Ingen kurs passer søket ditt. Prøv et annet tema eller lokallag.</p>
