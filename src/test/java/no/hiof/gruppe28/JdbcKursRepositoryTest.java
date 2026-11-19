@@ -4,9 +4,6 @@ import no.hiof.gruppe28.config.DatabaseConfig;
 import no.hiof.gruppe28.repository.JdbcKursRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
 @EnabledIfEnvironmentVariable(named = "MYSQL_TEST_URL", matches = ".+")
@@ -21,23 +18,7 @@ class JdbcKursRepositoryTest {
         }
         var config = new DatabaseConfig(url, System.getenv("MYSQL_TEST_USER"), System.getenv("MYSQL_TEST_PASSWORD"));
         try (var c = config.connect(); var s = c.createStatement()) {
-            for (String table : new String[]{
-                    "venteliste", "pamelding", "aktivitet", "artikkel",
-                    "medlemsinteresse", "administrator", "kurs",
-                    "kontaktperson", "lokallag", "id_teller", "kontaktmelding"
-            }) {
-                s.execute("DROP TABLE IF EXISTS " + table);
-            }
-            for (String file : new String[]{
-                    "01-schema.sql", "02-seed.sql", "03-pamelding.sql",
-                    "04-frontend.sql", "05-kurs-lokallag.sql", "06-pamelding-status.sql"
-            }) {
-                String sql = Files.readString(Path.of("database", file), StandardCharsets.UTF_8)
-                        .replaceAll("(?m)^\\s*--.*$", "");
-                for (String statement : sql.split(";")) {
-                    if (!statement.isBlank()) s.execute(statement);
-                }
-            }
+            JdbcTestskjema.gjenopprett(c);
             s.execute("""
                     UPDATE kurs
                     SET lokallag = 'Gammelt navn',

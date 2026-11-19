@@ -17,9 +17,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.sql.SQLException;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.math.BigDecimal;
@@ -49,21 +47,8 @@ class JdbcTilleggsRepositoryTest {
         }
         database = new DatabaseConfig(url,
                 System.getenv("MYSQL_TEST_USER"), System.getenv("MYSQL_TEST_PASSWORD"));
-        try (var c = database.connect(); var s = c.createStatement()) {
-            assertEquals("husflid_test", c.getCatalog());
-            for (String tabell : new String[]{"venteliste", "pamelding", "aktivitet", "artikkel",
-                    "medlemsinteresse", "administrator", "kurs", "kontaktperson", "lokallag",
-                    "id_teller", "kontaktmelding"}) {
-                s.execute("DROP TABLE IF EXISTS " + tabell);
-            }
-            for (String fil : new String[]{"01-schema.sql", "02-seed.sql", "03-pamelding.sql",
-                    "04-frontend.sql", "05-kurs-lokallag.sql", "06-pamelding-status.sql"}) {
-                String sql = Files.readString(Path.of("database", fil), StandardCharsets.UTF_8)
-                        .replaceAll("(?m)^\\s*--.*$", "");
-                for (String setning : sql.split(";")) {
-                    if (!setning.isBlank()) s.execute(setning);
-                }
-            }
+        try (var c = database.connect()) {
+            JdbcTestskjema.gjenopprett(c);
         }
         admin = new JdbcAdminPameldingRepository(database);
     }
@@ -72,8 +57,8 @@ class JdbcTilleggsRepositoryTest {
     void testdata() throws Exception {
         sql("DROP TRIGGER IF EXISTS jdbc_test_avvis_pamelding");
         sql("DROP TRIGGER IF EXISTS jdbc_test_avvis_plasstall");
-        for (String tabell : new String[]{"venteliste", "pamelding", "aktivitet", "artikkel",
-                "medlemsinteresse", "administrator", "kurs", "kontaktperson", "lokallag"}) {
+        for (String tabell : new String[]{"venteliste", "pamelding", "artikkel",
+                "administrator", "kurs", "kontaktperson", "lokallag"}) {
             sql("DELETE FROM " + tabell);
         }
         sql("UPDATE id_teller SET siste_id = 0 WHERE navn = 'kurs'");
@@ -196,6 +181,29 @@ class JdbcTilleggsRepositoryTest {
         assertNull(felles.lokallagId()); assertNull(felles.lokallagNavn()); assertNull(felles.bildesti());
     }
 
+    @Test void sisteMigreringBevarerRegistrerteDataOgKanKjoresIgjen() throws Exception {
+        String fil = "09-fjern-ubrukte-tabeller.sql";
+        String antallTabeller = "SELECT COUNT(*) FROM information_schema.TABLES "
+                + "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE'";
+        try (var c = database.connect(); var s = c.createStatement()) {
+            // Gjenskap de tre eldre tabellene i testdatabasen.
+            JdbcTestskjema.kjorFil(s, "04-frontend.sql");
+            s.executeUpdate("INSERT INTO kontaktmelding (navn, epost, melding) "
+                    + "VALUES ('Test', 'migrering@example.test', 'Test av migrering')");
+            var feil = assertThrows(SQLException.class, () -> JdbcTestskjema.kjorFil(s, fil));
+            assertEquals("45000", feil.getSQLState());
+            assertEquals("11", verdi(antallTabeller));
+            assertEquals("1", verdi("SELECT COUNT(*) FROM kontaktmelding"));
+
+            s.executeUpdate("DELETE FROM kontaktmelding WHERE epost = 'migrering@example.test'");
+            JdbcTestskjema.kjorFil(s, fil);
+            JdbcTestskjema.kjorFil(s, fil);
+            assertEquals("8", verdi(antallTabeller));
+            assertEquals("6", verdi("SELECT COUNT(*) FROM information_schema.REFERENTIAL_CONSTRAINTS "
+                    + "WHERE CONSTRAINT_SCHEMA = DATABASE()"));
+        }
+    }
+
     @Test void adminFiltrererPaKursetsLagOgKurs() {
         assertEquals(5, admin.finnPameldinger(null, null).size());
         assertEquals(3, admin.finnPameldinger(10L, null).size());
@@ -230,17 +238,20 @@ class JdbcTilleggsRepositoryTest {
         assertEquals(0, ledige(502));
     }
 
-    @Test void slettingAvPameldtFrigirEnPlass() throws Exception {
+    @Test void avmeldingBevarerHistorikkOgFrigirEnPlass() throws Exception {
         admin.slett("pameldt-501");
-        assertTrue(admin.finn("pameldt-501").isEmpty()); assertEquals(2, ledige(501));
-        assertEquals(404, assertThrows(ApiException.class,
+        assertEquals("AVMELDT", admin.finn("pameldt-501").orElseThrow().status());
+        assertNotNull(verdi("SELECT avmeldt_tid FROM pamelding WHERE referanse = 'pameldt-501'"));
+        assertEquals(2, ledige(501));
+        assertEquals(409, assertThrows(ApiException.class,
                 () -> admin.slett("pameldt-501")).status());
         assertEquals(2, ledige(501));
     }
 
-    @Test void slettingFraVentelisteEndrerIkkePlasstall() throws Exception {
+    @Test void avmeldingFraVentelisteEndrerIkkePlasstall() throws Exception {
         admin.slett("venter-501-a");
-        assertTrue(admin.finn("venter-501-a").isEmpty()); assertEquals(1, ledige(501));
+        assertEquals("AVMELDT", admin.finn("venter-501-a").orElseThrow().status());
+        assertEquals(1, ledige(501));
     }
 
     @Test void feilPlasstallRullerTilbakeSlettingen() throws Exception {
@@ -291,10 +302,10 @@ class JdbcTilleggsRepositoryTest {
         assertEquals(0, ledige(501));
     }
 
-    @Test void samtidigSlettingFrigirBareEnPlass() throws Exception {
+    @Test void samtidigAvmeldingFrigirBareEnPlass() throws Exception {
         Callable<Boolean> forsok = () -> {
             try { admin.slett("pameldt-501"); return true; }
-            catch (ApiException e) { assertEquals(404, e.status()); return false; }
+            catch (ApiException e) { assertEquals(409, e.status()); return false; }
         };
         assertEquals(1, samtidig(forsok, forsok).stream().filter(Boolean::booleanValue).count());
         assertEquals(2, ledige(501));

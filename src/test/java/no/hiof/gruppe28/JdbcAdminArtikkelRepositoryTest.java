@@ -17,9 +17,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -45,25 +42,15 @@ class JdbcAdminArtikkelRepositoryTest {
             throw new IllegalArgumentException("Testene krever den separate databasen husflid_test.");
         }
         database = new DatabaseConfig(url, System.getenv("MYSQL_TEST_USER"), System.getenv("MYSQL_TEST_PASSWORD"));
-        try (var c = database.connect(); var s = c.createStatement()) {
-            assertEquals("husflid_test", c.getCatalog());
-            for (String tabell : new String[]{"venteliste", "pamelding", "aktivitet", "artikkel",
-                    "medlemsinteresse", "administrator", "kurs", "kontaktperson", "lokallag", "id_teller", "kontaktmelding"}) {
-                s.execute("DROP TABLE IF EXISTS " + tabell);
-            }
-            for (String fil : new String[]{"01-schema.sql", "02-seed.sql", "03-pamelding.sql",
-                    "04-frontend.sql", "05-kurs-lokallag.sql", "06-pamelding-status.sql"}) {
-                String sql = Files.readString(Path.of("database", fil), StandardCharsets.UTF_8)
-                        .replaceAll("(?m)^\\s*--.*$", "");
-                for (String setning : sql.split(";")) if (!setning.isBlank()) s.execute(setning);
-            }
+        try (var c = database.connect()) {
+            JdbcTestskjema.gjenopprett(c);
         }
         repository = new JdbcAdminArtikkelRepository(database);
     }
 
     @BeforeEach void data() throws Exception {
-        for (String tabell : new String[]{"venteliste", "pamelding", "aktivitet", "artikkel",
-                "medlemsinteresse", "administrator", "kurs", "kontaktperson", "lokallag"}) {
+        for (String tabell : new String[]{"venteliste", "pamelding", "artikkel",
+                "administrator", "kurs", "kontaktperson", "lokallag"}) {
             sql("DELETE FROM " + tabell);
         }
         sql("INSERT INTO lokallag (id, slug, navn) VALUES (10, 'fredrikstad', 'Fredrikstad'), (20, 'moss', 'Moss')");
