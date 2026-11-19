@@ -652,13 +652,19 @@ main:focus { outline: none; }
   text-align: center;
   transition: box-shadow 150ms;
 }
-/*Garnnøste over navnet*/
-.lokallag a::before {
-  content: "🧶";
+/*Garnnøste over navnet. Tegnet som SVG i stedet for emoji,
+  så det ser likt ut i alle nettlesere (Windows viser emojien blå).
+  Fargen er logo-rød (--primary). Brukes også på lokallagene på Om oss.*/
+.lokallag a::before,
+.lag-kort:not(:has(figure))::before {
+  content: "";
+  width: 2.25rem;
+  height: 2.25rem;
   margin-bottom: 0.5rem;
-  font-size: 1.875rem;
-  line-height: 2.25rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3CclipPath id='k'%3E%3Ccircle cx='18' cy='18' r='14'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M27 28c2 4 6 3 7 6s-2 5 2 5' fill='none' stroke='%23bb2a4d' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='18' cy='18' r='14' fill='%23bb2a4d'/%3E%3Cg clip-path='url(%23k)' fill='none' stroke='%23f6d3dc' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M2 10c10 0 22 8 28 22'/%3E%3Cpath d='M2 17c9 1 17 7 21 17'/%3E%3Cpath d='M8 2c8 4 17 13 22 26'/%3E%3Cpath d='M3 28c6-9 16-16 30-17'/%3E%3Cpath d='M9 34c5-8 13-14 25-15'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
 }
+/*På mobil (to i bredden): er det et oddetall lag, går det siste over hele bredden*/
+.lokallag li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .lokallag strong {
   margin-bottom: 0.25rem;
   font-size: 1rem;
@@ -1876,10 +1882,27 @@ main:focus { outline: none; }
   border-radius: 0.75rem;
   background-color: var(--card);
 }
+/*Ikonene er tegnet som SVG i stedet for emoji, så alle har samme farge (logo-rød)
+  og ser like ut i alle nettlesere. Hvert ikon er en maske som fylles med --primary.*/
 .tilbud-ikon {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
   margin-bottom: 0.75rem;
-  font-size: 2.25rem;
-  line-height: 1;
+  background-color: var(--primary);
+  -webkit-mask: var(--ikon) center / contain no-repeat;
+  mask: var(--ikon) center / contain no-repeat;
+}
+.ikon-fellesskap { --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='7.5' r='3.5'/%3E%3Cpath d='M2.5 20.5v-1a5 5 0 0 1 5-5h3a5 5 0 0 1 5 5v1'/%3E%3Ccircle cx='17' cy='8.5' r='2.8'/%3E%3Cpath d='M21.5 20.5v-.8a4 4 0 0 0-3-3.9'/%3E%3C/svg%3E"); }
+.ikon-kulturarv { --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10 12 4l9 6z'/%3E%3Cpath d='M5 10v8M9.7 10v8M14.3 10v8M19 10v8'/%3E%3Cpath d='M3.5 18h17M2.5 21h19'/%3E%3C/svg%3E"); }
+.ikon-frivillighet { --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20s-7.2-4.5-9.1-8.7C1.5 8.2 3.6 4.8 6.9 4.8c2 0 3.4 1.2 5.1 3 1.7-1.8 3.1-3 5.1-3 3.3 0 5.4 3.4 4 6.5C19.2 15.5 12 20 12 20z'/%3E%3C/svg%3E"); }
+.ikon-kunnskap { --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 5.5c3-1.3 6.3-1.1 9.5 1v13.2c-3.2-2.1-6.5-2.3-9.5-1z'/%3E%3Cpath d='M21.5 5.5c-3-1.3-6.3-1.1-9.5 1v13.2c3.2-2.1 6.5-2.3 9.5-1z'/%3E%3C/svg%3E"); }
+.ikon-alle { --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M2.5 12h19'/%3E%3Cpath d='M12 2.5c3.2 3.2 3.2 15.8 0 19M12 2.5c-3.2 3.2-3.2 15.8 0 19'/%3E%3C/svg%3E"); }
+/*Garnnøstet er det samme som på lokallagene, med farge i selve bildet*/
+.ikon-garn {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3CclipPath id='k'%3E%3Ccircle cx='18' cy='18' r='14'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M27 28c2 4 6 3 7 6s-2 5 2 5' fill='none' stroke='%23bb2a4d' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='18' cy='18' r='14' fill='%23bb2a4d'/%3E%3Cg clip-path='url(%23k)' fill='none' stroke='%23f6d3dc' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M2 10c10 0 22 8 28 22'/%3E%3Cpath d='M2 17c9 1 17 7 21 17'/%3E%3Cpath d='M8 2c8 4 17 13 22 26'/%3E%3Cpath d='M3 28c6-9 16-16 30-17'/%3E%3Cpath d='M9 34c5-8 13-14 25-15'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  -webkit-mask: none;
+  mask: none;
 }
 .tilbud-kort h3 {
   margin-bottom: 0.5rem;
@@ -1900,8 +1923,14 @@ main:focus { outline: none; }
 .lag-kort { gap: 0.25rem; padding-bottom: 1rem; }
 .lag-kort > :not(figure) { margin-inline: 1rem; }
 .lag-kort figure { height: 140px; margin-bottom: 0.75rem; }
-/*Uten bilde: luft over navnet*/
-.lag-kort:not(:has(figure)) { padding-top: 1rem; }
+/*Uten bilde: samme utseende som lokallagene på forsiden (garnnøste og sentrert tekst)*/
+.lag-kort:not(:has(figure)) {
+  align-items: center;
+  padding-top: 1.25rem;
+  text-align: center;
+}
+/*På mobil og nettbrett (to i bredden): er det et oddetall lag, går det siste over hele bredden*/
+.lag-liste li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .lag-kort h3 { font-size: 1rem; font-weight: 700; }
 .lag-kort p {
   flex: 1;
@@ -2131,7 +2160,13 @@ main:focus { outline: none; }
     margin-top: 0;
   }
 
-  .lokallag { grid-template-columns: repeat(4, 1fr); }
+  /*Alle lokallagene på én rad, uansett hvor mange det er i databasen*/
+  .lokallag {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+  .lokallag li:last-child:nth-child(odd) { grid-column: auto; }
 
   /*Kursside: innhold til venstre, påmelding til høyre*/
   .side-smal { grid-template-columns: minmax(0, 1fr) 22rem; }
@@ -2160,7 +2195,13 @@ main:focus { outline: none; }
     margin-top: 0;
   }
   .tilbud { grid-template-columns: repeat(3, 1fr); }
-  .lag-liste { grid-template-columns: repeat(4, 1fr); }
+  /*Alle lokallagene på én rad, uansett hvor mange det er i databasen*/
+  .lag-liste {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+  .lag-liste li:last-child:nth-child(odd) { grid-column: auto; }
 
   /*Kontakt oss: fire kontaktpersoner i bredden*/
   .personer { grid-template-columns: repeat(4, 1fr); }
