@@ -18,13 +18,13 @@ public class AdminPameldingController {
         this.pameldingController = pameldingController;
     }
 
-    // GET /api/admin/oversikt
+
     public void oversikt(Context ctx) {
         ctx.header("Cache-Control", "no-store");
         ctx.json(service.oversikt(bruker(ctx)));
     }
 
-    // GET /api/admin/pameldinger?kurs={id}  (uten kurs = alle egne kurs)
+
     public void pameldinger(Context ctx) {
         ctx.header("Cache-Control", "no-store");
         Long kursId = null;
@@ -38,13 +38,13 @@ public class AdminPameldingController {
             .toList());
     }
 
-    // POST /api/admin/pameldinger/{referanse}/gi-plass
+
     public void giPlass(Context ctx) {
         service.giPlass(bruker(ctx), ctx.pathParam("referanse"));
         ctx.json(Map.of("melding", "Personen har fått plass på kurset."));
     }
 
-    // DELETE /api/admin/pameldinger/{referanse}
+
     public void slett(Context ctx) {
         service.slett(bruker(ctx), ctx.pathParam("referanse"));
         ctx.json(Map.of("melding", "Personen er meldt av."));
@@ -56,7 +56,7 @@ public class AdminPameldingController {
         pameldingController.registrer(ctx);
     }
 
-    // Den innloggede brukeren. Vakten har allerede sjekket at den finnes.
+
     private InnloggetBruker bruker(Context ctx) {
         InnloggetBruker bruker = ctx.sessionAttribute(InnloggingController.SESJON_NOKKEL);
         if (bruker == null) {
@@ -72,7 +72,7 @@ public class AdminPameldingController {
                 return tall;
             }
         } catch (NumberFormatException e) {
-            // faller ned til feilen under
+
         }
         throw new ApiException(400, feilmelding);
     }

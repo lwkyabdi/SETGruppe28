@@ -34,7 +34,7 @@ public class AdminPameldingService {
         return new AdminOversikt(repository.antallKurs(lag), pameldte, venteliste);
     }
 
-    // Påmeldte først, så ventelisten, så avmeldte, hver i den rekkefølgen de meldte seg på
+
     public List<AdminPamelding> pameldinger(InnloggetBruker bruker, Long kursId) {
         return repository.finnPameldinger(lagFilter(bruker), kursId).stream()
             .sorted(Comparator
@@ -60,7 +60,7 @@ public class AdminPameldingService {
         sendPlassEpost(pamelding);
     }
 
-    // Melder personen av. Påmeldingen blir liggende med status AVMELDT, og plassen blir ledig.
+
     public void slett(InnloggetBruker bruker, String referanse) {
         AdminPamelding pamelding = finnEgen(bruker, referanse);
 
@@ -70,7 +70,7 @@ public class AdminPameldingService {
         repository.slett(referanse);
     }
 
-    // Påmeldte først, så venteliste, og avmeldte nederst
+
     private static int rekkefolge(String status) {
         if ("PAMELDT".equals(status)) return 0;
         if ("VENTELISTE".equals(status)) return 1;

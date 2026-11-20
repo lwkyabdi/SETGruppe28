@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class BildeService {
 
-    public static final long MAKS_STORRELSE = 2 * 1024 * 1024; // 2 MB
+    public static final long MAKS_STORRELSE = 2 * 1024 * 1024;
 
     private final Path mappe;
     private final String adresse;

@@ -29,7 +29,7 @@ public class DemoPameldingRepository implements PameldingRepository {
         Kurs kurs = kursRepository.findPublisert(kursId)
             .orElseThrow(() -> new PameldingException(404, "Kurset finnes ikke."));
 
-        // Samme forespørsel skal ikke registreres flere ganger.
+
         Lagret tidligere = pameldinger.get(data.referanse());
         if (tidligere != null) {
             if (!tidligere.foresporselHash().equals(data.foresporselHash())) {
@@ -41,14 +41,14 @@ public class DemoPameldingRepository implements PameldingRepository {
 
         PameldingRepository.kontrollerKurs(kurs, idag);
 
-        // Én påmelding per e-postadresse på samme kurs.
+
         boolean alleredePameldt = pameldinger.values().stream()
             .anyMatch(p -> p.kursId() == kursId && p.epost().equals(data.epost()));
         if (alleredePameldt) {
             throw new PameldingException(409, "Denne e-postadressen er allerede påmeldt kurset.");
         }
 
-        // Ledig plass gir påmeldt, fullt kurs gir venteliste.
+
         int ledige = kurs.ledigePlasser() - brukteplasser.getOrDefault(kursId, 0);
         PameldingStatus status = ledige > 0 ? PameldingStatus.PAMELDT : PameldingStatus.VENTELISTE;
         if (status == PameldingStatus.PAMELDT) {

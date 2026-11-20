@@ -32,7 +32,7 @@ public final class BekreftelsesTekst {
             + "Hilsen " + lagnavn(kvittering.lokallag());
     }
 
-    // "Moss" og "Moss Husflidslag" gir begge "Moss Husflidslag". Mangler laget, brukes fylkeslaget.
+
     static String lagnavn(String lokallag) {
         if (lokallag == null || lokallag.isBlank()) {
             return "Østfold Husflidslag";

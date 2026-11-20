@@ -151,7 +151,7 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
 
     private <T> T endre(String referanse, Endring<T> endring) {
         try (var c = database.connect()) {
-            // Første lesing i selve transaksjonen skal ta lås, uten et eldre øyeblikksbilde.
+
             long kursId = finnKursId(c, referanse);
             c.setAutoCommit(false);
             try {
@@ -180,7 +180,7 @@ public class JdbcAdminPameldingRepository implements AdminPameldingRepository {
     }
 
     private static LasteRader las(Connection c, String referanse, long kursId) throws SQLException {
-        // Samme låserekkefølge som vanlig påmelding: kurset før påmeldingen.
+
         int ledige;
         try (var s = c.prepareStatement(
             "SELECT ledige_plasser FROM kurs WHERE id = ? FOR UPDATE")) {

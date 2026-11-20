@@ -17,7 +17,7 @@ public class AdminKursController {
         this.service = service;
     }
 
-    // GET /api/admin/kurs
+
     public void alle(Context ctx) {
         ctx.header("Cache-Control", "no-store");
         ctx.json(service.alle(bruker(ctx)).stream()
@@ -25,25 +25,25 @@ public class AdminKursController {
             .toList());
     }
 
-    // GET /api/admin/kurs/{id}
+
     public void finn(Context ctx) {
         ctx.header("Cache-Control", "no-store");
         ctx.json(AdminKursDto.from(service.finn(bruker(ctx), id(ctx))));
     }
 
-    // POST /api/admin/kurs
+
     public void opprett(Context ctx) {
         long id = service.opprett(bruker(ctx), skjema(ctx));
         ctx.status(201).json(Map.of("id", id, "melding", "Kurset er opprettet."));
     }
 
-    // PUT /api/admin/kurs/{id}
+
     public void oppdater(Context ctx) {
         service.oppdater(bruker(ctx), id(ctx), skjema(ctx));
         ctx.json(Map.of("melding", "Kurset er lagret."));
     }
 
-    // DELETE /api/admin/kurs/{id}
+
     public void slett(Context ctx) {
         service.slett(bruker(ctx), id(ctx));
         ctx.json(Map.of("melding", "Kurset er slettet."));
@@ -64,7 +64,7 @@ public class AdminKursController {
                 return id;
             }
         } catch (NumberFormatException e) {
-            // faller ned til feilen under
+
         }
         throw new ApiException(400, "Kurs-ID må være et positivt heltall.");
     }

@@ -30,14 +30,14 @@ public class JdbcPameldingRepository implements PameldingRepository {
             c.setAutoCommit(false);
 
             try {
-                // Låser kursraden mens påmeldingen behandles.
+
                 var kurs = JdbcKursRepository.findPublisert(c, kursId, true)
                         .orElseThrow(() -> new PameldingException(
                                 404,
                                 "Kurset finnes ikke."
                         ));
 
-                // Samme forespørsel skal ikke registreres flere ganger.
+
                 try (var s = c.prepareStatement(
                         "SELECT * FROM pamelding WHERE referanse = ?"
                 )) {
@@ -76,8 +76,7 @@ public class JdbcPameldingRepository implements PameldingRepository {
                 }
 
                 PameldingRepository.kontrollerKurs(kurs, idag);
-                // Er det ledige plasser, blir personen påmeldt.
-                // Er kurset fullt, havner personen på venteliste.
+
                 PameldingStatus status;
                 if (kurs.ledigePlasser() > 0) {
                     status = PameldingStatus.PAMELDT;
@@ -184,7 +183,7 @@ public class JdbcPameldingRepository implements PameldingRepository {
 
                 c.commit();
 
-                // Bare påmeldte tar en plass. Står man på venteliste, endres ikke antallet.
+
                 var kursEtterPamelding = kurs;
                 if (status == PameldingStatus.PAMELDT) {
                     kursEtterPamelding = kurs.medLedigePlasser(kurs.ledigePlasser() - 1);
