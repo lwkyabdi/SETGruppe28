@@ -221,7 +221,6 @@ public class Application {
 
         return Javalin.create(config -> {
             config.staticFiles.add("/public", Location.CLASSPATH);
-            config.staticFiles.enableWebjars();
 
             config.routes.after("/api/*", ctx -> {
                 String type = ctx.res().getContentType();

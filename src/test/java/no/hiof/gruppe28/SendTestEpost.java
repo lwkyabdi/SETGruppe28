@@ -10,8 +10,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-// Manuell test: sender én ekte e-post til gruppens egen adresse.
-// Krever epostConfig.properties. Kjøres med den grønne pilen, ikke av Maven.
+// Kjør main manuelt for å sende en e-post til adressen i smtp.username.
 public class SendTestEpost {
 
     public static void main(String[] args) throws IOException {

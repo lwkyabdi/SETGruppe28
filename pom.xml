@@ -9,7 +9,6 @@
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javalin.version>7.2.3</javalin.version>
-    <vue.version>3.5.41</vue.version>
     <junit.version>5.13.4</junit.version>
   </properties>
   <dependencies>
@@ -27,12 +26,6 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.angus</groupId><artifactId>angus-mail</artifactId><version>2.0.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars.npm</groupId><artifactId>vue</artifactId><version>${vue.version}</version>
-      <exclusions>
-        <exclusion><groupId>*</groupId><artifactId>*</artifactId></exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><version>${junit.version}</version><scope>test</scope>

@@ -1,40 +1,30 @@
-# Manuell testing
+# Manuell kontroll
 
-Datoene i denne malen er fiktive og dokumenterer ikke gjennomførte tester.
-Faktisk resultat, tester og korrekt dato registreres ved gjennomføring.
+Testtilfellene M1–M12 følger tabell 7.3 i prosjektrapporten. Resultatene fra prosjektets gjennomføring står i kapittel 7.3, med skjermbilder i kapittel 6 og 7. Tabellen under kan brukes på nytt etter en endring. Fyll ut den siste kolonnen med dato, miljø og det du faktisk observerte.
 
-Navigasjon, søk og utseende kan prøves med `--demo`. Kontroll av databaseinnhold,
-brutt databasetilkobling og nye SQL-rader krever vanlig oppstart med MySQL.
+For M5, M9, M10 og M11 brukes vanlig oppstart med database. For å kontrollere mottak i M5 trengs også SMTP og en testinnboks. Bruk fiktive deltakere og egne testkurs i et miljø der testdata kan endres. Demomodus er tilstrekkelig for å prøve navigasjonen og den offentlige påmeldingsflyten uten varig lagring.
 
-| Nr. | Handling | Forventet resultat | Faktisk resultat / tester / dato |
+| ID | Hva du gjør | Forventet resultat | Resultat ved ny kjøring |
 | --- | --- | --- | --- |
-| 1 | Start appen og åpne forsiden | Siste nytt og kommende kurs vises | 09.10.2026 |
-| 2 | Sammenlign datoene med MySQL | Bare kurs fra og med i dag vises under kommende | 09.10.2026 |
-| 3 | Åpne kursoversikten | Alle publiserte kurs vises; kladd ID 8 er skjult | 09.10.2026 |
-| 4 | Søk på bunad, deretter en tekst uten treff | Riktig kurs, deretter en forståelig tomtilstand | 09.10.2026 |
-| 5 | Filtrer på Moss og Veving | Bare passende kurs vises | 09.10.2026 |
-| 6 | Åpne kurs ID 1 og ID 2 | Ulike titler, priser, steder og detaljer | 09.10.2026 |
-| 7 | Åpne /api/kurs/99999 | HTTP 404 | 10.10.2026 |
-| 8 | Åpne /api/kurs/8 | HTTP 404 for kladd | 10.10.2026 |
-| 9 | Åpne /api/kurs/abc | HTTP 400 | 10.10.2026 |
-| 10 | Åpne kurs-detalj.html?id=99999 | Forklarende melding, tilbakevei til kursoversikt | 10.10.2026 |
-| 11 | Åpne kontakt og kurskontakt | Navn, bildeillustrasjon, e-post og telefon vises | 10.10.2026 |
-| 12 | Åpne de tre nyhetene | Riktig eksempelnyhet vises; ukjent ID gir melding | 10.10.2026 |
-| 13 | Prøv alle lenker i topp, bunn og kort | Riktig side åpnes | 10.10.2026 |
-| 14 | Prøv 390 px, 768 px og PC-bredde | Lesbar tekst, meny kan brukes, ingen blokkert hovedflyt | 11.10.2026 |
-| 15 | Bruk Tab/Shift+Tab og Enter | Synlig fokus og brukbar navigasjon | 11.10.2026 |
-| 16 | Se Network i nettleserens utviklerverktøy | Kurs hentes fra /api; ingen feilede nødvendige ressurser | 11.10.2026 |
-| 17 | Simuler utilgjengelig database gjennom en midlertidig feil i den lokale appens tilkobling, og last kurssiden på nytt | API-et svarer med HTTP 503; siden viser en forståelig feilmelding og ingen falske kursdata | 11.10.2026 |
-| 18 | Gjenopprett riktig databasetilkobling, start appen på nytt og trykk Prøv igjen | Data lastes uten å endre kildekoden | 11.10.2026 |
-| 19 | Legg til et syntetisk kurs i MySQL og last siden på nytt | Nytt publisert kurs vises; dataflyten er demonstrert | 12.10.2026 |
-| 20 | La et annet gruppemedlem følge README fra ren kloning | Samme funksjoner kan startes på annen maskin | 12.10.2026 |
+| M1 | Åpne forsiden. Følg snarveiene til Kurs, Aktuelt og Kontakt. | Forsiden viser de nyeste nyhetene og kommende kurs. Snarveiene åpner riktig side. | |
+| M2 | Åpne kursoversikten med et eldre og et kommende publisert kurs i testdataene. | Fra og med dagens dato vises kursene med nærmeste dato først. Et avsluttet kurs vises ikke i oversikten. | |
+| M3 | Velg et lokallag og et tema, og nullstill filtrene. | Treffene passer begge valgene. Når filtrene nullstilles, vises alle kommende kurs. | |
+| M4 | Åpne detaljsiden for et kurs. | Dato, tidspunkt, sted, beskrivelse, nivå, utstyr, pris, kontaktperson og ledige plasser stemmer med testkurset. | |
+| M5 | Meld en testperson på et kurs med ledig plass. Kontroller kvitteringen og innboksen. | Deltakeren er påmeldt, én plass er brukt, og e-post og kvittering har samme referanse. | |
+| M6 | Meld en annen testperson på et fullt kurs. | Skjemaet tilbyr venteliste. Kvitteringen viser ventelistestatus, og antall ledige plasser er fortsatt null. | |
+| M7 | Åpne Aktuelt og velg en publisert nyhet. Prøv kopiering av lenken og åpne delingsvalget. | Riktig tekst og bilde vises. Den kopierte lenken åpner samme nyhet. Delingsvalget åpner deling for nyheten. | |
+| M8 | Åpne Kontakt og Ofte stilte spørsmål. | Kontaktsiden viser valgte kontaktpersoner. FAQ viser svar om blant annet avlysning, sykdom, betaling og påmelding. | |
+| M9 | Prøv feil passord og deretter gyldig innlogging. Logg ut igjen. | Feil passord avvises. Gyldig konto får tilgang. Etter utlogging krever administrasjonen ny innlogging. | |
+| M10 | Opprett og rediger en testnyhet og et testkurs. Publiser dem, og avlys deretter kurset. | Publiserte endringer blir synlige på nettsiden. Det avlyste kurset forsvinner fra den offentlige kurslisten. | |
+| M11 | Åpne påmeldingsoversikten og velg et kurs med både påmeldte og ventende deltakere. | Kontaktopplysninger og status vises for riktig kurs. Med lokallagskonto vises bare egne deltakerlister. | |
+| M12 | Åpne nettstedet i mobil-, nettbrett- og PC-bredde. Bruk menyen og gå gjennom en påmelding. | Innholdet tilpasser seg bredden, menyen virker, og hovedflyten kan brukes uten sidelengs rulling. | |
 
-Test av utilgjengelig database utføres ved å endre tilkoblingen i den lokale appen
-midlertidig. Skolens databaseserver skal fortsette å kjøre.
-Gjenopprett de riktige tilkoblingsinnstillingene etter testen.
+Ved kontroll av kø og kapasitet kan M6 og M11 prøves sammen. Meld av en deltaker med plass og kontroller at raden står som avmeldt. Velg deretter en ventende deltaker og trykk «Gi plass». Først da skal den ledige plassen tas i bruk.
 
-Tilfelle 19 kan gjøres ved å kopiere en eksempelrad med ny ID i Workbench;
-kontroller alle påkrevde felt og en eksisterende kontakt-ID.
-Fjern testkurset etter gjennomført kontroll.
+Supplerende kontroller fra utviklingen:
 
-Feil registreres som Issues med gjenskapingssteg og forventet og faktisk resultat.
+- Åpne `/api/kurs/abc` og et kursnummer som ikke finnes. Forvent henholdsvis 400 og 404.
+- Åpne kurssiden med og uten databasetilkobling i et lokalt testoppsett. Ved databasefeil skal API-et svare 503, og nettsiden skal vise en forståelig melding. Gjenopprett tilkoblingen og prøv igjen.
+- Følg en lenke med Tab og aktiver den med Enter. Kontroller synlig fokus på mobilmenyen og i påmeldingsskjemaet.
+
+Ved avvik, noter test-ID, nettleser, skjermbredde hvis relevant, forventet og faktisk resultat. Bruk testopplysninger i skjermbilder.

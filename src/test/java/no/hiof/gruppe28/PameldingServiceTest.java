@@ -36,7 +36,6 @@ class PameldingServiceTest {
         PameldingStatus.PAMELDT
     );
 
-    // Falsk e-post: husker hvem den "sendte" til, i stedet for å sende
     private final List<String> sendtTil = new ArrayList<>();
     private final EpostTjeneste falskEpost = (mottaker, k) -> sendtTil.add(mottaker);
 

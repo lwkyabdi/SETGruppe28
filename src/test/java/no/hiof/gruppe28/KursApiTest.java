@@ -67,11 +67,21 @@ class KursApiTest {
         assertEquals(400, get("/api/kurs/abc").statusCode());
         assertEquals(400, get("/api/kurs/-1").statusCode());
     }
-    @Test void frontendOgVueServeres() throws Exception {
+    @Test void frontendfilerServeres() throws Exception {
         assertEquals(200, get("/").statusCode());
         assertEquals(200, get("/index.html").statusCode());
         assertEquals(200, get("/style.css").statusCode());
-        assertEquals(200, get("/webjars/vue/3.5.41/dist/vue.global.prod.js").statusCode());
+        assertEquals(200, get("/script.js").statusCode());
+        assertEquals(200, get("/minside/admin.html").statusCode());
+        assertEquals(200, get("/minside/admin.js").statusCode());
+        assertEquals(200, get("/minside/admin.css").statusCode());
+        assertEquals(200, get("/bilder/kontakt-placeholder.svg").statusCode());
+
+        var pamelding = get("/pamelding.html?kurs=1");
+        assertEquals(200, pamelding.statusCode());
+        assertTrue(pamelding.body().contains("id=\"pamelding-skjema\""));
+        assertTrue(pamelding.body().contains("name=\"samtykke\""));
+        assertTrue(get("/pameldt.html").body().contains("id=\"pameldt-tittel\""));
     }
     @Test void databasefeilGir503MedForstaeligMelding() throws Exception {
         KursRepository failing = new KursRepository() {

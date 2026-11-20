@@ -84,7 +84,7 @@ public class JdbcPameldingRepository implements PameldingRepository {
                     status = PameldingStatus.VENTELISTE;
                 }
 
-                // Én påmelding per e-postadresse på samme kurs.
+                // Også avmeldte registreringer sperrer en ny påmelding med samme e-post og kurs.
                 try (var s = c.prepareStatement(
                         """
                         SELECT referanse
