@@ -1,28 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap");
 
-/*ADMINISTRASJON*/
-/*Egen stilfil for admin. Fargene og skriftene er de samme som på nettsiden.*/
-
-/*FARGER, SKRIFTER OG MÅL*/
 :root {
-  --background: #f7f7f7; /*lys grå bakgrunn*/
-  --foreground: #333132; /*kull, samme som teksten i logoen*/
-  --primary: #bb2a4d; /*logo-rød*/
-  --primary-foreground: #ffffff; /*tekst på rød*/
-  --muted: #eeedeb; /*grå flater*/
-  --muted-foreground: #66625f; /*svak tekst*/
-  --card: #ffffff; /*kort og tabeller*/
-  --border: #e4e1df; /*rammer*/
-  --footer: #333132; /*kull i menyen*/
+  --background: #f7f7f7;
+  --foreground: #333132;
+  --primary: #bb2a4d;
+  --primary-foreground: #ffffff;
+  --muted: #eeedeb;
+  --muted-foreground: #66625f;
+  --card: #ffffff;
+  --border: #e4e1df;
+  --footer: #333132;
   --footer-tekst: #f4f3f2;
 
   --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Lora", Georgia, serif;
 
-  --side-luft: 1rem; /*luft på sidene (1.5rem på PC)*/
+  --side-luft: 1rem;
 }
 
-/*GRUNNOPPSETT*/
 *, ::before, ::after { box-sizing: border-box; }
 
 body {
@@ -46,7 +41,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
   outline-offset: 2px;
 }
 
-/*Hopp til hovedinnhold: vises bare når man tabber til den*/
 .hopp-lenke {
   position: absolute;
   top: 0.5rem;
@@ -62,7 +56,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
 .hopp-lenke:focus { transform: none; }
 .admin-innhold:focus { outline: none; }
 
-/*Skjult, men lest av skjermlesere*/
 .skjult {
   position: absolute;
   width: 1px;
@@ -72,7 +65,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
   white-space: nowrap;
 }
 
-/*KNAPPER*/
 .knapp {
   display: inline-block;
   padding: 0.75rem 2rem;
@@ -91,7 +83,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
   font-weight: 600;
 }
 
-/*SKJEMA*/
 .skjema {
   display: flex;
   flex-direction: column;
@@ -118,7 +109,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
 }
 .skjema button { padding-block: 1rem; }
 
-/*Feilmelding*/
 .skjema-feil {
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
@@ -129,7 +119,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
 }
 .skjema-feil[hidden] { display: none; }
 
-/*Tilbake-lenke*/
 .tilbake a {
   display: inline-flex;
   gap: 0.5rem;
@@ -139,7 +128,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
 .tilbake a::before { content: "←"; }
 .tilbake a:hover { opacity: 0.7; }
 
-/*Merke for påmeldt og venteliste*/
 .plasser {
   display: inline-flex;
   align-items: center;
@@ -160,7 +148,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
 .plasser-faa   { background-color: #fef3c7; color: #b45309; }
 .plasser-ledig { background-color: #dcfce7; color: #15803d; }
 
-/*INNLOGGING*/
 .admin-innlogging { background-color: var(--muted); }
 
 .innlogging {
@@ -188,7 +175,6 @@ button, select, input, textarea { font: inherit; color: inherit; }
 }
 .innlogging-boks header p { color: var(--muted-foreground); }
 
-/*Testbrukeren under innloggingen*/
 .demo-info {
   width: min(100%, 26rem);
   padding: 0.75rem 1rem;
@@ -199,19 +185,15 @@ button, select, input, textarea { font: inherit; color: inherit; }
   color: var(--muted-foreground);
 }
 
-/*ADMINSIDENE*/
-/*Skjules til admin.js har sjekket at man er logget inn*/
 body.admin:not(.innlogget) { visibility: hidden; }
 
-/*Toppen over hele bredden, menyen til venstre og innholdet til høyre*/
 body.admin {
   display: grid;
-  grid-template-columns: minmax(0, 1fr); /*hindrer at brede tabeller gjør siden bredere*/
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto auto 1fr;
   background-color: var(--background);
 }
 
-/*HEADER*/
 .admin-topp {
   position: sticky;
   top: 0;
@@ -258,8 +240,6 @@ body.admin {
 .admin-topp-lenker a:hover,
 .logg-ut:hover { background-color: var(--muted); }
 
-/*ADMINMENY*/
-/*På mobil: menyen ligger som en rad under toppen*/
 .admin-meny {
   padding: 0.75rem var(--side-luft);
   background-color: var(--footer);
@@ -284,7 +264,6 @@ body.admin {
   background-color: var(--primary);
 }
 
-/*INNHOLD*/
 .admin-innhold {
   min-width: 0;
   padding: 2rem var(--side-luft) 3rem;
@@ -306,7 +285,6 @@ body.admin {
 .admin-sidetopp p { color: var(--muted-foreground); }
 .admin-sidetopp .knapp { justify-self: start; margin-top: 0.75rem; }
 
-/*TALL ØVERST PÅ KURSSIDEN*/
 .admin-tall {
   display: grid;
   gap: 1rem;
@@ -327,7 +305,6 @@ body.admin {
   color: var(--primary);
 }
 
-/*FILTER PÅ PÅMELDINGER*/
 .admin-filter {
   display: flex;
   flex-wrap: wrap;
@@ -347,10 +324,8 @@ body.admin {
   cursor: pointer;
 }
 
-/*TABELLER*/
-/*Tabellen kan scrolles sidelengs på smale skjermer*/
 .admin-tabell {
-  position: relative; /*holder skjult tekst inne i tabellen*/
+  position: relative;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -388,7 +363,6 @@ body.admin {
 
 .admin-fullt { font-weight: 700; color: var(--primary); }
 
-/*Liten tekst under tittel og dato*/
 .admin-under {
   display: block;
   font-size: 1rem;
@@ -396,7 +370,6 @@ body.admin {
   color: var(--muted-foreground);
 }
 
-/*Lite bilde i tabellen*/
 .admin-mini-bilde {
   width: 3.5rem;
   height: 2.5rem;
@@ -404,7 +377,6 @@ body.admin {
   object-fit: cover;
 }
 
-/*Status på kurs*/
 .admin-status {
   display: inline-block;
   padding: 0.2rem 0.6rem;
@@ -420,7 +392,7 @@ body.admin {
 .admin-kontakt a {
   display: block;
   font-size: 1rem;
-  white-space: nowrap; /*e-post deles ikke midt i ordet*/
+  white-space: nowrap;
 }
 .admin-kontakt a:hover { text-decoration: underline; }
 
@@ -430,9 +402,8 @@ body.admin {
   color: var(--muted-foreground);
 }
 
-/*Knapper i tabellen*/
 .admin-handlinger { white-space: nowrap; text-align: right; }
-/*Dato og klokkeslett holdes på én linje hver*/
+
 .admin-tabell time,
 .admin-tabell .admin-under { white-space: nowrap; }
 .admin-knapp {
@@ -456,7 +427,6 @@ body.admin {
   border-color: var(--primary);
 }
 
-/*Melding etter lagring*/
 .admin-melding {
   margin-bottom: 1.5rem;
   padding: 1rem 1.25rem;
@@ -466,7 +436,6 @@ body.admin {
 }
 .admin-melding[hidden] { display: none; }
 
-/*Avkrysning i skjema*/
 .skjema .valg {
   display: flex;
   align-items: flex-start;
@@ -484,7 +453,6 @@ body.admin {
   accent-color: var(--primary);
 }
 
-/*DIALOG FOR NYTT OG REDIGER*/
 .admin-dialog {
   width: min(100% - 2rem, 32rem);
   max-height: 90vh;
@@ -504,7 +472,6 @@ body.admin {
 .admin-dialog { overflow-y: auto; }
 .admin-dialog-bred { width: min(100% - 2rem, 42rem); }
 
-/*Grupper i skjemaet*/
 .admin-dialog fieldset {
   display: flex;
   flex-direction: column;
@@ -520,14 +487,12 @@ body.admin {
   font-weight: 600;
 }
 
-/*Hjelpetekst under et felt*/
 .admin-hjelp {
   margin: -0.6rem 0 1rem;
   font-size: 1rem;
   color: var(--muted-foreground);
 }
 
-/*Forhåndsvisning av bildet. Alle bilder får samme form med object-fit.*/
 .bilde-forhandsvisning { margin: 0 0 1rem; }
 .bilde-forhandsvisning[hidden] { display: none; }
 .bilde-forhandsvisning img {
@@ -553,14 +518,12 @@ body.admin {
 .dialog-knapper .knapp-kant { background: none; }
 .dialog-knapper .knapp-kant:hover { background-color: var(--muted); }
 
-/*FRA 640 PX*/
 @media (min-width: 640px) {
   .admin-tall { grid-template-columns: repeat(3, 1fr); }
   .admin-sidetopp { grid-template-columns: 1fr auto; }
   .admin-sidetopp .knapp { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
 }
 
-/*FRA 1024 PX: MENYEN SOM SIDEFELT*/
 @media (min-width: 1024px) {
   :root { --side-luft: 1.5rem; }
 

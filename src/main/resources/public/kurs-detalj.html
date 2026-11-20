@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="bilder/favicon.png">
-  <!--script.js setter kursnavnet i tittelen når kurset er hentet-->
   <title>Kurs – Østfold Husflidslag</title>
   <meta name="description" content="Lær å sy din egen bunad fra bunnen av. Kurs hos Fredrikstad Husflidslag.">
   <link rel="stylesheet" href="style.css">
@@ -13,10 +12,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -32,7 +29,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -58,7 +54,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -85,7 +80,6 @@
 
   <main class="side side-smal" id="hovedinnhold" tabindex="-1">
 
-    <!--BRØDSMULESTI-->
     <nav class="brodsmuler" aria-label="Brødsmulesti">
       <ol>
         <li><a href="index.html">Hjem</a></li>
@@ -94,15 +88,11 @@
       </ol>
     </nav>
 
-    <!--Vises mens kurset hentes fra /api/kurs/{id}. script.js fjerner den og viser kurset.-->
     <p class="liste-melding" id="kurs-laster" role="status">Henter kurset …</p>
 
-    <!--KURSINFORMASJON-->
-    <!--Alt innhold fylles inn av script.js. Skjult til kurset er hentet.-->
     <article class="kursdetalj" aria-labelledby="kurs-tittel" hidden>
       <figure class="kursdetalj-bilde">
         <img alt="">
-        <!--Merke over bildet når kurset er fullt-->
         <figcaption class="fullt-merke" hidden>Fullt – venteliste</figcaption>
       </figure>
 
@@ -114,7 +104,6 @@
 
       <h1 id="kurs-tittel" data-kurs="tittel"></h1>
 
-      <!--Fakta om kurset-->
       <dl class="fakta">
         <dt class="startdato">Startdato</dt>
         <dd><time data-kurs="dato"></time></dd>
@@ -132,7 +121,6 @@
         <dd data-kurs="plasserLedige"></dd>
       </dl>
 
-      <!--Kontaktperson: den som har hovedansvaret for kurset-->
       <section class="kurs-kontakt" aria-labelledby="kontakt-tittel">
         <h2 id="kontakt-tittel">Kontaktperson</h2>
         <img alt="" width="64" height="64">
@@ -141,30 +129,23 @@
         <ul></ul>
       </section>
 
-      <!--Om kurset-->
       <section class="om-kurset" aria-labelledby="om-tittel">
         <h2 id="om-tittel">Om kurset</h2>
         <p data-kurs="beskrivelse"></p>
       </section>
 
-      <!--Hva du bør ta med-->
       <section class="ta-med" aria-labelledby="ta-med-tittel">
         <h2 id="ta-med-tittel">Hva du bør ta med</h2>
         <p data-kurs="utstyr"></p>
       </section>
 
-      <!--Andre kurs-->
       <section class="andre-kurs" aria-labelledby="andre-tittel">
         <h2 id="andre-tittel">Andre kurs du kanskje liker</h2>
-        <!--Fylles med kurs som har ledige plasser fra /api/kurs/kommende-->
         <ul></ul>
       </section>
     </article>
 
-    <!--PÅMELDING-->
-    <!--Fylles inn av script.js ut fra ?id= i adressen. Skjult til kurset er hentet.-->
     <aside class="pamelding" aria-label="Påmelding" hidden>
-      <!--Vises bare når kurset er fullt-->
       <p class="fullt-banner" hidden>
         <strong>Kurset er fullt</strong>
         <span>Alle plassene er tatt, men du kan stå på venteliste.</span>
@@ -176,7 +157,6 @@
       </p>
       <meter id="ledige-plasser" min="0" max="1" value="0"></meter>
 
-      <!--Kort info om kurset-->
       <dl class="info-list">
         <dt>Dato</dt>
         <dd><time data-kurs="dato"></time></dd>
@@ -190,7 +170,6 @@
         <dd data-kurs="niva"></dd>
       </dl>
 
-      <!--Pris-->
       <dl class="priser">
         <dt>Medlemspris</dt>
         <dd data-kurs="medlemspris"></dd>
@@ -198,7 +177,6 @@
         <dd data-kurs="ordinaerpris"></dd>
       </dl>
 
-      <!--Vises bare når kurset er fullt: slik fungerer ventelisten-->
       <section class="venteliste-steg" id="venteliste-info" aria-labelledby="venteliste-tittel" hidden>
         <h2 id="venteliste-tittel">Slik fungerer ventelisten</h2>
         <ol>
@@ -208,10 +186,8 @@
         </ol>
       </section>
 
-      <!--Blir til «Sett meg på venteliste» når kurset er fullt (script.js)-->
       <a href="pamelding.html" class="knapp knapp-primar knapp-stor" id="meld-pa-knapp">Meld deg på</a>
 
-      <!--Vises bare når kurset er fullt: kurs med ledige plasser (fylles inn av script.js)-->
       <section class="ledige-alternativ" id="ledige-alternativ" aria-labelledby="alternativ-tittel" hidden>
         <h2 id="alternativ-tittel">Vil du heller ha plass nå?</h2>
         <p>Disse kursene har ledige plasser:</p>
@@ -226,7 +202,6 @@
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="bilder/favicon.png">
-  <!--script.js setter tittelen på nyheten når den er hentet-->
   <title>Nyhet – Østfold Husflidslag</title>
   <meta name="description" content="Nyheter fra Østfold Husflidslag.">
   <link rel="stylesheet" href="style.css">
@@ -13,10 +12,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -32,7 +29,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -58,7 +54,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -83,10 +78,8 @@
     </nav>
   </header>
 
-  <!--Artikkel 1 står her. script.js bytter innholdet for de andre nyhetene (nyhet.html?id=2 osv.)-->
   <main class="side side-artikkel" id="hovedinnhold" tabindex="-1">
 
-    <!--BRØDSMULESTI-->
     <nav class="brodsmuler" aria-label="Brødsmulesti">
       <ol>
         <li><a href="index.html">Hjem</a></li>
@@ -95,11 +88,8 @@
       </ol>
     </nav>
 
-    <!--Vises mens nyheten hentes fra /api/nyheter/{id}. script.js fjerner den og viser nyheten.-->
     <p class="liste-melding" id="nyhet-laster" role="status">Henter nyheten …</p>
 
-    <!--ARTIKKEL-->
-    <!--Alt innhold fylles inn av script.js. Skjult til nyheten er hentet.-->
     <article class="artikkel" id="artikkel" aria-labelledby="artikkel-tittel" hidden>
       <header>
         <p class="artikkel-meta">
@@ -115,10 +105,8 @@
 
       <p class="artikkel-ingress" id="artikkel-ingress"></p>
 
-      <!--Selve teksten. Hvert avsnitt blir et eget <p>.-->
       <section class="artikkel-tekst" id="artikkel-tekst" aria-label="Artikkeltekst"></section>
 
-      <!--Del nyheten-->
       <footer class="del">
         <p>Del denne nyheten:</p>
         <ul>
@@ -129,12 +117,10 @@
       </footer>
     </article>
 
-    <!--TILBAKE-->
     <p class="tilbake tilbake-nyheter"><a href="aktuelt.html">Tilbake til alle nyheter</a></p>
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

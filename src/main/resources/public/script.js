@@ -29,8 +29,6 @@ if (kursfilter) {
     const lokallag = lokallagValg.value;
     let synlige = 0;
 
-    //Mens kursene hentes, eller hvis noe gikk galt, står det en melding i listen.
-    //Da skal verken antallet eller «ingen treff» vises.
     const visesMelding = document.querySelector("#kursliste > .liste-melding") !== null;
     antall.closest("p").hidden = visesMelding;
     if (visesMelding) {
@@ -84,8 +82,6 @@ if (meldPaKnapp) {
   visKursside();
 }
 
-//Skjuler det som mangler i databasen, så siden ikke viser tomme overskrifter og rader:
-//«Om kurset» og «Hva du bør ta med» uten tekst, og rader i faktaboksene uten verdi.
 function skjulTommeFelt() {
   document.querySelectorAll(".om-kurset, .ta-med").forEach(function (seksjon) {
     const tekst = seksjon.querySelector("[data-kurs]");
@@ -117,7 +113,6 @@ async function visKursside() {
     return;
   }
 
-  //Kurset er hentet: fjern «Henter kurset …» og vis innholdet
   document.getElementById("kurs-laster").remove();
   document.querySelector(".kursdetalj").hidden = false;
   document.querySelector("aside.pamelding").hidden = false;
@@ -305,12 +300,10 @@ async function visPameldingsskjema() {
     return;
   }
 
-  //Kurset er hentet: fjern «Henter kurset …» og vis skjemaet og oppsummeringen
   document.getElementById("kurs-laster").remove();
   document.querySelector(".pameldingsskjema").hidden = false;
   document.querySelector(".kurs-oppsummering").hidden = false;
 
-  //Fødselsår kan ikke være senere enn i år
   skjema.elements.fodselsar.max = new Date().getFullYear();
 
   fyllKurs(kurs);
@@ -420,7 +413,6 @@ async function visBekreftelse() {
 
   document.querySelector("#tilbake a").href = "pamelding.html?kurs=" + pamelding.kursId;
 
-  //Kursnavn, dato og sted hentes fra API-et. Går det ikke, sier vi det i stedet for å vise feil kurs.
   const kurs = await hentKursFraApi(pamelding.kursId);
   if (kurs) {
     fyllKurs(kurs);
@@ -530,7 +522,6 @@ function fyllKvittering(kvittering) {
     if (felt.dataset.kurs === "dato") felt.dateTime = kvittering.dato;
   });
 
-  //Linjer med «A · B» i kurskortet: vis bare det som finnes, uten løse prikker
   document.querySelectorAll(".pameldt-kurs p").forEach(function (linje) {
     const deler = [...linje.querySelectorAll("[data-kurs]")].filter(function (felt) { return felt.textContent.trim(); });
     if (deler.length === 0) linje.hidden = true;
@@ -541,7 +532,6 @@ function fyllKvittering(kvittering) {
 const artikkel = document.getElementById("artikkel");
 
 if (artikkel) {
-  //Delingsknappene settes opp først. visNyhet() kan bytte ut hele siden med en feilmelding.
   const delFacebook = document.getElementById("del-facebook");
   delFacebook.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href);
 
@@ -630,13 +620,12 @@ async function hentJson(adresse) {
   const svar = await fetch(adresse);
   if (!svar.ok) {
     const feil = new Error("Feil fra serveren: " + svar.status);
-    feil.status = svar.status; //så vi kan skille «finnes ikke» (404) fra «serveren er nede»
+    feil.status = svar.status;
     throw feil;
   }
   return svar.json();
 }
 
-//Bytter ut innholdet i en liste med én melding over hele bredden (tom liste eller feil)
 function visMelding(liste, tekst) {
   const li = document.createElement("li");
   li.className = "liste-melding";
@@ -646,8 +635,6 @@ function visMelding(liste, tekst) {
   liste.replaceChildren(li);
 }
 
-//Bytter ut hele innholdet i <main> med en overskrift, en forklaring og en knapp tilbake.
-//Brukes når et kurs eller en nyhet ikke finnes, eller serveren ikke svarer.
 function visSidemelding(overskrift, forklaring, sidetittel, tilbake) {
   const tittel = document.createElement("h1");
   tittel.textContent = overskrift;
@@ -695,8 +682,6 @@ function tilKursVisning(k) {
   };
 }
 
-//Gir null hvis kurset ikke finnes. Med kastVedFeil: true kastes feilen videre
-//når serveren ikke svarer, så siden kan vise en annen melding enn «finnes ikke».
 async function hentKursFraApi(id, { kastVedFeil = false } = {}) {
   if (!Number.isInteger(id) || id <= 0) return null;
   try {
@@ -717,8 +702,6 @@ function fulltLagnavn(navn) {
   return kortnavn(navn) + " Husflidslag";
 }
 
-//«Finn oss» på kontakt.html: ett adressekort per lokallag som har adresse.
-//Kortene legges foran Østfold Husflidslag, som står fast i HTML-en.
 function fyllFinnOss(lagene) {
   const liste = document.getElementById("finn-oss-liste");
   if (!liste) return;
@@ -733,7 +716,6 @@ function fyllFinnOss(lagene) {
     gate.textContent = lag.adresse;
     adresse.append(navn, gate);
 
-    //Telefon og e-post på samme linje, med · mellom
     const kontakt = document.createElement("span");
     if (lag.telefon) {
       const tlf = document.createElement("a");
@@ -763,7 +745,7 @@ async function visLokallag() {
   } catch (feil) {
     console.error(feil);
     visFeil(document.querySelectorAll("ul.lokallag, ul.lag-liste"), "Kunne ikke hente lokallagene akkurat nå.");
-    fyllFinnOss([]); //Østfold Husflidslag står fortsatt, så siden har alltid en adresse
+    fyllFinnOss([]);
     return;
   }
 
@@ -826,7 +808,6 @@ async function visLokallag() {
       const tittel = document.createElement("h3");
       tittel.textContent = fulltLagnavn(lag.navn);
 
-      //Beskrivelsen vises bare hvis laget har en i databasen
       const tekst = document.createElement("p");
       tekst.textContent = lag.beskrivelse || "";
       tekst.hidden = !lag.beskrivelse;
@@ -849,15 +830,12 @@ async function visLokallag() {
 
 visLokallag();
 
-//"Søm" blir til "som", "Andre håndverk" til "andre-handverk". Brukes i tema-filteret og i adressen (?tema=).
 function temaVerdi(tema) {
   return (tema || "").trim().toLowerCase()
     .replace(/ø/g, "o").replace(/æ/g, "ae").replace(/å/g, "a")
     .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-//Bygger tema-filteret ut fra temaene til kursene, sortert alfabetisk.
-//Valget fra adressen (?tema=) settes etterpå, fordi valget ikke finnes før listen er bygget.
 function byggTemafilter(kurs) {
   const valg = document.getElementById("tema-filter");
   if (!valg) return;
@@ -1067,7 +1045,6 @@ async function visNyhet() {
       nyhet = await hentJson("/api/nyheter/" + id);
     } catch (feil) {
       console.error(feil);
-      //404/400 betyr at nyheten ikke finnes. Andre feil betyr at serveren ikke svarer.
       if (feil.status !== 404 && feil.status !== 400) {
         visSidemelding("Nyheten kan ikke vises akkurat nå", "Vi klarte ikke å hente nyheten. Prøv igjen om litt.", "Nyheten kan ikke vises", tilbake);
         return;
@@ -1080,7 +1057,6 @@ async function visNyhet() {
     return;
   }
 
-  //Nyheten er hentet: fjern «Henter nyheten …» og vis artikkelen
   document.getElementById("nyhet-laster").remove();
   document.getElementById("artikkel").hidden = false;
 

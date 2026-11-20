@@ -10,10 +10,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -29,7 +27,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -55,7 +52,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -82,36 +78,30 @@
 
   <main class="side" id="hovedinnhold" tabindex="-1">
 
-    <!--SIDETOPP-->
     <header class="sidetopp">
       <h1>Kurs og aktiviteter</h1>
       <p>Finn kurs nær deg – for alle nivåer og interesser</p>
     </header>
 
-    <!--SØK OG FILTER-->
     <form class="kursfilter" action="kurs.html" method="get" role="search">
       <label for="kurs-sok">Hva vil du lære?</label>
       <input id="kurs-sok" name="sok" type="search" placeholder="Søk etter strikking, bunad, veving...">
 
       <label for="tema-filter">Tema</label>
-      <!--Temaene bygges i script.js ut fra temaene til kursene som hentes-->
       <select id="tema-filter" name="tema">
         <option value="">Alle temaer</option>
       </select>
 
       <label for="lokallag-filter">Lokallag</label>
-      <!--Lokallagene hentes fra /api/lokallag i script.js-->
       <select id="lokallag-filter" name="lokallag">
         <option value="">Alle lokallag</option>
       </select>
     </form>
 
-    <!--KURSLISTE-->
     <section aria-labelledby="kursliste-tittel">
       <h2 id="kursliste-tittel" class="skjult">Kurs</h2>
       <p class="antall" aria-live="polite" hidden>Viser <span id="antall-kurs">0</span> kurs</p>
 
-      <!--Fylles med kursene fra /api/kurs/kommende i script.js-->
       <ul class="kortliste kursliste" id="kursliste">
         <li class="liste-melding"><p>Henter kurs …</p></li>
       </ul>
@@ -119,7 +109,6 @@
       <p class="ingen-treff" id="ingen-treff" hidden>Ingen kurs passer søket ditt. Prøv et annet tema eller lokallag.</p>
     </section>
 
-    <!--SPØRSMÅL OM KURS-->
     <aside class="sporsmal" aria-labelledby="sporsmal-tittel">
       <h2 id="sporsmal-tittel">Spørsmål om kurs?</h2>
       <p>Se svar på de vanligste spørsmålene om påmelding, betaling og avlysning.</p>
@@ -128,7 +117,6 @@
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

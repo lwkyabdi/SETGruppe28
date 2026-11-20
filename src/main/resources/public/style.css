@@ -1,27 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap");
 
-/*FARGER, SKRIFTER OG MÅL*/
 :root {
-  --background: #f7f7f7; /*lys grå bakgrunn*/
-  --foreground: #333132; /*kull, samme som teksten i logoen*/
-  --primary: #bb2a4d; /*logo-rød*/
-  --primary-foreground: #ffffff; /*tekst på rød*/
-  --primary-lys: #fbeef1; /*svak rød, til hover*/
-  --muted: #eeedeb; /*litt mørkere grå seksjoner*/
-  --muted-foreground: #66625f; /*svak tekst*/
-  --card: #ffffff; /*kort*/
-  --border: #e4e1df; /*rammer*/
-  --footer: #333132; /*kull i footeren*/
+  --background: #f7f7f7;
+  --foreground: #333132;
+  --primary: #bb2a4d;
+  --primary-foreground: #ffffff;
+  --primary-lys: #fbeef1;
+  --muted: #eeedeb;
+  --muted-foreground: #66625f;
+  --card: #ffffff;
+  --border: #e4e1df;
+  --footer: #333132;
   --footer-tekst: #f4f3f2;
 
   --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Lora", Georgia, serif;
 
-  --maks-bredde: 72rem; /*innholdet er maks 1152 px bredt*/
-  --side-luft: 1rem; /*luft på sidene (1.5rem på PC)*/
+  --maks-bredde: 72rem;
+  --side-luft: 1rem;
 }
 
-/*Felles bredde og luft på sidene*/
 .topp,
 .hero,
 .seksjon,
@@ -29,8 +27,6 @@
   padding-inline: max(var(--side-luft), calc((100% - var(--maks-bredde)) / 2 + var(--side-luft)));
 }
 
-/*GRUNNOPPSETT*/
-/*Alt med hidden skal alltid være skjult, også knapper med display i andre regler*/
 [hidden] { display: none !important; }
 
 *, ::before, ::after { box-sizing: border-box; }
@@ -60,7 +56,6 @@ address { font-style: normal; }
   outline-offset: 2px;
 }
 
-/*Hopp til hovedinnhold: skjult over toppen til man trykker Tab (WCAG 2.4.1)*/
 .hopp-lenke {
   position: absolute;
   top: 0.5rem;
@@ -76,7 +71,6 @@ address { font-style: normal; }
 .hopp-lenke:focus { transform: none; }
 main:focus { outline: none; }
 
-/*Skjult, men lest av skjermlesere*/
 .skjult {
   position: absolute;
   width: 1px;
@@ -86,7 +80,6 @@ main:focus { outline: none; }
   white-space: nowrap;
 }
 
-/*KNAPPER*/
 .knapp {
   display: inline-block;
   padding: 0.75rem 2rem;
@@ -107,7 +100,6 @@ main:focus { outline: none; }
 }
 .knapp-stor { padding: 1rem 2.5rem; font-size: 1.125rem; }
 
-/*Lenke med pil*/
 .pil-lenke {
   display: inline-flex;
   align-items: center;
@@ -121,7 +113,6 @@ main:focus { outline: none; }
 .pil-lenke:hover,
 .les-mer:hover { gap: 0.5rem; }
 
-/*HEADER*/
 .topp {
   position: sticky;
   top: 0;
@@ -138,14 +129,12 @@ main:focus { outline: none; }
   box-shadow: 0 2px 4px -2px rgb(0 0 0 / 0.08);
 }
 
-/*Logo*/
 .logo { display: flex; align-items: center; padding-block: 0.75rem; }
 .logo img {
   width: auto;
-  height: 52px; /*større på PC, se nederst*/
+  height: 52px;
 }
 
-/*Hovedmeny*/
 .hovedmeny { display: none; }
 .hovedmeny ul { display: flex; gap: 0.25rem; }
 .hovedmeny a,
@@ -163,10 +152,8 @@ main:focus { outline: none; }
 .hovedmeny a[aria-current="page"],
 .mobilmeny a[aria-current="page"] { background-color: var(--muted); color: var(--primary); font-weight: 700; }
 
-/*Lokallag og Finn kurs*/
 .finn-kurs { display: flex; gap: 0.75rem; }
 
-/*Bli medlem og Min side*/
 .header-hoyre {
   display: none;
   align-items: center;
@@ -185,7 +172,6 @@ main:focus { outline: none; }
 .header-hoyre ul a:hover { background-color: var(--muted); }
 .header-hoyre ul a[aria-current="page"] { background-color: var(--muted); color: var(--primary); }
 
-/*Bli medlem som rød knapp*/
 .header-hoyre ul a.knapp-medlem { background-color: var(--primary); color: var(--primary-foreground); }
 .header-hoyre ul a.knapp-medlem:hover { background-color: #9c2240; }
 .header-hoyre ul a.knapp-medlem[aria-current="page"] { box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--primary); }
@@ -195,7 +181,7 @@ main:focus { outline: none; }
   font-size: 1rem;
   color: var(--foreground);
   background-color: #ffffff;
-  /*Pil i nedtrekkslisten*/
+
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23333132'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.6rem center;
@@ -218,7 +204,6 @@ main:focus { outline: none; }
 }
 .finn-kurs button:hover { background-color: #1f1d1e; }
 
-/*Menyknapp på mobil*/
 .menyknapp {
   padding: 0.5rem;
   color: var(--foreground);
@@ -229,7 +214,6 @@ main:focus { outline: none; }
 }
 .menyknapp svg { width: 28px; height: 28px; }
 
-/*Mobilmeny*/
 .mobilmeny {
   flex-basis: 100%;
   display: flex;
@@ -242,14 +226,13 @@ main:focus { outline: none; }
 .mobilmeny select { flex: 1; padding-block: 0.75rem; font-size: 1rem; }
 .mobilmeny button { padding: 0.75rem 1.25rem; font-size: 1rem; }
 
-/*HERO*/
 .hero {
   position: relative;
   display: grid;
   align-items: center;
   column-gap: 2rem;
-  padding-block: 3.5rem 4.5rem; /*litt ekstra luft over bølgen*/
-  background-color: var(--muted); /*samme grå som Kommende kurs*/
+  padding-block: 3.5rem 4.5rem;
+  background-color: var(--muted);
   color: var(--foreground);
 }
 
@@ -287,7 +270,7 @@ main:focus { outline: none; }
   padding: 1rem 2rem;
   font-size: 1.125rem;
 }
-/*Rød hovedknapp og kull-kant i heroen*/
+
 .knapp-hvit { background-color: var(--primary); color: var(--primary-foreground); }
 .knapp-hvit:hover { background-color: #9c2240; }
 .knapp-kant {
@@ -297,7 +280,6 @@ main:focus { outline: none; }
 }
 .knapp-kant:hover { background-color: #ffffff; }
 
-/*Bildet vises bare på PC*/
 .hero-bilde {
   display: none;
   height: 360px;
@@ -307,7 +289,6 @@ main:focus { outline: none; }
 }
 .hero-bilde img { width: 100%; height: 100%; object-fit: cover; }
 
-/*Bølge nederst*/
 .hero-bolge {
   position: absolute;
   left: 0;
@@ -324,24 +305,20 @@ main:focus { outline: none; }
   stroke-opacity: 0.5;
 }
 
-/*Stjernen fra logoen midt på bølgen*/
-/*Bare stjernen i hflogo.svg vises, teksten kuttes bort*/
 .hero::after {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 16px; /*der bølgen er midt på*/
-  width: 30px; /*40px på PC*/
+  bottom: 16px;
+  width: 30px;
   height: 30px;
   transform: translate(-50%, 50%);
   background: url("bilder/hflogo.svg") left center / auto 100% no-repeat;
 }
 
-/*SEKSJONER*/
 .seksjon { padding-block: 3.5rem; }
 .seksjon-beige { background-color: var(--muted); }
 
-/*Overskrift og lenke*/
 .seksjon-topp {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -369,10 +346,8 @@ main:focus { outline: none; }
   font-size: 1.125rem;
 }
 
-/*Bare på mobil*/
 .kun-mobil { margin-top: 1.5rem; }
 
-/*KORT*/
 .kortliste {
   display: grid;
   gap: 1.5rem;
@@ -395,10 +370,9 @@ main:focus { outline: none; }
 .kort:hover {
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
-/*Luft på sidene*/
+
 .kort > :not(figure, .kurs-tema) { margin-inline: 1.25rem; }
 
-/*Bildet zoomer inn ved hover*/
 .kort figure {
   height: 12rem;
   margin-bottom: 0.5rem;
@@ -419,7 +393,6 @@ main:focus { outline: none; }
   line-height: 1.375;
 }
 
-/*Hele kortet kan klikkes*/
 .les-mer::before,
 .kort .knapp::before {
   content: "";
@@ -427,7 +400,6 @@ main:focus { outline: none; }
   inset: 0;
 }
 
-/*Nyhetskort*/
 .nyhet-meta {
   display: flex;
   gap: 0.75rem;
@@ -436,7 +408,6 @@ main:focus { outline: none; }
 }
 .nyhet-meta span::before { content: "·"; margin-right: 0.75rem; }
 
-/*Større bilde og litt større tekst i nyhetskortene*/
 .nyhet { gap: 0.6rem; }
 .nyhet figure { height: 15rem; }
 .nyhet h3 { font-size: 1.25rem; transition: text-decoration-color 150ms; }
@@ -460,9 +431,8 @@ main:focus { outline: none; }
   transition: gap 150ms;
 }
 
-/*Kurskort*/
 .kurs { gap: 0.75rem; }
-.kurs figure { height: 9.5rem; } /*litt mindre bilde, mer plass til tekst*/
+.kurs figure { height: 9.5rem; }
 
 .kurs-tema {
   position: absolute;
@@ -484,7 +454,6 @@ main:focus { outline: none; }
 }
 .kurs h3 { font-size: 1.25rem; line-height: 1.25; }
 
-/*Dato og tid med ikon*/
 .kurs-info {
   display: flex;
   flex-direction: column;
@@ -513,7 +482,6 @@ main:focus { outline: none; }
   --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6v6l4 2'/%3E%3C/svg%3E");
 }
 
-/*Plasser og pris*/
 .kurs > footer {
   display: flex;
   align-items: center;
@@ -558,7 +526,6 @@ main:focus { outline: none; }
   font-weight: 600;
 }
 
-/*Melding i en liste mens data hentes, eller hvis noe går galt. Går over hele bredden.*/
 .liste-melding {
   grid-column: 1 / -1;
   padding: 1.25rem;
@@ -568,11 +535,9 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*Se alle kurs-knappen*/
 .alle-kurs { margin-top: 2rem; text-align: center; }
 .alle-kurs .knapp { width: 100%; padding-block: 1rem; }
 
-/*BLI MEDLEM*/
 .bli-medlem {
   width: min(calc(var(--maks-bredde) - 2 * var(--side-luft)), calc(100% - 2 * var(--side-luft)));
   margin: 3.5rem auto;
@@ -608,7 +573,7 @@ main:focus { outline: none; }
   align-items: flex-start;
   gap: 0.75rem;
 }
-/*Hake foran hvert punkt*/
+
 .fordeler li::before {
   content: "✓";
   flex-shrink: 0;
@@ -633,7 +598,6 @@ main:focus { outline: none; }
 }
 .bli-medlem figure img { width: 100%; height: 100%; object-fit: cover; }
 
-/*VÅRE LOKALLAG*/
 .lokallag {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -652,9 +616,7 @@ main:focus { outline: none; }
   text-align: center;
   transition: box-shadow 150ms;
 }
-/*Garnnøste over navnet. Tegnet som SVG i stedet for emoji,
-  så det ser likt ut i alle nettlesere (Windows viser emojien blå).
-  Fargen er logo-rød (--primary). Brukes også på lokallagene på Om oss.*/
+
 .lokallag a::before,
 .lag-kort:not(:has(figure))::before {
   content: "";
@@ -663,7 +625,7 @@ main:focus { outline: none; }
   margin-bottom: 0.5rem;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3CclipPath id='k'%3E%3Ccircle cx='18' cy='18' r='14'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M27 28c2 4 6 3 7 6s-2 5 2 5' fill='none' stroke='%23bb2a4d' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='18' cy='18' r='14' fill='%23bb2a4d'/%3E%3Cg clip-path='url(%23k)' fill='none' stroke='%23f6d3dc' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M2 10c10 0 22 8 28 22'/%3E%3Cpath d='M2 17c9 1 17 7 21 17'/%3E%3Cpath d='M8 2c8 4 17 13 22 26'/%3E%3Cpath d='M3 28c6-9 16-16 30-17'/%3E%3Cpath d='M9 34c5-8 13-14 25-15'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
 }
-/*På mobil (to i bredden): er det et oddetall lag, går det siste over hele bredden*/
+
 .lokallag li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .lokallag strong {
   margin-bottom: 0.25rem;
@@ -675,7 +637,6 @@ main:focus { outline: none; }
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-/*TRENGER DU HJELP*/
 .hjelp {
   display: flex;
   flex-direction: column;
@@ -696,7 +657,6 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*FOOTER*/
 .bunn {
   display: grid;
   gap: 2.5rem;
@@ -755,7 +715,6 @@ main:focus { outline: none; }
   gap: 0.5rem;
 }
 
-/*Copyright*/
 .copyright {
   padding-top: 1.5rem;
   border-top: 1px solid rgb(255 255 255 / 0.1);
@@ -764,13 +723,11 @@ main:focus { outline: none; }
   opacity: 0.6;
 }
 
-/*KURSOVERSIKT*/
 .side {
   padding-block: 2.5rem;
   padding-inline: max(var(--side-luft), calc((100% - var(--maks-bredde)) / 2 + var(--side-luft)));
 }
 
-/*Sidetopp*/
 .sidetopp { margin-bottom: 2rem; }
 .sidetopp h1 {
   margin-bottom: 0.75rem;
@@ -783,7 +740,6 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*Søk og filter*/
 .kursfilter {
   display: grid;
   column-gap: 1rem;
@@ -809,7 +765,7 @@ main:focus { outline: none; }
 .kursfilter input {
   margin-bottom: 1.25rem;
   padding: 1rem 1rem 1rem 3rem;
-  /*Forstørrelsesglass*/
+
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%231c2a1e66' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: left 1rem center;
@@ -820,7 +776,6 @@ main:focus { outline: none; }
   cursor: pointer;
 }
 
-/*Antall kurs*/
 .antall {
   margin-bottom: 1.25rem;
   font-weight: 600;
@@ -834,7 +789,6 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*Spørsmål om kurs*/
 .sporsmal {
   margin-top: 3rem;
   padding: 1.5rem;
@@ -857,7 +811,6 @@ main:focus { outline: none; }
   padding: 0.75rem 1.5rem;
 }
 
-/*KURSSIDE*/
 .side-smal {
   --maks-bredde: 64rem;
   display: grid;
@@ -865,7 +818,6 @@ main:focus { outline: none; }
   align-items: start;
 }
 
-/*Brødsmulesti*/
 .brodsmuler ol {
   display: flex;
   flex-wrap: wrap;
@@ -883,7 +835,6 @@ main:focus { outline: none; }
   color: var(--foreground);
 }
 
-/*Bilde og tittel*/
 .kursdetalj-bilde {
   height: 300px;
   margin-bottom: 1.5rem;
@@ -915,7 +866,6 @@ main:focus { outline: none; }
   font-weight: 700;
 }
 
-/*Fakta om kurset*/
 .fakta {
   display: grid;
   grid-auto-flow: row dense;
@@ -942,7 +892,6 @@ main:focus { outline: none; }
 }
 .fakta dd:last-of-type { margin-bottom: 0; }
 
-/*Om kurset, ta med og andre kurs*/
 .kursdetalj section { margin-bottom: 2rem; }
 .kursdetalj section:last-child { margin-bottom: 0; }
 .kursdetalj h2 {
@@ -998,7 +947,6 @@ main:focus { outline: none; }
   color: var(--primary);
 }
 
-/*Påmeldingsboks*/
 .pamelding {
   display: flex;
   flex-direction: column;
@@ -1018,7 +966,6 @@ main:focus { outline: none; }
 }
 .ledige span { color: #d97706; }
 
-/*Stolpe som viser ledige plasser*/
 .pamelding meter {
   width: 100%;
   height: 0.75rem;
@@ -1045,7 +992,6 @@ main:focus { outline: none; }
   background: #d97706;
 }
 
-/*Kort info om kurset*/
 .info-list {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -1071,7 +1017,6 @@ main:focus { outline: none; }
 .info-list dt:last-of-type,
 .info-list dd:last-of-type { border-bottom: 0; }
 
-/*Pris*/
 .priser {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -1096,7 +1041,6 @@ main:focus { outline: none; }
 
 .pamelding .knapp { width: 100%; }
 
-/*Tekst om ventelisten (kurssiden og påmeldingssiden)*/
 .venteliste-info {
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
@@ -1109,10 +1053,6 @@ main:focus { outline: none; }
 }
 .kurs-oppsummering .venteliste-info { margin: 0; }
 
-/*KURSSIDEN NÅR KURSET ER FULLT*/
-/*script.js setter klassen kurs-fullt på <main> når det ikke er ledige plasser*/
-
-/*Bildet blir gråere, med et tydelig merke over*/
 .kursdetalj-bilde { position: relative; }
 .kurs-fullt .kursdetalj-bilde img { filter: grayscale(0.85); opacity: 0.85; }
 .fullt-merke {
@@ -1129,7 +1069,6 @@ main:focus { outline: none; }
   box-shadow: 0 4px 10px rgb(0 0 0 / 0.25);
 }
 
-/*Etikett ved siden av tema og lokallag*/
 .fullt-etikett {
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
@@ -1139,10 +1078,8 @@ main:focus { outline: none; }
   background-color: var(--foreground);
 }
 
-/*Plasser i faktaboksen*/
 .kurs-fullt [data-kurs="plasserLedige"] { color: var(--primary); }
 
-/*Påmeldingsboksen får en mørk topp og ramme*/
 .kurs-fullt .pamelding {
   padding-top: 0;
   overflow: hidden;
@@ -1164,7 +1101,7 @@ main:focus { outline: none; }
   font-family: var(--font-serif);
   font-size: 1.375rem;
 }
-/*Lite lås-ikon foran «Kurset er fullt»*/
+
 .fullt-banner strong::before {
   content: "";
   width: 1.25rem;
@@ -1176,17 +1113,14 @@ main:focus { outline: none; }
 }
 .fullt-banner span { opacity: 0.9; }
 
-/*Stolpen er helt full og rød*/
 .kurs-fullt .ledige span { font-weight: 700; color: var(--primary); }
 .kurs-fullt .pamelding meter::-webkit-meter-optimum-value,
 .kurs-fullt .pamelding meter::-webkit-meter-suboptimum-value,
 .kurs-fullt .pamelding meter::-webkit-meter-even-less-good-value { background: var(--primary); }
 .kurs-fullt .pamelding meter::-moz-meter-bar { background: var(--primary); }
 
-/*Prisen er nedtonet, siden man ikke betaler før man får plass*/
 .kurs-fullt .priser { opacity: 0.6; }
 
-/*Slik fungerer ventelisten*/
 .venteliste-steg {
   margin-bottom: 1.25rem;
   padding: 1rem 1.25rem;
@@ -1227,11 +1161,9 @@ main:focus { outline: none; }
   background-color: #b45309;
 }
 
-/*Venteliste-knappen er mørk, så den skiller seg fra vanlig påmelding*/
 .kurs-fullt #meld-pa-knapp { background-color: var(--foreground); }
 .kurs-fullt #meld-pa-knapp:hover { background-color: #1f1d1e; }
 
-/*Kurs med ledige plasser*/
 .ledige-alternativ {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
@@ -1282,8 +1214,6 @@ main:focus { outline: none; }
   text-decoration: underline;
 }
 
-/*Kontaktperson for kurset*/
-/*Egen boks under fakta, med samme utseende*/
 .kurs-kontakt {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -1314,7 +1244,7 @@ main:focus { outline: none; }
   border-radius: 50%;
   object-fit: cover;
 }
-/*Uten bilde: navn og rolle under hverandre, over hele bredden*/
+
 .kurs-kontakt:has(img[hidden]) { grid-template-columns: 1fr; }
 
 .kurs-kontakt-navn {
@@ -1343,14 +1273,11 @@ main:focus { outline: none; }
 .kurs-kontakt a:hover { text-decoration: underline; }
 .kurs-kontakt li:first-child a::before { content: "Tlf: "; font-weight: 400; color: var(--muted-foreground); }
 
-/*AKTUELT*/
 .nyhetsliste { grid-template-columns: 1fr; }
 .aktuelt-knapp { margin-top: 3rem; }
 
-/*PÅMELDING*/
 .pameldingsskjema .sidetopp { margin-bottom: 1.5rem; }
 
-/*Skjemaet*/
 #pamelding-skjema {
   display: flex;
   flex-direction: column;
@@ -1389,14 +1316,12 @@ main:focus { outline: none; }
 #pamelding-skjema textarea { resize: vertical; }
 #pamelding-skjema fieldset > :last-child { margin-bottom: 0; }
 
-/*Feltet blir rødt hvis det mangler eller er feil*/
 #pamelding-skjema input:not([type="radio"], [type="checkbox"])[aria-invalid="true"],
 #pamelding-skjema textarea[aria-invalid="true"] {
   border-color: #b91c1c;
   box-shadow: 0 0 0 1px #b91c1c;
 }
 
-/*Radioknapper og avkrysning*/
 #pamelding-skjema .valg {
   display: flex;
   align-items: flex-start;
@@ -1414,7 +1339,6 @@ main:focus { outline: none; }
 }
 #pamelding-skjema .samtykke { margin-bottom: 0; }
 
-/*Feilmelding*/
 .skjema-feil {
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
@@ -1425,7 +1349,6 @@ main:focus { outline: none; }
 
 #pamelding-skjema button { border: 0; cursor: pointer; }
 
-/*Oppsummering av kurset*/
 .kurs-oppsummering {
   display: flex;
   flex-direction: column;
@@ -1466,7 +1389,6 @@ main:focus { outline: none; }
 }
 .din-pris strong { font-size: 1.25rem; }
 
-/*BEKREFT PÅMELDING*/
 .side-bekreft { --maks-bredde: 42rem; }
 
 .side-bekreft h1 {
@@ -1476,7 +1398,6 @@ main:focus { outline: none; }
   font-weight: 700;
 }
 
-/*Tilbake-lenke*/
 .tilbake { margin-bottom: 1.5rem; }
 .tilbake a {
   display: inline-flex;
@@ -1495,7 +1416,6 @@ main:focus { outline: none; }
 }
 #bekreft-skjema button { border: 0; cursor: pointer; }
 
-/*Kortet med opplysningene*/
 .bekreft-kort {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -1542,7 +1462,6 @@ main:focus { outline: none; }
 }
 .bekreft-info dd:last-of-type { margin-bottom: 0; }
 
-/*Ingen påmelding funnet*/
 .ingen-pamelding {
   padding: 2rem 1.5rem;
   border: 1px solid var(--border);
@@ -1559,7 +1478,6 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*DU ER PÅMELDT*/
 .pameldt {
   margin-top: 1.5rem;
   padding: 2.5rem 1.5rem;
@@ -1570,7 +1488,6 @@ main:focus { outline: none; }
   text-align: center;
 }
 
-/*Svart hake øverst*/
 .pameldt-ikon {
   width: 3.75rem;
   height: 3.75rem;
@@ -1591,7 +1508,6 @@ main:focus { outline: none; }
   overflow-wrap: anywhere;
 }
 
-/*Kurset du er påmeldt*/
 .pameldt-kurs {
   margin-bottom: 1.5rem;
   padding: 1.25rem;
@@ -1610,7 +1526,6 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*Knappene nederst*/
 .pameldt-knapper {
   display: flex;
   flex-direction: column;
@@ -1629,7 +1544,6 @@ main:focus { outline: none; }
 }
 .knapp-kant-mork:hover { background-color: var(--muted); }
 
-/*OFTE STILTE SPØRSMÅL*/
 .side-faq { --maks-bredde: 48rem; }
 .side-faq .sidetopp { margin-bottom: 2.5rem; }
 
@@ -1639,7 +1553,6 @@ main:focus { outline: none; }
   gap: 0.75rem;
 }
 
-/*Ett spørsmål*/
 .faq details {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -1663,7 +1576,6 @@ main:focus { outline: none; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary:hover { background-color: var(--muted); }
 
-/*Pluss-tegnet til høyre*/
 .faq summary::after {
   content: "+";
   flex-shrink: 0;
@@ -1679,7 +1591,6 @@ main:focus { outline: none; }
   transition: transform 200ms, background-color 200ms, color 200ms;
 }
 
-/*Når svaret er åpent: pluss blir til kryss*/
 .faq details[open] summary::after {
   transform: rotate(45deg);
   color: var(--primary-foreground);
@@ -1692,11 +1603,9 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*Fant du ikke svaret*/
 .faq-kontakt { margin-top: 2.5rem; padding: 2rem; }
 .faq-kontakt .knapp { width: auto; }
 
-/*KONTAKT OSS*/
 .side-kontakt {
   --maks-bredde: 64rem;
   display: grid;
@@ -1712,7 +1621,6 @@ main:focus { outline: none; }
   font-weight: 600;
 }
 
-/*Kontaktpersoner*/
 .personer {
   display: grid;
   gap: 1.25rem;
@@ -1728,16 +1636,16 @@ main:focus { outline: none; }
   background-color: var(--card);
   overflow: hidden;
 }
-/*Uten bilde (eller hvis bildet ikke finnes): luft over navnet*/
+
 .person:not(:has(img:not([hidden]))) { padding-top: 1.25rem; }
-/*Firkantet bilde som dekker hele toppen av kortet*/
+
 .person img {
   width: 100%;
   aspect-ratio: 1 / 1;
   margin-bottom: 0.75rem;
   object-fit: cover;
 }
-/*Teksten under bildet får luft på sidene*/
+
 .person > :not(img) { padding-inline: 1.25rem; }
 .person h3 {
   font-size: 1.125rem;
@@ -1767,7 +1675,6 @@ main:focus { outline: none; }
 .person-kontakt a:hover { text-decoration: underline; }
 .knapp-primar-kant:hover { background-color: var(--primary-lys); }
 
-/*Finn oss*/
 .finn-oss {
   padding: 1.5rem;
   border: 1px solid var(--border);
@@ -1792,27 +1699,23 @@ main:focus { outline: none; }
 }
 .finn-oss strong { font-size: 1rem; }
 .finn-oss address span:nth-of-type(1) { color: var(--muted-foreground); }
-/*Like høye adressekort når de står ved siden av hverandre*/
+
 .finn-oss address { height: 100%; }
 .finn-oss a { overflow-wrap: anywhere; }
 .finn-oss a:hover { text-decoration: underline; }
 
-/*Har du spørsmål om kurs*/
 .kontakt-faq { margin-top: 0; padding: 2rem; }
 .kontakt-faq h2 {
   margin-bottom: 0.5rem;
   font-size: 1.25rem;
 }
 
-/*OM OSS*/
-/*Felles bredde for toppen og seksjonene*/
 .om-topp,
 .om-seksjon {
   --om-luft: max(var(--side-luft), calc((100% - 64rem) / 2 + var(--side-luft)));
   padding-inline: var(--om-luft);
 }
 
-/*Grå topp med rød strek*/
 .om-topp {
   padding-block: 3.5rem;
   background-color: var(--muted);
@@ -1831,9 +1734,8 @@ main:focus { outline: none; }
   line-height: 1.625;
 }
 
-/*Seksjoner med strek mellom*/
 .om-seksjon { padding-block: 3.5rem; }
-/*Streken er like bred som innholdet*/
+
 .om-seksjon + .om-seksjon {
   background: linear-gradient(var(--border), var(--border)) center top / calc(100% - 2 * var(--om-luft)) 1px no-repeat;
 }
@@ -1850,7 +1752,6 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*Vår historie og misjon*/
 .historie {
   display: grid;
   column-gap: 2.5rem;
@@ -1870,7 +1771,6 @@ main:focus { outline: none; }
 }
 .historie img { width: 100%; height: 100%; object-fit: cover; }
 
-/*Hva vi tilbyr*/
 .tilbud {
   display: grid;
   gap: 1.5rem;
@@ -1882,8 +1782,7 @@ main:focus { outline: none; }
   border-radius: 0.75rem;
   background-color: var(--card);
 }
-/*Ikonene er tegnet som SVG i stedet for emoji, så alle har samme farge (logo-rød)
-  og ser like ut i alle nettlesere. Hvert ikon er en maske som fylles med --primary.*/
+
 .tilbud-ikon {
   display: block;
   width: 2.5rem;
@@ -1898,7 +1797,7 @@ main:focus { outline: none; }
 .ikon-frivillighet { --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20s-7.2-4.5-9.1-8.7C1.5 8.2 3.6 4.8 6.9 4.8c2 0 3.4 1.2 5.1 3 1.7-1.8 3.1-3 5.1-3 3.3 0 5.4 3.4 4 6.5C19.2 15.5 12 20 12 20z'/%3E%3C/svg%3E"); }
 .ikon-kunnskap { --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 5.5c3-1.3 6.3-1.1 9.5 1v13.2c-3.2-2.1-6.5-2.3-9.5-1z'/%3E%3Cpath d='M21.5 5.5c-3-1.3-6.3-1.1-9.5 1v13.2c3.2-2.1 6.5-2.3 9.5-1z'/%3E%3C/svg%3E"); }
 .ikon-alle { --ikon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M2.5 12h19'/%3E%3Cpath d='M12 2.5c3.2 3.2 3.2 15.8 0 19M12 2.5c-3.2 3.2-3.2 15.8 0 19'/%3E%3C/svg%3E"); }
-/*Garnnøstet er det samme som på lokallagene, med farge i selve bildet*/
+
 .ikon-garn {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3CclipPath id='k'%3E%3Ccircle cx='18' cy='18' r='14'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M27 28c2 4 6 3 7 6s-2 5 2 5' fill='none' stroke='%23bb2a4d' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='18' cy='18' r='14' fill='%23bb2a4d'/%3E%3Cg clip-path='url(%23k)' fill='none' stroke='%23f6d3dc' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M2 10c10 0 22 8 28 22'/%3E%3Cpath d='M2 17c9 1 17 7 21 17'/%3E%3Cpath d='M8 2c8 4 17 13 22 26'/%3E%3Cpath d='M3 28c6-9 16-16 30-17'/%3E%3Cpath d='M9 34c5-8 13-14 25-15'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
   -webkit-mask: none;
@@ -1915,7 +1814,6 @@ main:focus { outline: none; }
   color: var(--muted-foreground);
 }
 
-/*Våre lokallag*/
 .lag-liste {
   display: grid;
   gap: 1.25rem;
@@ -1923,13 +1821,13 @@ main:focus { outline: none; }
 .lag-kort { gap: 0.25rem; padding-bottom: 1rem; }
 .lag-kort > :not(figure) { margin-inline: 1rem; }
 .lag-kort figure { height: 140px; margin-bottom: 0.75rem; }
-/*Uten bilde: samme utseende som lokallagene på forsiden (garnnøste og sentrert tekst)*/
+
 .lag-kort:not(:has(figure)) {
   align-items: center;
   padding-top: 1.25rem;
   text-align: center;
 }
-/*På mobil og nettbrett (to i bredden): er det et oddetall lag, går det siste over hele bredden*/
+
 .lag-liste li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .lag-kort h3 { font-size: 1rem; font-weight: 700; }
 .lag-kort p {
@@ -1941,7 +1839,6 @@ main:focus { outline: none; }
 }
 .lag-kort .les-mer { font-size: 1rem; }
 
-/*Bli en del av fellesskapet*/
 .fellesskap { text-align: center; }
 .fellesskap h2 { margin-bottom: 1rem; }
 .fellesskap > p {
@@ -1964,11 +1861,9 @@ main:focus { outline: none; }
 }
 .om-knapper .knapp-primar { border: 2px solid var(--primary); }
 
-/*NYHETSARTIKKEL*/
 .side-artikkel { --maks-bredde: 48rem; }
 .side-artikkel .brodsmuler { margin-bottom: 1.5rem; }
 
-/*Lang tittel i brødsmulestien kuttes med …*/
 .side-artikkel .brodsmuler li:last-child {
   min-width: 0;
   max-width: 20rem;
@@ -2018,7 +1913,6 @@ main:focus { outline: none; }
 }
 .artikkel-tekst p + p { margin-top: 1.75rem; }
 
-/*Del nyheten*/
 .del {
   display: flex;
   flex-wrap: wrap;
@@ -2062,36 +1956,29 @@ main:focus { outline: none; }
 
 .tilbake-nyheter { margin: 2rem 0 0; }
 
-/*FRA 640 PX (MOBIL)*/
 @media (min-width: 640px) {
-  /*Kursside: fakta og andre kurs i to kolonner*/
   .fakta { grid-template-columns: 1fr 1fr; }
   .fakta dt:nth-of-type(even),
   .fakta dt:nth-of-type(even) + dd { grid-column: 2; }
   .fakta dd:nth-last-of-type(-n+2) { margin-bottom: 0; }
   .andre-kurs ul { grid-template-columns: 1fr 1fr; }
 
-  /*Bekreft påmelding: opplysningene i to kolonner*/
   .bekreft-info { grid-template-columns: 1fr 1fr; }
   .bekreft-info dt:nth-of-type(even),
   .bekreft-info dt:nth-of-type(even) + dd { grid-column: 2; }
   .bekreft-info dd:nth-last-of-type(-n+2) { margin-bottom: 0; }
 
-  /*Om oss: to kort i bredden, knappene ved siden av hverandre*/
   .tilbud,
   .lag-liste { grid-template-columns: repeat(2, 1fr); }
   .om-knapper { flex-direction: row; }
   .om-knapper .knapp { width: auto; }
 
-  /*Kontakt oss: to kontaktpersoner i bredden*/
   .personer { grid-template-columns: repeat(2, 1fr); }
 
-  /*Du er påmeldt: knappene ved siden av hverandre*/
   .pameldt { padding: 2.5rem; }
   .pameldt-knapper { flex-direction: row; }
   .pameldt-knapper .knapp { width: auto; }
 
-  /*Kursfilter: tema og lokallag ved siden av hverandre*/
   .kursfilter { grid-template-columns: 1fr 1fr; }
   .kursfilter label[for="kurs-sok"],
   .kursfilter input { grid-column: 1 / -1; }
@@ -2106,7 +1993,6 @@ main:focus { outline: none; }
   .alle-kurs .knapp { width: auto; padding: 0.75rem 2rem; }
 }
 
-/*FRA 768 PX (NETTBRETT)*/
 @media (min-width: 768px) {
   .kortliste { grid-template-columns: repeat(3, 1fr); }
   .kursliste { grid-template-columns: repeat(2, 1fr); }
@@ -2119,11 +2005,9 @@ main:focus { outline: none; }
   }
 }
 
-/*FRA 1024 PX (PC)*/
 @media (min-width: 1024px) {
   :root { --side-luft: 1.5rem; }
 
-  /*Hero: tekst til venstre, bilde til høyre*/
   .hero {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr repeat(4, auto) 1fr;
@@ -2143,7 +2027,6 @@ main:focus { outline: none; }
   .hero::after { width: 40px; height: 40px; }
   .hero-ingress { font-size: 1.25rem; line-height: 1.75rem; }
 
-  /*Bli medlem: tekst til venstre, bilde til høyre*/
   .bli-medlem {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr repeat(4, auto) 1fr;
@@ -2160,7 +2043,6 @@ main:focus { outline: none; }
     margin-top: 0;
   }
 
-  /*Alle lokallagene på én rad, uansett hvor mange det er i databasen*/
   .lokallag {
     grid-template-columns: none;
     grid-auto-flow: column;
@@ -2168,7 +2050,6 @@ main:focus { outline: none; }
   }
   .lokallag li:last-child:nth-child(odd) { grid-column: auto; }
 
-  /*Kursside: innhold til venstre, påmelding til høyre*/
   .side-smal { grid-template-columns: minmax(0, 1fr) 22rem; }
   .brodsmuler { grid-column: 1 / -1; margin-bottom: -0.5rem; }
   .pamelding,
@@ -2176,16 +2057,14 @@ main:focus { outline: none; }
     position: sticky;
     top: 6rem;
   }
-  /*Fullt kurs: boksen er lang, så den skal skrolle vanlig med siden*/
+
   .kurs-fullt .pamelding { position: static; }
   .kursdetalj h1 { font-size: 2.25rem; line-height: 2.5rem; }
   .kursliste { grid-template-columns: repeat(3, 1fr); }
   .nyhetsliste { grid-template-columns: repeat(3, 1fr); }
 
-  /*Om oss: tekst og bilde ved siden av hverandre, flere kort i bredden*/
   .om-topp h1 { font-size: 3rem; line-height: 1; }
 
-  /*Nyhetsartikkel: større tittel*/
   .artikkel h1 { font-size: 2.25rem; }
   .historie { grid-template-columns: 1fr 1fr; }
   .historie > :not(figure) { grid-column: 1; }
@@ -2195,7 +2074,7 @@ main:focus { outline: none; }
     margin-top: 0;
   }
   .tilbud { grid-template-columns: repeat(3, 1fr); }
-  /*Alle lokallagene på én rad, uansett hvor mange det er i databasen*/
+
   .lag-liste {
     grid-template-columns: none;
     grid-auto-flow: column;
@@ -2203,17 +2082,13 @@ main:focus { outline: none; }
   }
   .lag-liste li:last-child:nth-child(odd) { grid-column: auto; }
 
-  /*Kontakt oss: fire kontaktpersoner i bredden*/
   .personer { grid-template-columns: repeat(4, 1fr); }
-  /*Adressene ved siden av hverandre*/
+
   .finn-oss ul { flex-direction: row; }
   .finn-oss li { flex: 1; }
 }
 
-/*FRA 1280 PX: HELE MENYEN PÅ ÉN LINJE*/
-/*Under 1280 px er det ikke plass, så da brukes menyknappen*/
 @media (min-width: 1280px) {
-  /*Headeren er litt bredere enn innholdet, så menyen får luft*/
   .topp { --maks-bredde: 82rem; min-height: 5rem; column-gap: 1.5rem; }
   .logo img { height: 56px; }
 
@@ -2228,7 +2103,6 @@ main:focus { outline: none; }
   .mobilmeny { display: none; }
 }
 
-/*FRA 1440 PX (STOR PC)*/
 @media (min-width: 1440px) {
   .logo img { height: 64px; }
 }

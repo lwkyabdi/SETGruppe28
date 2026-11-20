@@ -5,18 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="bilder/favicon.png">
-  <!--script.js setter kursnavnet i tittelen når kurset er hentet-->
-  <title>Påmelding – Østfold Husflidslag</title>
-  <meta name="description" content="Meld deg på kurs hos Østfold Husflidslag.">
+  <title>Du er påmeldt – Østfold Husflidslag</title>
+  <meta name="description" content="Påmeldingen din er registrert.">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -32,7 +29,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -58,7 +54,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -83,120 +78,38 @@
     </nav>
   </header>
 
-  <main class="side side-smal" id="hovedinnhold" tabindex="-1">
+  <main class="side side-bekreft" id="hovedinnhold" tabindex="-1">
 
-    <!--BRØDSMULESTI-->
-    <nav class="brodsmuler" aria-label="Brødsmulesti">
-      <ol>
-        <li><a href="index.html">Hjem</a></li>
-        <li><a href="kurs.html">Kurs og aktiviteter</a></li>
-        <li><a href="kurs-detalj.html" id="brodsmule-kurs" data-kurs="tittel">Kurset</a></li>
-        <li><a href="pamelding.html" aria-current="page">Påmelding</a></li>
-      </ol>
-    </nav>
+    <section class="pameldt" id="pameldt" aria-labelledby="pameldt-tittel" hidden>
+      <svg class="pameldt-ikon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 12.5l5 5L20 6.5"></path>
+      </svg>
+      <h1 id="pameldt-tittel">Du er påmeldt!</h1>
+      <p class="pameldt-tekst">
+        <span id="pameldt-melding"></span>
+        med e-postadressen <span id="pameldt-epost"></span>.
+      </p>
 
-    <!--Vises mens kurset hentes fra /api/kurs/{id}. script.js fjerner den og viser skjemaet.-->
-    <p class="liste-melding" id="kurs-laster" role="status">Henter kurset …</p>
+      <article class="pameldt-kurs" aria-labelledby="pameldt-kurs">
+        <h2 id="pameldt-kurs" data-kurs="tittel"></h2>
+        <p><time data-kurs="dato"></time> · <span data-kurs="tid"></span></p>
+        <p><span data-kurs="lagnavn"></span> · <span data-kurs="sted"></span></p>
+      </article>
 
-    <!--PÅMELDINGSSKJEMA-->
-    <!--Skjult til kurset er hentet, så man ikke fyller ut skjemaet for et kurs som ikke finnes-->
-    <section class="pameldingsskjema" aria-labelledby="pamelding-tittel" hidden>
-      <header class="sidetopp">
-        <h1 id="pamelding-tittel">Meld deg på kurs</h1>
-        <p id="pamelding-ingress">Fyll ut skjemaet. På neste side ser du over opplysningene før du bekrefter.</p>
-      </header>
-
-      <!--Skjemaet sender deg videre til bekreft.html (se script.js)-->
-      <form id="pamelding-skjema" action="bekreft.html" novalidate>
-        <!--Om deg-->
-        <fieldset>
-          <legend>Om deg</legend>
-
-          <label for="fornavn">Fornavn</label>
-          <input id="fornavn" name="fornavn" type="text" autocomplete="given-name" required>
-
-          <label for="etternavn">Etternavn</label>
-          <input id="etternavn" name="etternavn" type="text" autocomplete="family-name" required>
-
-          <label for="epost">E-post</label>
-          <input id="epost" name="epost" type="email" autocomplete="email" required>
-
-          <label for="telefon">Telefon</label>
-          <input id="telefon" name="telefon" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9 +]{8,15}" required>
-
-          <label for="fodselsar">Fødselsår</label>
-          <input id="fodselsar" name="fodselsar" type="number" inputmode="numeric" min="1900" placeholder="F.eks. 1985" required>
-        </fieldset>
-
-        <!--Medlemskap-->
-        <fieldset>
-          <legend>Er du medlem av Husflidslaget?</legend>
-
-          <label class="valg">
-            <input type="radio" name="medlem" value="ja" required>
-            Ja, jeg er medlem
-          </label>
-          <label class="valg">
-            <input type="radio" name="medlem" value="nei">
-            Nei, jeg er ikke medlem
-          </label>
-
-          <label for="medlemsnummer" class="medlemsnummer" hidden>Medlemsnummer (valgfritt)</label>
-          <input id="medlemsnummer" name="medlemsnummer" type="text" inputmode="numeric" class="medlemsnummer" hidden>
-        </fieldset>
-
-        <!--Annet-->
-        <fieldset>
-          <legend>Annet</legend>
-
-          <label for="kommentar">Kommentar (valgfritt)</label>
-          <textarea id="kommentar" name="kommentar" rows="4" placeholder="F.eks. behov for tilrettelegging eller spørsmål til kursleder"></textarea>
-        </fieldset>
-
-        <!--Samtykke-->
-        <label class="valg samtykke">
-          <input type="checkbox" name="samtykke" required>
-          Jeg godtar at opplysningene mine brukes til å behandle påmeldingen.
-        </label>
-
-        <p class="skjema-feil" id="skjema-feil" role="alert" hidden></p>
-
-        <button type="submit" class="knapp knapp-primar knapp-stor">Gå videre</button>
-      </form>
+      <ul class="pameldt-knapper">
+        <li><a href="kurs.html" class="knapp knapp-primar">Se flere kurs</a></li>
+        <li><a href="index.html" class="knapp knapp-kant-mork">Tilbake til forsiden</a></li>
+      </ul>
     </section>
 
-    <!--KURSET DU MELDER DEG PÅ-->
-    <!--Fylles inn av script.js. Skjult til kurset er hentet.-->
-    <aside class="kurs-oppsummering" aria-labelledby="oppsummering-tittel" hidden>
-      <h2 id="oppsummering-tittel">Du melder deg på</h2>
-      <p class="kurs-tema" data-kurs="tema"></p>
-      <h3 data-kurs="tittel"></h3>
-
-      <dl class="info-list">
-        <dt>Dato</dt>
-        <dd><time data-kurs="dato"></time>, kl. <span data-kurs="tid"></span></dd>
-        <dt>Varighet</dt>
-        <dd data-kurs="varighet"></dd>
-        <dt>Sted</dt>
-        <dd data-kurs="sted"></dd>
-        <dt>Lokallag</dt>
-        <dd data-kurs="lagnavn"></dd>
-        <dt>Ledige plasser</dt>
-        <dd data-kurs="plasser"></dd>
-      </dl>
-
-      <!--Prisen endres når man velger medlem eller ikke. script.js legger prisene fra kurset i data-medlem og data-ordinaer.-->
-      <p class="din-pris">
-        <span>Din pris</span>
-        <strong id="din-pris">Velg medlemskap</strong>
-      </p>
-      <!--Vises bare ved venteliste-->
-      <p class="venteliste-info" id="venteliste-pris" hidden>Du betaler bare hvis du får plass.</p>
-    </aside>
+    <section class="ingen-pamelding" id="ingen-pamelding" aria-labelledby="ingen-tittel" hidden>
+      <h2 id="ingen-tittel">Vi fant ingen påmelding</h2>
+      <p>Meld deg på et kurs først, så får du en bekreftelse her.</p>
+      <a href="kurs.html" class="knapp knapp-primar">Se alle kurs</a>
+    </section>
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

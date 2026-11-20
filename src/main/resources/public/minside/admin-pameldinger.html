@@ -13,7 +13,6 @@
 
 <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-<!--HEADER-->
 <header class="admin-topp">
   <a href="admin-kurs.html" class="logo">
     <img src="../bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -25,7 +24,6 @@
   </ul>
 </header>
 
-<!--ADMINMENY-->
 <nav class="admin-meny" aria-label="Administrasjonsmeny">
   <ul>
     <li><a href="admin-kurs.html">Kurs</a></li>
@@ -36,17 +34,14 @@
 
 <main class="admin-innhold" id="hovedinnhold" tabindex="-1">
 
-  <!--SIDETOPP-->
   <header class="admin-sidetopp">
     <h1>Påmeldinger</h1>
     <p>Hvem som er påmeldt hvilke kurs, og hvem som står på venteliste.</p>
     <button type="button" class="knapp knapp-primar" id="ny-pamelding">+ Legg til påmelding</button>
   </header>
 
-  <!--Melding etter at noen er lagt til-->
   <p class="admin-melding" id="pamelding-melding" role="status" hidden></p>
 
-  <!--FILTER-->
   <form class="admin-filter" role="search" aria-label="Filtrer påmeldinger">
     <label for="filter-kurs">Vis påmeldinger til</label>
     <select id="filter-kurs" name="kurs">
@@ -54,8 +49,6 @@
     </select>
   </form>
 
-  <!--PÅMELDINGSLISTE-->
-  <!--Radene fylles inn av admin.js-->
   <section class="admin-tabell" aria-labelledby="pamelding-tabell-tittel">
     <table>
       <caption id="pamelding-tabell-tittel">Påmeldinger <span id="pamelding-antall"></span></caption>
@@ -76,8 +69,6 @@
 
 </main>
 
-<!--SKJEMA FOR NY PÅMELDING-->
-<!--For de som melder seg på via telefon, e-post eller i lokalet-->
 <dialog class="admin-dialog" id="pamelding-dialog" aria-labelledby="pamelding-dialog-tittel">
   <form class="skjema" id="pamelding-skjema" novalidate>
     <h2 id="pamelding-dialog-tittel">Legg til påmelding</h2>
