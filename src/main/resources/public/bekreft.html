@@ -10,10 +10,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -29,7 +27,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -55,7 +52,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -82,17 +78,13 @@
 
   <main class="side side-bekreft" id="hovedinnhold" tabindex="-1">
 
-    <!--TILBAKE-->
     <p class="tilbake" id="tilbake"><a href="pamelding.html">Tilbake</a></p>
 
     <h1 id="bekreft-tittel">Bekreft påmelding</h1>
 
-    <!--OPPSUMMERING-->
-    <!--Opplysningene fylles inn av script.js fra skjemaet på forrige side-->
     <form id="bekreft-skjema" action="pameldt.html">
       <article class="bekreft-kort" aria-labelledby="bekreft-kurs">
         <header>
-          <!--Kursnavn, dato, tid og lokallag hentes fra /api/kurs/{id} i script.js-->
           <h2 id="bekreft-kurs" data-kurs="tittel">Henter kurset …</h2>
           <p id="bekreft-kursinfo" hidden><time data-kurs="dato"></time> · <span data-kurs="tid"></span> · <span data-kurs="lokallag"></span></p>
         </header>
@@ -116,7 +108,6 @@
       <button type="submit" class="knapp knapp-primar knapp-stor" id="bekreft-knapp">Bekreft påmelding</button>
     </form>
 
-    <!--Vises hvis man kommer hit uten å ha fylt ut skjemaet-->
     <section class="ingen-pamelding" id="ingen-pamelding" aria-labelledby="ingen-tittel" hidden>
       <h2 id="ingen-tittel">Vi fant ingen påmelding</h2>
       <p>Fyll ut påmeldingsskjemaet først, så kan du bekrefte her.</p>
@@ -125,7 +116,6 @@
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

@@ -12,10 +12,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -31,7 +29,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -57,7 +54,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html" aria-current="page">Hjem</a></li>
@@ -84,7 +80,6 @@
 
   <main id="hovedinnhold" tabindex="-1">
 
-    <!--HERO-->
     <section class="hero" aria-labelledby="hero-tittel">
       <p class="hero-merke">Østfold Husflidslag</p>
       <h1 id="hero-tittel">Skap, lær og møt andre</h1>
@@ -92,7 +87,7 @@
         Oppdag kurs, aktiviteter og håndverkstradisjoner hos husflidlagene i Østfold.
         Vi har noe for alle – fra nybegynnere til erfarne håndverkere.
       </p>
-      <!--div brukes her fordi de to knappene trenger en felles boks for å stå på rad-->
+
       <div class="hero-knapper">
         <a href="kurs.html" class="knapp knapp-hvit">Finn kurs og aktiviteter</a>
         <a href="aktuelt.html" class="knapp knapp-kant">Se hva som skjer</a>
@@ -102,18 +97,17 @@
              alt="Tre kvinner strikker og lager håndarbeid sammen rundt et bord">
       </figure>
       <svg class="hero-bolge" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
-        <!--Masken lager et hull i streken, der stjernen står-->
+
         <mask id="bolge-hull">
           <rect width="1200" height="60" fill="#ffffff"></rect>
           <rect x="530" width="140" height="60" fill="#000000"></rect>
         </mask>
         <path d="M0,14 C150,36 300,42 480,40 C680,37 820,12 1000,8 C1100,6 1160,8 1200,10 L1200,60 L0,60 Z"></path>
-        <!--Tynn strek langs bølgen-->
         <path class="bolge-strek" mask="url(#bolge-hull)" vector-effect="non-scaling-stroke" d="M0,14 C150,36 300,42 480,40 C680,37 820,12 1000,8 C1100,6 1160,8 1200,10"></path>
       </svg>
     </section>
 
-    <!--SISTE NYTT-->
+
     <section class="seksjon" aria-labelledby="nytt-tittel">
       <header class="seksjon-topp">
         <h2 id="nytt-tittel">Siste nytt fra organisasjonen</h2>
@@ -121,7 +115,6 @@
         <a href="aktuelt.html" class="pil-lenke">Se alle nyheter</a>
       </header>
 
-      <!--Fylles med de nyeste nyhetene fra /api/nyheter i script.js-->
       <ul class="kortliste">
         <li class="liste-melding"><p>Henter nyheter …</p></li>
       </ul>
@@ -129,7 +122,6 @@
       <p class="kun-mobil"><a href="aktuelt.html" class="knapp knapp-primar-kant">Se alle nyheter</a></p>
     </section>
 
-    <!--KOMMENDE KURS-->
     <section class="seksjon seksjon-beige" aria-labelledby="kurs-tittel">
       <header class="seksjon-topp">
         <h2 id="kurs-tittel">Kommende kurs</h2>
@@ -137,7 +129,6 @@
         <a href="kurs.html" class="pil-lenke">Se alle kurs</a>
       </header>
 
-      <!--Fylles med de tre neste kursene fra /api/kurs/kommende i script.js-->
       <ul class="kortliste">
         <li class="liste-melding"><p>Henter kurs …</p></li>
       </ul>
@@ -145,7 +136,6 @@
       <p class="alle-kurs"><a href="kurs.html" class="knapp knapp-primar">Se alle kurs og aktiviteter</a></p>
     </section>
 
-    <!--BLI MEDLEM-->
     <section class="bli-medlem" aria-labelledby="medlem-tittel">
       <h2 id="medlem-tittel">Bli medlem – få rabatt på alle kurs</h2>
       <p>
@@ -165,20 +155,17 @@
       </figure>
     </section>
 
-    <!--VÅRE LOKALLAG-->
     <section class="seksjon seksjon-beige" aria-labelledby="lokallag-tittel">
       <header class="seksjon-topp sentrert">
         <h2 id="lokallag-tittel">Våre lokallag i Østfold</h2>
         <p>Vi har aktive lag i hele Østfold. Du kan delta på kurs hos alle lokallagene – uansett hvor du er bosatt.</p>
       </header>
 
-      <!--Fylles med lokallagene fra /api/lokallag i script.js-->
       <ul class="lokallag">
         <li class="liste-melding"><p>Henter lokallag …</p></li>
       </ul>
     </section>
 
-    <!--TRENGER DU HJELP-->
     <section class="seksjon hjelp" aria-labelledby="hjelp-tittel">
       <h2 id="hjelp-tittel">Trenger du hjelp?</h2>
       <p>Vi hjelper deg gjerne. Ta kontakt med oss via telefon eller e-post, eller besøk oss i lokalene våre.</p>
@@ -187,7 +174,6 @@
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

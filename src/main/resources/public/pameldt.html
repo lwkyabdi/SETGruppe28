@@ -12,10 +12,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -31,7 +29,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -57,7 +54,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -84,7 +80,6 @@
 
   <main class="side side-bekreft" id="hovedinnhold" tabindex="-1">
 
-    <!--DU ER PÅMELDT-->
     <section class="pameldt" id="pameldt" aria-labelledby="pameldt-tittel">
       <svg class="pameldt-ikon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M4 12.5l5 5L20 6.5"></path>
@@ -95,21 +90,18 @@
         med e-postadressen <span id="pameldt-epost">du oppga</span>.
       </p>
 
-      <!--Kurset du er påmeldt-->
       <article class="pameldt-kurs" aria-labelledby="pameldt-kurs">
         <h2 id="pameldt-kurs" data-kurs="tittel">Bunadssøm for nybegynnere</h2>
         <p><time datetime="2024-09-20" data-kurs="dato">20. september 2024</time> · <span data-kurs="tid">18:00–21:00</span></p>
         <p><span data-kurs="lagnavn">Fredrikstad Husflidslag</span> · <span data-kurs="sted">Fredrikstad Husflidssenter, Nygårdsgt. 14</span></p>
       </article>
 
-      <!--Videre herfra-->
       <ul class="pameldt-knapper">
         <li><a href="kurs.html" class="knapp knapp-primar">Se flere kurs</a></li>
         <li><a href="index.html" class="knapp knapp-kant-mork">Tilbake til forsiden</a></li>
       </ul>
     </section>
 
-    <!--Vises hvis man kommer hit uten å ha meldt seg på-->
     <section class="ingen-pamelding" id="ingen-pamelding" aria-labelledby="ingen-tittel" hidden>
       <h2 id="ingen-tittel">Vi fant ingen påmelding</h2>
       <p>Meld deg på et kurs først, så får du en bekreftelse her.</p>
@@ -118,7 +110,6 @@
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

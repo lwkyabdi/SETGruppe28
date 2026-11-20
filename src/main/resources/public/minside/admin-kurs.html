@@ -13,7 +13,7 @@
 
 <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-<!--HEADER-->
+
 <header class="admin-topp">
   <a href="admin-kurs.html" class="logo">
     <img src="../bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -25,7 +25,7 @@
   </ul>
 </header>
 
-<!--ADMINMENY-->
+
 <nav class="admin-meny" aria-label="Administrasjonsmeny">
   <ul>
     <li><a href="admin-kurs.html" aria-current="page">Kurs</a></li>
@@ -36,14 +36,12 @@
 
 <main class="admin-innhold" id="hovedinnhold" tabindex="-1">
 
-  <!--SIDETOPP-->
   <header class="admin-sidetopp">
     <h1>Kurs</h1>
     <p>Oversikt over kursene og hvor mange som er påmeldt.</p>
     <button type="button" class="knapp knapp-primar" id="nytt-kurs">+ Nytt kurs</button>
   </header>
 
-  <!--OVERSIKT-->
   <section aria-labelledby="oversikt-tittel">
     <h2 id="oversikt-tittel" class="skjult">Oversikt</h2>
     <ul class="admin-tall">
@@ -53,8 +51,6 @@
     </ul>
   </section>
 
-  <!--KURSLISTE-->
-  <!--Radene fylles inn av admin.js-->
   <section class="admin-tabell" aria-labelledby="kurs-tabell-tittel">
     <table>
       <caption id="kurs-tabell-tittel">Alle kurs</caption>
@@ -76,8 +72,6 @@
 
 </main>
 
-<!--SKJEMA FOR KURS-->
-<!--Samme felt som vises på kurssiden-->
 <dialog class="admin-dialog admin-dialog-bred" id="kurs-dialog" aria-labelledby="kurs-dialog-tittel">
   <form class="skjema" id="kurs-skjema" novalidate>
     <h2 id="kurs-dialog-tittel">Nytt kurs</h2>

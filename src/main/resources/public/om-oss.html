@@ -12,10 +12,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -31,7 +29,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -57,7 +54,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -84,13 +80,11 @@
 
   <main class="om-oss" id="hovedinnhold" tabindex="-1">
 
-    <!--TOPP-->
     <header class="om-topp">
       <h1>Om oss</h1>
       <p>Østfold Husflidslag er en regional organisasjon som tar vare på og formidler norske håndverkstradisjoner i Østfold.</p>
     </header>
 
-    <!--VÅR HISTORIE OG MISJON-->
     <section class="om-seksjon historie" aria-labelledby="historie-tittel">
       <h2 id="historie-tittel">Vår historie og misjon</h2>
       <p>Østfold Husflidslag ble stiftet på begynnelsen av 1900-tallet med et enkelt mål: å ta vare på og videreføre norske håndverkstradisjoner for kommende generasjoner.</p>
@@ -101,7 +95,6 @@
       </figure>
     </section>
 
-    <!--HVA VI TILBYR-->
     <section class="om-seksjon" aria-labelledby="tilbud-tittel">
       <h2 id="tilbud-tittel" class="sentrert-tittel">Hva vi tilbyr</h2>
       <ul class="tilbud">
@@ -150,17 +143,14 @@
       </ul>
     </section>
 
-    <!--VÅRE LOKALLAG-->
     <section class="om-seksjon" aria-labelledby="lag-tittel">
       <h2 id="lag-tittel">Våre lokallag</h2>
       <p class="om-ingress">Vi har aktive husflidslag i hele Østfold. Du kan delta på kurs hos alle lagene, uansett hvor du bor.</p>
-      <!--Fylles med lokallagene fra /api/lokallag i script.js (navn, beskrivelse og bilde)-->
       <ul class="lag-liste">
         <li class="liste-melding"><p>Henter lokallag …</p></li>
       </ul>
     </section>
 
-    <!--BLI EN DEL AV FELLESSKAPET-->
     <section class="om-seksjon fellesskap" aria-labelledby="fellesskap-tittel">
       <h2 id="fellesskap-tittel">Bli en del av fellesskapet</h2>
       <p>Er du nysgjerrig på håndverk og tradisjon? Ta kontakt eller meld deg på et kurs. Vi ønsker deg hjertelig velkommen!</p>
@@ -172,7 +162,6 @@
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

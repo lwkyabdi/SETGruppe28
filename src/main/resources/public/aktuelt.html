@@ -12,10 +12,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -31,7 +29,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -57,7 +54,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -84,29 +80,25 @@
 
   <main class="side" id="hovedinnhold" tabindex="-1">
 
-    <!--SIDETOPP-->
     <header class="sidetopp">
       <h1>Aktuelt</h1>
       <p>Nyheter, arrangementer og informasjon fra husflidlagene i Østfold</p>
     </header>
 
-    <!--NYHETER-->
     <section aria-labelledby="nyheter-tittel">
       <h2 id="nyheter-tittel" class="skjult">Alle nyheter</h2>
-      <!--Fylles med alle publiserte nyheter fra /api/nyheter i script.js, nyeste først-->
+
       <ul class="kortliste nyhetsliste">
         <li class="liste-melding"><p>Henter nyheter …</p></li>
       </ul>
     </section>
 
-    <!--SE ALLE KURS-->
     <p class="alle-kurs aktuelt-knapp">
       <a href="kurs.html" class="knapp knapp-primar">Se alle kurs og aktiviteter</a>
     </p>
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>

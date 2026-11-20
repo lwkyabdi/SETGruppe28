@@ -12,10 +12,8 @@
 </head>
 <body>
 
-  <!--Hopp til hovedinnhold: vises bare når man trykker Tab (WCAG 2.4.1)-->
   <a href="#hovedinnhold" class="hopp-lenke">Hopp til hovedinnhold</a>
 
-  <!--HEADER-->
   <header class="topp">
     <a href="index.html" class="logo">
       <img src="bilder/hflogo.svg" alt="Norges Husflidslag" width="121" height="48">
@@ -31,7 +29,6 @@
       </ul>
     </nav>
 
-    <!--Bli medlem, Min side og kurssøk-->
     <nav class="header-hoyre" aria-label="Medlem og kurssøk">
       <ul>
         <li><a href="https://husflid.no/om-norges-husflidslag/blimedlem/" class="knapp-medlem">Bli medlem</a></li>
@@ -57,7 +54,6 @@
       </svg>
     </button>
 
-    <!--Menyen på mobil-->
     <nav id="mobilmeny" class="mobilmeny" aria-label="Meny" hidden>
       <ul>
         <li><a href="index.html">Hjem</a></li>
@@ -84,26 +80,20 @@
 
   <main class="side side-kontakt" id="hovedinnhold" tabindex="-1">
 
-    <!--SIDETOPP-->
     <header class="sidetopp">
       <h1>Kontakt oss</h1>
       <p>Vi hjelper deg gjerne. Ring eller send e-post direkte til den som kan svare deg, eller besøk oss i lokalene våre.</p>
     </header>
 
-    <!--KONTAKTPERSONER-->
     <section class="kontaktpersoner" aria-labelledby="personer-tittel">
       <h2 id="personer-tittel">Kontaktpersoner</h2>
-      <!--Fylles med kontaktpersonene fra /api/kontaktpersoner i script.js-->
       <ul class="personer">
         <li class="liste-melding"><p>Henter kontaktpersoner …</p></li>
       </ul>
     </section>
 
-    <!--FINN OSS-->
     <section class="finn-oss" aria-labelledby="finn-oss-tittel">
       <h2 id="finn-oss-tittel">Finn oss</h2>
-      <!--Lokallagene med adresse hentes fra /api/lokallag i script.js og legges inn før Østfold Husflidslag.
-          Østfold Husflidslag (fylkeslaget) står fast, fordi det er sidens egen kontaktinformasjon.-->
       <ul id="finn-oss-liste">
         <li class="liste-melding"><p>Henter lokallag …</p></li>
         <li id="finn-oss-fylke">
@@ -116,7 +106,6 @@
       </ul>
     </section>
 
-    <!--SPØRSMÅL OM KURS-->
     <aside class="sporsmal kontakt-faq" aria-labelledby="faq-lenke-tittel">
       <h2 id="faq-lenke-tittel">Har du spørsmål om kurs?</h2>
       <p>Vi har svart på de vanligste spørsmålene om påmelding, betaling og avlysning.</p>
@@ -125,7 +114,6 @@
 
   </main>
 
-  <!--FOOTER-->
   <footer class="bunn">
     <section aria-labelledby="footer-om">
       <h2 id="footer-om">Østfold Husflidslag</h2>
