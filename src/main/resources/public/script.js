@@ -325,7 +325,7 @@ async function visPameldingsskjema() {
   if (erVenteliste) {
     document.getElementById("pamelding-tittel").textContent = "Sett deg på venteliste";
     document.getElementById("pamelding-ingress").textContent =
-      "Kurset er fullt. Fyll ut skjemaet for å stå på ventelisten. Når noen melder seg av, får førstemann på ventelisten plassen og beskjed på e-post.";
+      "Kurset er fullt. Fyll ut skjemaet for å stå på ventelisten. Blir det ledig plass, tar lokallaget kontakt med deg på e-post.";
     document.getElementById("venteliste-pris").hidden = false;
     document.title = "Venteliste: " + kurs.tittel + " – Østfold Husflidslag";
   }
@@ -506,7 +506,7 @@ if (pameldt) {
       document.getElementById("pameldt-tittel").textContent = "Du står på venteliste";
       document.getElementById("pameldt-melding").textContent =
         "Kurset " + kvittering.kursTittel + " er fullt. Du står på ventelisten (referanse " + kvittering.referanse +
-        "). Når noen melder seg av, får førstemann på ventelisten plassen og beskjed på e-post. Du er registrert";
+        "). Blir det ledig plass, tar lokallaget kontakt med deg på e-post. Du er registrert";
       document.title = "Du står på venteliste – Østfold Husflidslag";
     }
 
