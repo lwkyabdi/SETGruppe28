@@ -156,6 +156,4 @@ Backend svarer med JSON. Hvis noe går galt, får man `{"melding": "..."}`.
 
 ## Hvordan vi jobbet med Git
 
-Hver oppgave fikk sin egen branch. Når den var ferdig, lagde vi en pull request og merget den inn i `main`. Vi kjørte alle testene før vi merget.
-
 
